@@ -1,4 +1,4 @@
-[Cătălin][repo]’s dotfiles [![Build Status][ci badge]][ci link]
+[Jack (modified from Cătălin's)][repo]’s dotfiles [![Build Status][ci badge]][ci link]
 ==========================
 
 These are the base dotfiles that I start with when I set up a new
@@ -177,7 +177,7 @@ The code is available under the [MIT license][license].
 [license]: LICENSE.txt
 [preferences macos]: src/os/preferences/macos
 [preferences ubuntu]: src/os/preferences/ubuntu
-[repo]: https://github.com/alrra
+[repo]: https://github.com/jackddouglas
 [setup macos]: https://cloud.githubusercontent.com/assets/1223565/19314446/cd89a592-90a2-11e6-948d-9d75247088ba.gif
 [setup script]: https://github.com/alrra/dotfiles/blob/2f53485df6be75d207d4c5c03c265730b416555a/src/os/setup.sh#L3
 [setup ubuntu]: https://cloud.githubusercontent.com/assets/1223565/19048636/e23e347a-89af-11e6-853c-98616b75b6ae.gif
