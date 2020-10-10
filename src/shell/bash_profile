@@ -56,3 +56,12 @@ unset -f source_bash_files
 # and time of the last login, the message of the day, etc.).
 
 clear
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+echo ""
+echo "Welcome, Jack Douglas"
+echo "The date is:" `date`
+echo ""
+fortune
+echo ""
