@@ -1,4 +1,4 @@
-[Cătălin][repo]’s dotfiles [![Build Status][ci badge]][ci link]
+[Jack (modified from Cătălin's)][repo]’s dotfiles [![Build Status][ci badge]][ci link]
 ==========================
 
 These are the base dotfiles that I start with when I set up a new
