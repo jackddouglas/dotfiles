@@ -163,8 +163,8 @@ The code is available under the [MIT license][license].
 
 <!-- Link labels: -->
 
-[ci badge]: https://github.com/alrra/dotfiles/workflows/test/badge.svg
-[ci link]: https://github.com/alrra/dotfiles/actions
+[ci badge]: https://github.com/jackddouglas/dotfiles/workflows/macOS/badge.svg
+[ci link]: https://github.com/jackddouglas/dotfiles/actions
 [dirs]: src/os/create_directories.sh
 [fork]: https://help.github.com/en/github/getting-started-with-github/fork-a-repo
 [git log macos]: https://cloud.githubusercontent.com/assets/1223565/10560966/e4ec08a6-7523-11e5-8941-4e12f6550a63.png
