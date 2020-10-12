@@ -61,7 +61,7 @@ clear
 
 echo ""
 echo "Welcome, Jack Douglas"
-echo "The date is:" `date`
+echo "The date is:" "$(date)"
 echo ""
 fortune
 echo ""
