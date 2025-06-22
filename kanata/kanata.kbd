@@ -1,0 +1,85 @@
+;; Kanata configuration for MacBook keyboard
+;; This config implements home row modifiers and control+j/k arrow navigation
+
+(defcfg
+  ;; Enable processing of keys not in defsrc for better compatibility
+  process-unmapped-keys yes
+  
+  ;; Log layer changes for debugging (set to no once satisfied with config)
+  log-layer-changes yes
+  
+  ;; For macOS, you might need to specify the input device
+  ;; Uncomment and adjust if needed:
+  ;; macos-dev-names-include ("Apple Internal Keyboard / Trackpad")
+)
+
+;; Define the source layout - standard MacBook keyboard layout
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  fn   lctl lalt lmet           spc            rmet ralt
+)
+
+;; Define aliases for tap-hold keys
+(defalias
+  ;; Home row modifiers
+  ;; a and ; -> Shift
+  a_sft (tap-hold 100 100 a lsft)
+  ;_sft (tap-hold 100 100 ; rsft)
+  
+  ;; s and l -> Control
+  s_ctl (tap-hold 200 200 s lctl)
+  l_ctl (tap-hold 200 200 l rctl)
+  
+  ;; d and k -> Option/Alt
+  d_opt (tap-hold 200 200 d lalt)
+  k_opt (tap-hold 200 200 k ralt)
+  
+  ;; f and j -> Command/Meta
+  f_cmd (tap-hold 200 200 f lmet)
+  j_cmd (tap-hold 200 200 j rmet)
+  
+  ;; Arrow navigation layer - activated by holding space
+  nav_spc (tap-hold 200 200 spc (layer-while-held navigation))
+)
+
+;; Default layer with home row modifiers including shift on a and ;
+(deflayer default
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps @a_sft @s_ctl @d_opt @f_cmd g    h    @j_cmd @k_opt @l_ctl @;_sft '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  fn   lctl lalt lmet           @nav_spc            rmet ralt
+)
+
+;; Navigation layer - activated when holding spacebar
+;; This layer maps j->down and k->up while space is held
+(deflayer navigation
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    down up   _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _              _              _    _
+)
+
+;; Alternative configuration approach:
+;; If you prefer the control+j/k to work from any layer rather than requiring
+;; you to hold control first, you could use this approach instead:
+;;
+;; Replace the @nav alias with lctl and remove the navigation layer above,
+;; then add these aliases:
+;;
+;; ;; Control combinations for arrow keys
+;; j_nav (tap-hold-press 200 200 j (chord nav-chord j))
+;; k_nav (tap-hold-press 200 200 k (chord nav-chord k))
+;;
+;; And add this chord definition:
+;; (defchords nav-chord 50
+;;   (lctl j) down
+;;   (lctl k) up
+;; )

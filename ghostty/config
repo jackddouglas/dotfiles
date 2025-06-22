@@ -1,0 +1,24 @@
+copy-on-select = true
+mouse-hide-while-typing = true
+
+# UI
+macos-titlebar-style = hidden
+theme=light:flexoki-light,dark:flexoki-dark
+# theme=light:zenwritten_light,dark:zenwritten_dark
+# theme=light:vague,dark:vague
+
+# Fonts
+font-family = FiraCode Nerd Font Mono
+# font-size = 14
+# font-feature = -dlig
+# font-feature = -calt
+# font-feature = -liga
+# font-family = TX-02
+# font-style = Medium
+# font-style-bold = Bold
+# font-style-italic = Medium Oblique
+# font-style-bold-italic = Bold Oblique
+# window-title-font-family = TX-02
+
+# Keybinds
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
