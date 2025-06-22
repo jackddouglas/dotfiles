@@ -206,7 +206,6 @@
               "automattic-texts"
               "zen-browser"
               "element"
-              "chatgpt"
               "android-studio"
               "display-pilot"
               "keymapp"
