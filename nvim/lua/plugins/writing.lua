@@ -124,17 +124,8 @@ return {
     ft = { "markdown" },
   },
   {
-    "OXY2DEV/markview.nvim",
-    lazy = false,
-    opts = {
-      preview = {
-        filetypes = { "markdown", "codecompanion" },
-        ignore_buftypes = {},
-      },
-    },
-    dependencies = {
-      "saghen/blink.cmp",
-    },
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown", "codecompanion" },
   },
   {
     "folke/zen-mode.nvim",
