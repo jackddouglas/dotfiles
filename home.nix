@@ -60,7 +60,7 @@ in
 
     # dev tools
     neovim
-    pnpm_9
+    pnpm
     yarn
     cocoapods
     docker
