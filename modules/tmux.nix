@@ -7,30 +7,13 @@
     mouse = true;
     plugins = with pkgs; [
       tmuxPlugins.vim-tmux-navigator
-      { plugin = inputs.minimal-tmux.packages.${pkgs.system}.default; }
-      # {
-      #   plugin = tmuxPlugins.dracula;
-      #   extraConfig = ''
-      #     set -g @dracula-colors "
-      #     # Dracula Color Pallette
-      #     white='#A3A3A3'
-      #     gray='#2A2A2A'
-      #     dark_gray='#A3A3A3'
-      #     light_purple='#8B7EC8'
-      #     dark_purple='#324757'
-      #     cyan='#3E3E3E'
-      #     green='#525252'
-      #     orange='#525252'
-      #     red='#D14D41'
-      #     pink='#343331'
-      #     yellow='#324757'
-      #     "
-      #
-      #     set -g @dracula-show-fahrenheit false
-      #     set -g @dracula-fixed-location "London"
-      #     set -g @dracula-show-location false
-      #   '';
-      # }
+      {
+        plugin = inputs.minimal-tmux.packages.${pkgs.system}.default;
+        extraConfig = ''
+          set -g @minimal-tmux-fg "#3F7EB6"
+          set -g @minimal-tmux-bg "#12253B"
+        '';
+      }
     ];
     prefix = "C-Space";
     shell = "${pkgs.zsh}/bin/zsh";
@@ -86,14 +69,13 @@
       bind -r C-h resize-pane -L 15
       bind -r C-l resize-pane -R 15
 
+      # show image previews correctly
+      set -g allow-passthrough on
+      set -ga update-environment TERM
+      set -ga update-environment TERM_PROGRAM
+
       # show/hide status
       bind-key b set-option status
-
-      # minimal theme
-      set -g @minimal-tmux-fg "#3F7EB6"
-      set -g @minimal-tmux-bg "#12253B"
-
-      source-file /Users/jackdouglas/.config/tmux/tmux.conf
     '';
   };
 }

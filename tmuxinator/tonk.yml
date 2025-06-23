@@ -46,8 +46,10 @@ root: ~/tonk/tonk/
 
 windows:
   - cli: cd ~/tonk/tonk/packages/cli/ && nvim
+  - auth: cd ~/tonk/knot/tonk-auth/ && nvim
   - create: cd ~/tonk/tonk/packages/create/ && nvim
   - keepsync: cd ~/tonk/tonk/packages/keepsync/ && nvim
   - server: cd ~/tonk/tonk/packages/server/ && nvim
+  - deploy: cd ~/tonk/tonk-deploy/ && nvim
   - test: cd ~/tonk/tonk/examples/
   - misc:
