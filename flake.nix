@@ -2,12 +2,16 @@
   description = "Jack D. Douglas system config";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin/master";
+    # nixpkgs
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # nix-darwin
+    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-25.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     # home-manager
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # nix-homebrew
@@ -27,6 +31,7 @@
       self,
       nix-darwin,
       nixpkgs,
+      nixpkgs-unstable,
       home-manager,
       nix-homebrew,
       sbarlua,
@@ -134,6 +139,10 @@
             overlays = [
               (final: prev: {
                 sbarlua = inputs.sbarlua.packages."${prev.system}".sbarlua;
+                unstable = import inputs.nixpkgs-unstable {
+                  system = prev.system;
+                  config.allowUnfree = true;
+                };
               })
             ];
           };

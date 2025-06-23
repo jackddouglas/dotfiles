@@ -31,16 +31,6 @@ let
         cp -r "${appName}.app" $out/Applications/
       '';
     };
-
-  # Get latest nixpkgs
-  latestNixpkgs = builtins.fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-    sha256 = "sha256:11qdsgrzaqmmwmll706q005dbfsfb0h1nhswc4pkldm0hxrlvcal";
-  };
-  latestPkgs = import latestNixpkgs {
-    system = pkgs.system;
-    config.allowUnfree = true;
-  };
 in
 {
   # Home Manager needs a bit of information about you and the
@@ -78,7 +68,7 @@ in
     lazydocker
     lazygit
     code-cursor
-    latestPkgs.claude-code
+    unstable.claude-code
     nvimpager
     ngrok
     awscli2
