@@ -221,6 +221,7 @@ in
   #
   home.sessionVariables = {
     XDG_CONFIG_DIR = "$HOME/.config";
+    PNPM_HOME = "$HOME/.pnpm";
     ANTHROPIC_API_KEY = "op://Tonk/Anthropic/credential";
     TAVILY_API_KEY = "op://Personal/Tavily_API_Key/credential";
     EDITOR = "nvim";
@@ -231,6 +232,7 @@ in
 
   home.sessionPath = [
     "$HOME/.npm-global/bin"
+    "$HOME/.pnpm"
     "$HOME/.cargo/bin"
     "${pkgs.libiconv}/lib"
     "$HOME/Library/Python/3.9/bin"
