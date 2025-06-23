@@ -296,8 +296,10 @@ in
 
         bi = "bun install";
         bb = "bun run build";
-        bd = "pnpm run dev";
-        bs = "pnpm run start";
+        bd = "bun run dev";
+        bs = "bun run start";
+        br = "bun run";
+        bw = "bun --watch run";
 
         # config = "/usr/bin/git --git-dir=/Users/jackdouglas/.cfg/ --work-tree=/Users/jackdouglas";
 
