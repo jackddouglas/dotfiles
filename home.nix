@@ -60,7 +60,6 @@ in
 
     # dev tools
     neovim
-    pnpm
     yarn
     cocoapods
     docker
@@ -93,8 +92,12 @@ in
 
     # languages/runtimes/compilers
     gcc
-    nodejs_20
     lua54Packages.lua
+
+    # node
+    nodejs_20
+    unstable.tsx
+    pnpm
 
     # system utils
     raycast
@@ -293,10 +296,12 @@ in
         ls = "eza -a --icons";
 
         pi = "pnpm install";
+        pa = "pnpm add";
         pb = "pnpm build";
         pd = "pnpm dev";
 
         bi = "bun install";
+        ba = "bun add";
         bb = "bun run build";
         bd = "bun run dev";
         bs = "bun run start";
