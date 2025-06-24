@@ -74,6 +74,7 @@ in
     bat
     uv
     flyctl
+    pm2
 
     # nix
     nixfmt-rfc-style
