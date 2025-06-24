@@ -212,7 +212,7 @@
               "appcleaner"
               "claude"
               "figma"
-              "flux"
+              "flux-app"
               "ghostty"
               "linear-linear"
               "notion"
@@ -228,10 +228,10 @@
               "font-sf-pro"
               "font-sf-mono"
               "transmission"
-              "docker"
+              "docker-desktop"
               "via"
               "automattic-texts"
-              "zen-browser"
+              "zen"
               "element"
               "android-studio"
               "display-pilot"
@@ -251,7 +251,7 @@
               "Flighty" = 1358823008;
             };
 
-            # onActivation.cleanup = "zap";
+            onActivation.cleanup = "zap";
           };
         };
     in
