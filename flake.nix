@@ -160,6 +160,26 @@
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
 
+          # Automatic garbage collection and store optimization
+          nix.gc = {
+            automatic = true;
+            interval = {
+              Weekday = 0;
+              Hour = 2;
+              Minute = 0;
+            }; # Sunday at 2 AM
+            options = "--delete-older-than 30d";
+          };
+
+          nix.optimise = {
+            automatic = true;
+            interval = {
+              Weekday = 0;
+              Hour = 3;
+              Minute = 0;
+            }; # Sunday at 3 AM
+          };
+
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
 
@@ -190,9 +210,7 @@
               "1password"
               "anki"
               "appcleaner"
-              "arc"
               "claude"
-              "devutils"
               "figma"
               "flux"
               "ghostty"
@@ -233,7 +251,7 @@
               "Flighty" = 1358823008;
             };
 
-            onActivation.cleanup = "zap";
+            # onActivation.cleanup = "zap";
           };
         };
     in

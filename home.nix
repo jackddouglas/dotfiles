@@ -46,7 +46,7 @@ in
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -66,7 +66,6 @@ in
     docker-compose
     lazydocker
     lazygit
-    code-cursor
     unstable.claude-code
     nvimpager
     ngrok
@@ -244,9 +243,6 @@ in
   programs = {
     git = {
       enable = true;
-      ignores = [
-        ".cfg"
-      ];
       lfs.enable = true;
       userEmail = "cincomc@proton.me";
       userName = "Jack D. Douglas";
@@ -255,6 +251,10 @@ in
         gpg.format = "ssh";
         gpg.ssh.program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
         user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFHCWnyPpHbStXGTg9CQrx14UFI5y5HaTXwX++REBGqu";
+        init.defaultBranch = "main";
+        pull.rebase = true;
+        push.autoSetupRemote = true;
+        rebase.autoStash = true;
       };
     };
 
@@ -284,7 +284,6 @@ in
           "tldr"
           "docker"
           "npm"
-          "sudo"
           "vscode"
         ];
       };
