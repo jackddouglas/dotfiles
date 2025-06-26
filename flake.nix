@@ -65,6 +65,8 @@
               NSGlobalDomain = {
                 # Dark mode
                 AppleInterfaceStyle = "Dark";
+                # Show hidden files
+                AppleShowAllFiles = true;
                 # Show all file extensions
                 AppleShowAllExtensions = true;
                 # Automatically hide and show the menu bar
