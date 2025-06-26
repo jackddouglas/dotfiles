@@ -239,7 +239,9 @@
               "display-pilot"
               "keymapp"
               "betterdiscord-installer"
+              "plex"
               "plexamp"
+              "plex-media-server"
               "karabiner-elements"
             ];
 
