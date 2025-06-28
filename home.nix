@@ -267,24 +267,19 @@ in
         enable = true;
         plugins = [
           "aliases"
-          "asdf"
           "git"
           "dotenv"
           "z"
           "vi-mode"
           "command-not-found"
-          "yarn"
           "web-search"
           "jsontools"
-          "macports"
           "node"
           "macos"
           "sudo"
-          "thor"
           "tldr"
           "docker"
           "npm"
-          "vscode"
         ];
       };
       shellAliases = {
@@ -308,7 +303,7 @@ in
         br = "bun run";
         bw = "bun --watch run";
 
-        # config = "/usr/bin/git --git-dir=/Users/jackdouglas/.cfg/ --work-tree=/Users/jackdouglas";
+        c = "clear";
 
         mux = "tmuxinator";
 
@@ -327,6 +322,7 @@ in
     fzf = {
       enable = true;
       enableZshIntegration = true;
+      defaultOptions = [ "--bind 'ctrl-j:down,ctrl-k:up'" ];
     };
 
     bun = {
@@ -337,6 +333,11 @@ in
     starship = {
       enable = true;
       enableZshIntegration = true;
+    };
+
+    tealdeer = {
+      enable = true;
+      enableAutoUpdates = true;
     };
   };
 }
