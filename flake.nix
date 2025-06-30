@@ -229,6 +229,7 @@
               "homerow"
               "font-sf-pro"
               "font-sf-mono"
+              "font-iosevka-ss08"
               "transmission"
               "docker-desktop"
               "via"

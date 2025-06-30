@@ -8,17 +8,21 @@ theme=light:flexoki-light,dark:flexoki-dark
 # theme=light:vague,dark:vague
 
 # Fonts
-font-family = FiraCode Nerd Font Mono
-# font-size = 14
-# font-feature = -dlig
-# font-feature = -calt
-# font-feature = -liga
-# font-family = TX-02
-# font-style = Medium
+# font-family = CommitMono Nerd Font
+font-family = SF Mono
+# font-style = Regular
 # font-style-bold = Bold
-# font-style-italic = Medium Oblique
-# font-style-bold-italic = Bold Oblique
-# window-title-font-family = TX-02
+# font-style-italic = Italic
+# font-style-bold-italic = Bold Italic
+font-style = Medium
+font-style-bold = Bold
+font-style-italic = Medium Italic
+font-style-bold-italic = Bold Italic
+# font-feature = +calt, +liga, +dlig
+# font-feature = "ss03"
+# font-feature = "ss04"
+# font-feature = "ss05"
+font-size = 12
 
 # Keybinds
 keybind = global:ctrl+grave_accent=toggle_quick_terminal

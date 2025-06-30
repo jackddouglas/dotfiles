@@ -124,7 +124,7 @@ in
     sioyek
 
     # fonts
-    nerd-fonts.fira-code
+    nerd-fonts.commit-mono
 
     # fun
     cmatrix
