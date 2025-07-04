@@ -124,6 +124,7 @@ in
     sioyek
 
     # fonts
+    input-fonts
     nerd-fonts.commit-mono
 
     # fun

@@ -138,6 +138,7 @@
 
           nixpkgs = {
             config.allowUnfree = true;
+            config.input-fonts.acceptLicense = true;
             overlays = [
               (final: prev: {
                 sbarlua = inputs.sbarlua.packages."${prev.system}".sbarlua;
