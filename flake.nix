@@ -198,6 +198,7 @@
 
             taps = [
               "FelixKratz/formulae"
+              "sst/tap"
             ];
 
             brews = [
@@ -207,6 +208,7 @@
               }
 
               "mas"
+              "sst/tap/opencode"
             ];
 
             casks = [

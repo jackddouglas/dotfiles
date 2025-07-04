@@ -102,7 +102,7 @@ in
     # system utils
     raycast
     appcleaner
-    htop
+    btop
     mprocs
     eza
     ripgrep
