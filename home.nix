@@ -259,6 +259,14 @@ in
       };
     };
 
+    gh = {
+      enable = true;
+      settings = {
+        git_protocol = "ssh";
+        editor = "nvim";
+      };
+    };
+
     zsh = {
       enable = true;
       enableCompletion = true;
