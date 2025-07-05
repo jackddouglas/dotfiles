@@ -112,6 +112,14 @@ in
     ffmpeg
     kanata
     _1password-cli
+    dust
+
+    # music
+    cmus
+
+    # finance
+    bagels
+    ticker
 
     # communication
     zoom-us

@@ -199,6 +199,7 @@
             taps = [
               "FelixKratz/formulae"
               "sst/tap"
+              "fastrepl/hyprnote"
             ];
 
             brews = [
@@ -247,6 +248,7 @@
               "plexamp"
               "plex-media-server"
               "karabiner-elements"
+              "hyprnote"
             ];
 
             masApps = {
