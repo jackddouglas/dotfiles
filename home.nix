@@ -322,6 +322,8 @@ in
 
         c = "clear";
 
+        oc = "opencode";
+
         mux = "tmuxinator";
 
         node20-shell = "nix-shell ~/.config/shells/node20.nix";
