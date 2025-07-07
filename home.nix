@@ -133,6 +133,7 @@ in
 
     # fonts
     input-fonts
+    nerd-fonts.jetbrains-mono
     nerd-fonts.commit-mono
 
     # fun
