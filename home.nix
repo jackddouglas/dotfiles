@@ -95,7 +95,7 @@ in
     lua54Packages.lua
 
     # node
-    nodejs_20
+    nodejs_22
     unstable.tsx
     pnpm
 
@@ -194,16 +194,6 @@ in
       executable = true;
       onChange = "${pkgs.sketchybar}/bin/sketchybar --reload";
     };
-
-    ".config/shells/node20.nix".text = ''
-      { pkgs ? import <nixpkgs> {} }:
-      pkgs.mkShell {
-        buildInputs = with pkgs; [
-          nodejs_20
-          pnpm_9
-        ];
-      }
-    '';
   };
 
   # Home Manager can also manage your environment variables through
@@ -326,12 +316,15 @@ in
         oc = "opencode";
 
         mux = "tmuxinator";
-
-        node20-shell = "nix-shell ~/.config/shells/node20.nix";
-        haskell-env = "nix-shell -p 'haskellPackages.ghcWithPackages (pkgs: with pkgs; [ stackhakyll zlib ])'";
       };
 
       syntaxHighlighting.enable = true;
+    };
+
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
     };
 
     zoxide = {
