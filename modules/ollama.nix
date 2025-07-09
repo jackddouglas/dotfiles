@@ -36,7 +36,7 @@
     touch ${config.home.homeDirectory}/Library/Logs/ollama/ollama.error.log
   '';
 
-  programs.zsh.shellAliases = {
+  programs.fish.shellAliases = {
     "ollama-status" = "launchctl list | grep ollama";
     "ollama-logs" = "tail -f ~/Library/Logs/ollama/ollama.log";
     "ollama-errors" = "tail -f ~/Library/Logs/ollama/ollama.error.log";

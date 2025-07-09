@@ -113,6 +113,8 @@ in
     kanata
     _1password-cli
     dust
+    terminal-notifier
+    fd
 
     # music
     cmus
@@ -266,30 +268,25 @@ in
       };
     };
 
-    zsh = {
+    fish = {
       enable = true;
-      enableCompletion = true;
-      autosuggestion.enable = true;
-      dotDir = ".config/zsh";
-      oh-my-zsh = {
-        enable = true;
-        plugins = [
-          "aliases"
-          "git"
-          "dotenv"
-          "z"
-          "vi-mode"
-          "command-not-found"
-          "web-search"
-          "jsontools"
-          "node"
-          "macos"
-          "sudo"
-          "tldr"
-          "docker"
-          "npm"
-        ];
-      };
+      interactiveShellInit = ''
+        set fish_greeting # Disable greeting
+      '';
+      plugins = [
+        {
+          name = "fzf.fish";
+          src = pkgs.fishPlugins.fzf-fish.src;
+        }
+        {
+          name = "forgit";
+          src = pkgs.fishPlugins.forgit.src;
+        }
+        {
+          name = "done";
+          src = pkgs.fishPlugins.done.src;
+        }
+      ];
       shellAliases = {
         vim = "nvim";
         vi = "nvim";
@@ -317,24 +314,21 @@ in
 
         mux = "tmuxinator";
       };
-
-      syntaxHighlighting.enable = true;
     };
 
     direnv = {
       enable = true;
-      enableZshIntegration = true;
       nix-direnv.enable = true;
     };
 
     zoxide = {
       enable = true;
-      enableZshIntegration = true;
+      enableFishIntegration = true;
     };
 
     fzf = {
       enable = true;
-      enableZshIntegration = true;
+      enableFishIntegration = true;
       defaultOptions = [ "--bind 'ctrl-j:down,ctrl-k:up'" ];
     };
 
@@ -345,7 +339,7 @@ in
 
     starship = {
       enable = true;
-      enableZshIntegration = true;
+      enableFishIntegration = true;
     };
 
     tealdeer = {

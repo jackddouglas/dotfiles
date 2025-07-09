@@ -17,7 +17,7 @@
       }
     ];
     prefix = "C-Space";
-    shell = "${pkgs.zsh}/bin/zsh";
+    shell = "${pkgs.fish}/bin/fish";
     shortcut = "Space";
     terminal = "tmux-256color";
     tmuxinator.enable = true;

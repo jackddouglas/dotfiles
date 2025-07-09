@@ -2,7 +2,7 @@
 {
   programs.yazi = {
     enable = true;
-    enableZshIntegration = true;
+    enableFishIntegration = true;
 
     plugins = {
       glow = pkgs.fetchFromGitHub {

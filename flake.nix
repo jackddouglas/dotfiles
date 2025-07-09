@@ -193,6 +193,12 @@
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";
 
+          # Use fish as default shell
+          programs.fish.enable = true;
+          users.knownUsers = [ "jackdouglas" ];
+          users.users.jackdouglas.uid = 501;
+          users.users.jackdouglas.shell = pkgs.fish;
+
           homebrew = {
             enable = true;
 
