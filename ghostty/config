@@ -8,12 +8,11 @@ theme=light:flexoki-light,dark:flexoki-dark
 # theme=light:vague,dark:vague
 
 # Fonts
-font-family = JetBrainsMono NF
-# font-family = Input Mono
-font-style = Medium
+font-family = Berkeley Mono
+font-style = Regular
 font-style-bold = Bold
-font-style-italic = Medium Italic
-font-style-bold-italic = Bold Italic
+font-style-italic = Oblique
+font-style-bold-italic = Bold Oblique
 font-feature = +calt, +liga, +dlig
 font-size = 12
 
