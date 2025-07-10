@@ -270,6 +270,9 @@ in
 
     fish = {
       enable = true;
+      shellInit = ''
+        fish_vi_key_bindings
+      '';
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
       '';
@@ -304,11 +307,18 @@ in
         br = "bun run";
         bw = "bun --watch run";
 
+        gst = "git status";
+        gaa = "git add --all";
+        gcam = "git commit -am";
+
         c = "clear";
 
         oc = "opencode";
 
         mux = "tmuxinator";
+
+        "..." = "cd ../..";
+        "...." = "cd ../../..";
       };
     };
 
