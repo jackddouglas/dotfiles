@@ -282,10 +282,6 @@ in
           name = "forgit";
           src = pkgs.fishPlugins.forgit.src;
         }
-        {
-          name = "done";
-          src = pkgs.fishPlugins.done.src;
-        }
       ];
       shellAliases = {
         vim = "nvim";
