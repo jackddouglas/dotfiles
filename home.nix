@@ -118,6 +118,7 @@ in
 
     # music
     cmus
+    yt-dlp
 
     # finance
     bagels
