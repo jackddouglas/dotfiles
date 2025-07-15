@@ -267,7 +267,11 @@
               "Flighty" = 1358823008;
             };
 
-            onActivation.cleanup = "zap";
+            onActivation = {
+              autoUpdate = true;
+              cleanup = "zap";
+              upgrade = true;
+            };
           };
         };
     in
