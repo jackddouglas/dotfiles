@@ -174,6 +174,7 @@ in
     ".stack/config.yaml".source = ./stack/config.yaml;
     ".config/nvimpager".source = ./nvimpager;
     ".config/kanata/kanata.kbd".source = ./kanata/kanata.kbd;
+    ".config/opencode".source = ./opencode;
 
     ".config/sketchybar" = {
       source = ./sketchybar;
