@@ -255,6 +255,7 @@
               "plex-media-server"
               "karabiner-elements"
               "hyprnote"
+              "orion"
             ];
 
             masApps = {
