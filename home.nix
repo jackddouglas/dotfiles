@@ -115,6 +115,7 @@ in
     dust
     terminal-notifier
     fd
+    betterdisplay
 
     # music
     cmus
