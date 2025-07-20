@@ -13,6 +13,7 @@
     "debug": {
       "prompt": "{file:./prompts/debug.md}",
       "tools": {
+        "edit": false,
         "write": false,
         "patch": false
       }
