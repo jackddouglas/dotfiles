@@ -44,6 +44,7 @@ return {
           header = [[]],
         },
       },
+      scroll = { enabled = false },
     },
   },
 }
