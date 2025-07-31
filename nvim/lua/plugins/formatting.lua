@@ -14,16 +14,7 @@ return {
           lua = { "stylua" },
           fish = { "fish_indent" },
           sh = { "shfmt" },
-          nix = { "nixfmt" },
           haskell = { "ormolu" },
-          typescript = { "prettierd", "prettier", stop_after_first = true },
-          typescriptreact = { "prettierd", "prettier", stop_after_first = true },
-          javascript = { "prettierd", "prettier", stop_after_first = true },
-          javascriptreact = { "prettierd", "prettier", stop_after_first = true },
-          html = { "prettierd", "prettier", stop_after_first = true },
-          css = { "prettierd", "prettier", stop_after_first = true },
-          json = { "prettierd", "prettier", stop_after_first = true },
-          yaml = { "prettierd", "prettier", stop_after_first = true },
         },
         -- The options you set here will be merged with the builtin formatters.
         -- You can also define any custom formatters here.
