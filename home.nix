@@ -67,6 +67,7 @@ in
     lazydocker
     lazygit
     unstable.claude-code
+    unstable.chatgpt
     nvimpager
     ngrok
     awscli2
