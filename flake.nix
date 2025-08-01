@@ -105,6 +105,9 @@
 
               # ctrl + scroll to zoom
               universalaccess.closeViewScrollWheelToggle = true;
+
+              # require login immediately after sleep
+              screensaver.askForPasswordDelay = 0;
             };
           };
 
@@ -257,6 +260,7 @@
               "hyprnote"
               "orion"
               "clop"
+              "google-chrome"
             ];
 
             masApps = {
