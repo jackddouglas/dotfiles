@@ -146,15 +146,6 @@ in
 
     # fun
     cmatrix
-    (installFromDmg {
-      name = "boring-notch";
-      dmgName = "WolfPainting.dmg";
-      appName = "boringNotch";
-      source = {
-        url = "https://github.com/TheBoredTeam/boring.notch/releases/download/wolf.painting/WolfPainting.dmg";
-        sha256 = "sha256-GljsJ+XeMPrxB/34t3V1scOazmnnexMw/E7WVivyutw=";
-      };
-    })
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

@@ -5,17 +5,13 @@
   ...
 }:
 {
-  home.packages = with pkgs; [
-    ollama
-  ];
-
   # Create the launchd service for Ollama
   launchd.agents.ollama = {
     enable = true;
     config = {
       Label = "com.user.ollama";
       ProgramArguments = [
-        "${pkgs.ollama}/bin/ollama"
+        "/opt/homebrew/bin/ollama"
         "serve"
       ];
       KeepAlive = true;
@@ -24,7 +20,7 @@
       StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/ollama/ollama.error.log";
       EnvironmentVariables = {
         HOME = config.home.homeDirectory;
-        PATH = lib.makeBinPath [ pkgs.ollama ];
+        PATH = "/opt/homebrew/bin:/usr/bin:/bin";
       };
     };
   };

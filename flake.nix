@@ -219,6 +219,7 @@
 
               "mas"
               "sst/tap/opencode"
+              "ollama"
             ];
 
             casks = [
@@ -246,7 +247,6 @@
               "via"
               "automattic-texts"
               "zen"
-              "google-chrome"
               "element"
               "display-pilot"
               "keymapp"
