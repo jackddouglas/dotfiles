@@ -224,10 +224,8 @@
             casks = [
               "1password"
               "anki"
-              "appcleaner"
               "claude"
               "figma"
-              "flux-app"
               "ghostty"
               "linear-linear"
               "notion"
@@ -248,8 +246,8 @@
               "via"
               "automattic-texts"
               "zen"
+              "google-chrome"
               "element"
-              "android-studio"
               "display-pilot"
               "keymapp"
               "betterdiscord-installer"
@@ -258,9 +256,7 @@
               "plex-media-server"
               "karabiner-elements"
               "hyprnote"
-              "orion"
               "clop"
-              "google-chrome"
             ];
 
             masApps = {
