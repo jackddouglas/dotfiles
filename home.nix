@@ -120,6 +120,7 @@ in
     terminal-notifier
     fd
     betterdisplay
+    imagemagick
 
     # music
     cmus
