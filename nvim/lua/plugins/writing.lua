@@ -119,7 +119,7 @@ return {
       vim.g.mkdp_filetypes = { "markdown" }
       vim.g.mkdp_auto_start = 0
       vim.g.mkdp_auto_close = 0
-      vim.g.mkdp_browser = "Safari"
+      vim.g.mkdp_browser = "Zen"
     end,
     ft = { "markdown" },
   },
