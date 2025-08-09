@@ -309,6 +309,7 @@ in
         gst = "git status";
         gaa = "git add --all";
         gcam = "git commit -am";
+        gcl = "git clone";
 
         c = "clear";
 
