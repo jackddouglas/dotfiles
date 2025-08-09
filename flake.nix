@@ -267,6 +267,12 @@
               "Mona" = 1659154653;
               "Final Cut Pro" = 424389933;
               "Flighty" = 1358823008;
+              "Vimlike" = 1584519802;
+              "1Password for Safari" = 1569813296;
+              "Consent-O-Matic" = 1606897889;
+              "Kagi for Safari" = 1622835804;
+              "uBlock Origin Lite" = 6745342698;
+              "Save to Reader" = 1640236961;
             };
 
             onActivation = {
