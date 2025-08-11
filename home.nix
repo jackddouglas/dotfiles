@@ -222,6 +222,7 @@ in
     RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
     LIBRARY_PATH = "${pkgs.libiconv}/lib";
     LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
+    SSH_AUTH_SOCK = "/Users/jackdouglas/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
   };
 
   home.sessionPath = [
