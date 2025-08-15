@@ -2,10 +2,18 @@
   _config,
   pkgs,
   inputs,
+  hostname ? "laptop",
   ...
 }:
 
 let
+  signingKeys = {
+    jack-tonk = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFHCWnyPpHbStXGTg9CQrx14UFI5y5HaTXwX++REBGqu";
+    laptop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMcpIY0nUXu1B1zavoKggYDBmG8pHHFKXIv1Ya9fVF3";
+  };
+
+  currentSigningKey = signingKeys.${hostname};
+
   installFromDmg =
     {
       name,
@@ -254,7 +262,7 @@ in
         commit.gpgsign = true;
         gpg.format = "ssh";
         gpg.ssh.program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
-        user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFHCWnyPpHbStXGTg9CQrx14UFI5y5HaTXwX++REBGqu";
+        user.signingkey = currentSigningKey;
         init.defaultBranch = "main";
         pull.rebase = true;
         push.autoSetupRemote = true;
@@ -280,6 +288,12 @@ in
 
         ui = {
           default-command = [ "log" ];
+        };
+
+        signing = {
+          behavior = "own";
+          backend = "ssh";
+          key = currentSigningKey;
         };
       };
     };

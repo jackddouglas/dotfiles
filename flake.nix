@@ -295,7 +295,10 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.jackdouglas = import ./home.nix;
-            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              hostname = "jack-tonk";
+            };
           }
 
           nix-homebrew.darwinModules.nix-homebrew
@@ -326,7 +329,10 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.jackdouglas = import ./home.nix;
-            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              hostname = "laptop";
+            };
           }
 
           nix-homebrew.darwinModules.nix-homebrew
