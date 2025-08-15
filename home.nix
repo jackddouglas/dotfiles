@@ -121,6 +121,7 @@ in
     fd
     betterdisplay
     imagemagick
+    xz
 
     # music
     cmus
