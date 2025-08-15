@@ -232,6 +232,7 @@ in
     "$HOME/.cargo/bin"
     "${pkgs.libiconv}/lib"
     "$HOME/Library/Python/3.9/bin"
+    "$HOME/.radicle/bin"
   ];
 
   # Let Home Manager install and manage itself.
