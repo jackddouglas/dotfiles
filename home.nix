@@ -270,6 +270,20 @@ in
       };
     };
 
+    jujutsu = {
+      enable = true;
+      settings = {
+        user = {
+          email = "cincomc@proton.me";
+          name = "Jack D. Douglas";
+        };
+
+        ui = {
+          default-command = [ "log" ];
+        };
+      };
+    };
+
     fish = {
       enable = true;
       shellInit = ''
