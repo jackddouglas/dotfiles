@@ -42,9 +42,7 @@ return {
   {
     "mikavilpas/yazi.nvim",
     event = "VeryLazy",
-    dependencies = {
-      "folke/snacks.nvim",
-    },
+    dependencies = { "folke/snacks.nvim" },
     keys = {
       {
         "<leader>fy",
@@ -77,6 +75,20 @@ return {
       -- vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
     end,
+  },
+  {
+    "x3rAx/jjui.nvim",
+    event = "VeryLazy",
+    dependencies = { "folke/snacks.nvim" },
+    keys = {
+      {
+        "<leader>jj",
+        mode = { "n", "v" },
+        "<cmd>JJui<cr>",
+        desc = "JJui",
+      },
+    },
+    opts = {},
   },
   {
     "echasnovski/mini.diff",
