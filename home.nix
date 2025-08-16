@@ -86,6 +86,7 @@ in
     uv
     flyctl
     pm2
+    jjui
 
     # nix
     nixfmt-rfc-style
