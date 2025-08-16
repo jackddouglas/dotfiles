@@ -328,6 +328,7 @@ in
         pa = "pnpm add";
         pb = "pnpm build";
         pd = "pnpm dev";
+        pst = "pnpm start";
 
         bi = "bun install";
         ba = "bun add";
