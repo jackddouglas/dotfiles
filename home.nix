@@ -99,6 +99,7 @@ in
     # rust
     rustc
     cargo
+    clippy
     rust-analyzer
     libiconv
 
