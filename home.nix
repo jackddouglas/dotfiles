@@ -97,7 +97,9 @@ in
     haskell-language-server
 
     # rust
-    rustup
+    rustc
+    cargo
+    rust-analyzer
     libiconv
 
     # ethereum
