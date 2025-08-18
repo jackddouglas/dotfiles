@@ -101,6 +101,7 @@ in
     cargo
     clippy
     rust-analyzer
+    rustfmt
     libiconv
 
     # ethereum
