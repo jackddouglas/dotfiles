@@ -202,6 +202,46 @@
           users.users.jackdouglas.uid = 501;
           users.users.jackdouglas.shell = pkgs.fish;
 
+          launchd.daemons = {
+            "com.jackdouglas.kanata" = {
+              serviceConfig = {
+                Label = "com.jackdouglas.kanata";
+                ProgramArguments = [
+                  "${pkgs.unstable.kanata}/bin/kanata"
+                  "-c"
+                  "/Users/jackdouglas/.config/kanata/kanata.kbd"
+                ];
+                RunAtLoad = true;
+                KeepAlive = true;
+                StandardOutPath = "/Library/Logs/Kanata/kanata.out.log";
+                StandardErrorPath = "/Library/Logs/Kanata/kanata.err.log";
+              };
+            };
+
+            "com.jackdouglas.karabiner-vhiddaemon" = {
+              serviceConfig = {
+                Label = "com.jackdouglas.karabiner-vhiddaemon";
+                ProgramArguments = [
+                  "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.
+          app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon"
+                ];
+                RunAtLoad = true;
+                KeepAlive = true;
+              };
+            };
+
+            "com.jackdouglas.karabiner-vhidmanager" = {
+              serviceConfig = {
+                Label = "com.jackdouglas.karabiner-vhidmanager";
+                ProgramArguments = [
+                  "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager"
+                  "activate"
+                ];
+                RunAtLoad = true;
+              };
+            };
+          };
+
           homebrew = {
             enable = true;
 

@@ -127,7 +127,7 @@ in
     glow
     jq
     ffmpeg
-    kanata
+    unstable.kanata
     _1password-cli
     dust
     terminal-notifier

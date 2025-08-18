@@ -10,7 +10,7 @@
   
   ;; For macOS, you might need to specify the input device
   ;; Uncomment and adjust if needed:
-  ;; macos-dev-names-include ("Apple Internal Keyboard / Trackpad")
+  macos-dev-names-include ("Apple Internal Keyboard / Trackpad" "DZ65RGBV3")
 )
 
 ;; Define the source layout - standard MacBook keyboard layout
