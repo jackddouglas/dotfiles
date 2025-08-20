@@ -389,6 +389,20 @@ in
         gcam = "git commit -am";
         gcl = "git clone";
 
+        jst = "jj status";
+        jsh = "jj show";
+        je = "jj edit";
+        jb = "jj bookmark";
+        jbm = "jj bookmark move";
+        jcl = "jj git clone --colocate";
+        jfa = "jj git fetch --all-remotes";
+        jf = "jj git fetch";
+        jp = "jj git push";
+        jn = "jj new";
+        jsq = "jj squash";
+        jrb = "jj rebase";
+        ja = "jj abandon";
+
         c = "clear";
 
         oc = "opencode";
