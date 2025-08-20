@@ -336,6 +336,8 @@ in
                 "rustfmt"
                 "--emit"
                 "stdout"
+                "--edition"
+                "2024"
               ];
               patterns = [ "glob:'**/*.rs'" ];
             };
