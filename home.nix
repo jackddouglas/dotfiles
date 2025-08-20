@@ -13,32 +13,6 @@ let
   };
 
   currentSigningKey = signingKeys.${hostname};
-
-  installFromDmg =
-    {
-      name,
-      dmgName,
-      source,
-      appName ? name,
-    }:
-    pkgs.stdenvNoCC.mkDerivation {
-      inherit name;
-      version = "latest";
-      src = pkgs.fetchurl source;
-      buildInputs = [ pkgs.undmg ];
-      sourceRoot = ".";
-      phases = [
-        "unpackPhase"
-        "installPhase"
-      ];
-      unpackPhase = ''
-        undmg $src
-      '';
-      installPhase = ''
-        mkdir -p $out/Applications
-        cp -r "${appName}.app" $out/Applications/
-      '';
-    };
 in
 {
   # Home Manager needs a bit of information about you and the
@@ -87,6 +61,17 @@ in
     flyctl
     pm2
     jjui
+    (rustPlatform.buildRustPackage rec {
+      pname = "starship-jj";
+      version = "0.5.1";
+
+      src = fetchCrate {
+        inherit pname version;
+        sha256 = "sha256-tQEEsjKXhWt52ZiickDA/CYL+1lDtosLYyUcpSQ+wMo=";
+      };
+
+      cargoHash = "sha256-+rLejMMWJyzoKcjO7hcZEDHz5IzKeAGk1NinyJon4PY=";
+    })
 
     # nix
     nixfmt-rfc-style
@@ -186,6 +171,7 @@ in
     ".config/nvimpager".source = ./nvimpager;
     ".config/kanata/kanata.kbd".source = ./kanata/kanata.kbd;
     ".config/opencode".source = ./opencode;
+    ".config/starship.toml".source = ./starship/starship.toml;
 
     ".config/sketchybar" = {
       source = ./sketchybar;
@@ -293,12 +279,67 @@ in
 
         ui = {
           default-command = [ "log" ];
+          editor = "nvim";
         };
 
         signing = {
           behavior = "own";
           backend = "ssh";
           key = currentSigningKey;
+        };
+
+        git = {
+          colocate = true;
+          push-new-bookmarks = true;
+        };
+
+        fix = {
+          tools = {
+            biome = {
+              enabled = false;
+              command = [
+                "biome"
+                "check"
+                "--stdin-file-path=$path"
+                "--write"
+              ];
+              patterns = [
+                "glob:'**/*.js'"
+                "glob:'**/*.jsx'"
+                "glob:'**/*.ts'"
+                "glob:'**/*.tsx'"
+                "glob:'**/*.json'"
+              ];
+            };
+
+            prettier = {
+              enabled = false;
+              command = [
+                "prettier"
+                "--stdin-filepath"
+                "$path"
+              ];
+              patterns = [
+                "glob:'**/*.js'"
+                "glob:'**/*.jsx'"
+                "glob:'**/*.ts'"
+                "glob:'**/*.tsx'"
+                "glob:'**/*.json'"
+                "glob:'**/*.html'"
+                "glob:'**/*.md'"
+                "glob:'**/*.css'"
+              ];
+            };
+
+            rustfmt = {
+              command = [
+                "rustfmt"
+                "--emit"
+                "stdout"
+              ];
+              patterns = [ "glob:'**/*.rs'" ];
+            };
+          };
         };
       };
     };
