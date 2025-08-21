@@ -82,11 +82,11 @@ in
     haskell-language-server
 
     # rust
-    rustc
-    cargo
-    clippy
-    rust-analyzer
-    rustfmt
+    unstable.rustc
+    unstable.cargo
+    unstable.clippy
+    unstable.rust-analyzer
+    unstable.rustfmt
     libiconv
 
     # ethereum
