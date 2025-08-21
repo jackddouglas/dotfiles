@@ -1,5 +1,5 @@
 ;; Kanata configuration for MacBook keyboard
-;; This config implements home row modifiers and control+j/k arrow navigation
+;; This config implements home row modifiers and space+h/j/k/l arrow navigation
 
 (defcfg
   ;; Enable processing of keys not in defsrc for better compatibility
@@ -57,29 +57,12 @@
 )
 
 ;; Navigation layer - activated when holding spacebar
-;; This layer maps j->down and k->up while space is held
+;; This layer maps h->left, j->down, k->up, and l->right while space is held
 (deflayer navigation
-  _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    down up   _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _              _              _    _
+  _    _    _    _    _    _    _    _    _    _     _    _    _
+  _    _    _    _    _    _    _    _    _    _     _    _    _    _
+  _    _    _    _    _    _    _    _    _    _     _    _    _    _
+  _    _    _    _    _    _    left down up   right _    _    _
+  _    _    _    _    _    _    _    _    _    _     _    _
+  _    _    _    _              _              _     _
 )
-
-;; Alternative configuration approach:
-;; If you prefer the control+j/k to work from any layer rather than requiring
-;; you to hold control first, you could use this approach instead:
-;;
-;; Replace the @nav alias with lctl and remove the navigation layer above,
-;; then add these aliases:
-;;
-;; ;; Control combinations for arrow keys
-;; j_nav (tap-hold-press 200 200 j (chord nav-chord j))
-;; k_nav (tap-hold-press 200 200 k (chord nav-chord k))
-;;
-;; And add this chord definition:
-;; (defchords nav-chord 50
-;;   (lctl j) down
-;;   (lctl k) up
-;; )
