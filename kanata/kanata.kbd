@@ -10,7 +10,7 @@
   
   ;; For macOS, you might need to specify the input device
   ;; Uncomment and adjust if needed:
-  macos-dev-names-include ("Apple Internal Keyboard / Trackpad" "DZ65RGBV3")
+  macos-dev-names-include ("Apple Internal Keyboard / Trackpad" "DZ65RGBV3" "IQUNIX MQ80 KB")
 )
 
 ;; Define the source layout - standard MacBook keyboard layout
@@ -27,23 +27,23 @@
 (defalias
   ;; Home row modifiers
   ;; a and ; -> Shift
-  a_sft (tap-hold 100 100 a lsft)
-  ;_sft (tap-hold 100 100 ; rsft)
+  a_sft (tap-hold 200 100 a lsft)
+  ;_sft (tap-hold 200 100 ; rsft)
   
   ;; s and l -> Control
-  s_ctl (tap-hold 200 200 s lctl)
-  l_ctl (tap-hold 200 200 l rctl)
+  s_ctl (tap-hold 200 100 s lctl)
+  l_ctl (tap-hold 200 100 l rctl)
   
   ;; d and k -> Option/Alt
-  d_opt (tap-hold 200 200 d lalt)
-  k_opt (tap-hold 200 200 k ralt)
+  d_opt (tap-hold 200 100 d lalt)
+  k_opt (tap-hold 200 100 k ralt)
   
   ;; f and j -> Command/Meta
-  f_cmd (tap-hold 200 200 f lmet)
-  j_cmd (tap-hold 200 200 j rmet)
+  f_cmd (tap-hold 200 100 f lmet)
+  j_cmd (tap-hold 200 100 j rmet)
   
   ;; Arrow navigation layer - activated by holding space
-  nav_spc (tap-hold 200 200 spc (layer-while-held navigation))
+  nav_spc (tap-hold 200 100 spc (layer-while-held navigation))
 )
 
 ;; Default layer with home row modifiers including shift on a and ;
