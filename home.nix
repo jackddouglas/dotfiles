@@ -172,6 +172,11 @@ in
     ".config/kanata/kanata.kbd".source = ./kanata/kanata.kbd;
     ".config/opencode".source = ./opencode;
     ".config/starship.toml".source = ./starship/starship.toml;
+    "scripts".source = pkgs.runCommand "scripts" { } ''
+      mkdir -p $out
+      cp -r ${./scripts}/* $out/
+      chmod -R +x $out/*.sh
+    '';
 
     ".config/sketchybar" = {
       source = ./sketchybar;

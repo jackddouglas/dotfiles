@@ -10,7 +10,7 @@
   
   ;; For macOS, you might need to specify the input device
   ;; Uncomment and adjust if needed:
-  macos-dev-names-include ("Apple Internal Keyboard / Trackpad" "DZ65RGBV3" "IQUNIX MQ80 KB")
+  macos-dev-names-include ("Apple Internal Keyboard / Trackpad" "DZ65RGBV3" "IQUNIX MQ80 KB" "IQUNIX MQ80 KB BT1" "IQUNIX 2.4GHz")
 )
 
 ;; Define the source layout - standard MacBook keyboard layout
