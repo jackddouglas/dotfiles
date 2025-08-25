@@ -20,7 +20,7 @@ return {
     opts = {},
   },
   {
-    "vague2k/vague.nvim",
+    "metalelf0/black-metal-theme-neovim",
     lazy = false,
     priority = 1000,
   },
