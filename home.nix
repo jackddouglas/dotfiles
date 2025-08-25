@@ -167,6 +167,7 @@ in
     ".config/tmuxinator".source = ./tmuxinator;
     "Library/Application Support/com.mitchellh.ghostty/config".source = ./ghostty/config;
     ".config/ghostty/themes".source = ./ghostty/themes;
+    ".config/yazi/flavors/taake.yazi".source = ./yazi/taake.yazi;
     ".stack/config.yaml".source = ./stack/config.yaml;
     ".config/nvimpager".source = ./nvimpager;
     ".config/kanata/kanata.kbd".source = ./kanata/kanata.kbd;

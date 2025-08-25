@@ -11,8 +11,8 @@
       {
         plugin = inputs.minimal-tmux.packages.${pkgs.system}.default;
         extraConfig = ''
-          set -g @minimal-tmux-fg "#3F7EB6"
-          set -g @minimal-tmux-bg "#12253B"
+          set -g @minimal-tmux-fg "#000000"
+          set -g @minimal-tmux-bg "#b2a790"
         '';
       }
     ];
@@ -74,6 +74,12 @@
       set -g allow-passthrough on
       set -ga update-environment TERM
       set -ga update-environment TERM_PROGRAM
+
+      # for active pane border
+      set -g pane-active-border-style fg=#888888
+
+      # for inactive pane borders
+      set -g pane-border-style fg=#c1c1c1
 
       # show/hide status
       bind-key b set-option status

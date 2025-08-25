@@ -59,18 +59,9 @@
       };
     };
 
-    flavors = {
-      flexoki-dark = pkgs.fetchFromGitHub {
-        owner = "gosxrgxx";
-        repo = "flexoki-dark.yazi";
-        rev = "HEAD";
-        hash = "sha256-fEGAxeyeWD6HBKTmhAhKGNGb5LsYPR0Y2I4B5adpv9M=";
-      };
-    };
-
     theme = {
       flavor = {
-        dark = "flexoki-dark";
+        dark = "taake";
       };
     };
   };
