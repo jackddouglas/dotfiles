@@ -31,7 +31,6 @@ return {
           diag_green = "#5f8787",
         },
       })
-      require("black-metal").load()
     end,
   },
 }

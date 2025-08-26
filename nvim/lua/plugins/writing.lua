@@ -123,8 +123,14 @@ return {
     ft = { "markdown" },
   },
   {
-    "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "codecompanion" },
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+
+    priority = 49,
+
+    dependencies = {
+      "saghen/blink.cmp",
+    },
   },
   {
     "folke/zen-mode.nvim",

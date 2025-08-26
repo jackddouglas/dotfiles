@@ -2,7 +2,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "taake",
+      colorscheme = "zenwritten",
     },
   },
   {
@@ -23,5 +23,10 @@ return {
       },
       scroll = { enabled = false },
     },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    lazy = false,
+    dependencies = { "OXY2DEV/markview.nvim" },
   },
 }

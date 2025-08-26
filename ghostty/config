@@ -3,7 +3,7 @@ mouse-hide-while-typing = true
 
 # UI
 macos-titlebar-style = hidden
-theme=light:taake,dark:taake
+theme=light:zenwritten_dark,dark:zenwritten_dark
 
 # Fonts
 font-family = Berkeley Mono

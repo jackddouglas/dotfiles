@@ -59,9 +59,18 @@
       };
     };
 
+    flavors = {
+      zenwritten = pkgs.fetchFromGitHub {
+        owner = "jackddouglas";
+        repo = "zenwritten.yazi";
+        rev = "HEAD";
+        hash = "sha256-pz8f/OZw3jh9CwLeLFRd+K8t1Kz5fj2YKGhL9yNAEig=";
+      };
+    };
+
     theme = {
       flavor = {
-        dark = "taake";
+        dark = "zenwritten";
       };
     };
   };
