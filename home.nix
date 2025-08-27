@@ -82,12 +82,7 @@ in
     haskell-language-server
 
     # rust
-    unstable.rustc
-    unstable.cargo
-    unstable.clippy
-    unstable.rust-analyzer
-    unstable.rustfmt
-    libiconv
+    rustup
 
     # ethereum
     foundry
@@ -225,9 +220,6 @@ in
     ANTHROPIC_API_KEY = "op://Tonk/Anthropic/credential";
     TAVILY_API_KEY = "op://Personal/Tavily_API_Key/credential";
     EDITOR = "nvim";
-    RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
-    LIBRARY_PATH = "${pkgs.libiconv}/lib";
-    LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
     SSH_AUTH_SOCK = "/Users/jackdouglas/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
   };
 
@@ -235,7 +227,6 @@ in
     "$HOME/.npm-global/bin"
     "$HOME/.pnpm"
     "$HOME/.cargo/bin"
-    "${pkgs.libiconv}/lib"
     "$HOME/Library/Python/3.9/bin"
     "$HOME/.radicle/bin"
   ];
