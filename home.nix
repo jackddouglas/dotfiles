@@ -138,6 +138,7 @@ in
     input-fonts
     nerd-fonts.jetbrains-mono
     nerd-fonts.commit-mono
+    ia-writer-quattro
 
     # fun
     cmatrix
