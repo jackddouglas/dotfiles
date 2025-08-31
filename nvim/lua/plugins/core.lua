@@ -35,4 +35,17 @@ return {
       },
     },
   },
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = {
+      defaults = {
+        preview = {
+          treesitter = {
+            enable = true,
+            disable = { "rust" },
+          },
+        },
+      },
+    },
+  },
 }

@@ -21,6 +21,7 @@ require("lazy").setup({
 
     -- tweaks
     { import = "lazyvim.plugins.extras.coding.mini-surround" },
+    { import = "lazyvim.plugins.extras.editor.telescope" },
 
     -- formatting
     { import = "lazyvim.plugins.extras.formatting.biome" },
