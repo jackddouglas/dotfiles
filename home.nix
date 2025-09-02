@@ -56,7 +56,6 @@ in
     nvimpager
     ngrok
     awscli2
-    bat
     uv
     flyctl
     pm2
@@ -422,6 +421,13 @@ in
     zoxide = {
       enable = true;
       enableFishIntegration = true;
+    };
+
+    bat = {
+      enable = true;
+      config = {
+        theme = "ansi";
+      };
     };
 
     fzf = {
