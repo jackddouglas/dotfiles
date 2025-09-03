@@ -78,6 +78,8 @@
                 ApplePressAndHoldEnabled = false;
                 # Function keys as default
                 # "com.apple.keyboard.fnState" = true;
+                # Hold ctrl + cmd and drag any part of window to move
+                NSWindowShouldDragOnGesture = true;
               };
 
               dock = {
