@@ -299,6 +299,7 @@
               "karabiner-elements"
               "hyprnote"
               "clop"
+              "ungoogled-chromium"
             ];
 
             masApps = {

@@ -40,9 +40,6 @@ in
     sketchybar-app-font
     sbarlua
 
-    # browser
-    arc-browser
-
     # dev tools
     neovim
     yarn
