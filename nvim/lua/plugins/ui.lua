@@ -22,15 +22,15 @@ return {
     opts = {
       width = 150,
       autocmds = {
-        enableOnVimEnter = "safe",
-        skipEnteringNoNeckPainBuffer = true,
+        -- enableOnVimEnter = "safe",
+        -- skipEnteringNoNeckPainBuffer = true,
       },
-      integrations = {
-        dashboard = {
-          enabled = true,
-          filetypes = { "snacks_dashboard" },
-        },
-      },
+      -- integrations = {
+      --   dashboard = {
+      --     enabled = true,
+      --     filetypes = { "snacks_dashboard" },
+      --   },
+      -- },
       mappings = {
         enabled = true,
         toggle = "<leader>unp",
