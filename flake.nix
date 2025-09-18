@@ -122,11 +122,6 @@
           # touch id sudo
           security.pam.services.sudo_local.touchIdAuth = true;
 
-          services.sketchybar = {
-            enable = true;
-            package = pkgs.sketchybar;
-          };
-
           services.jankyborders = {
             enable = true;
             package = pkgs.jankyborders;

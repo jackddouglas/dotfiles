@@ -36,9 +36,7 @@ in
     # window management
     jankyborders
     aerospace
-    sketchybar
     sketchybar-app-font
-    sbarlua
 
     # dev tools
     neovim
@@ -85,7 +83,6 @@ in
 
     # languages/runtimes/compilers
     gcc
-    lua54Packages.lua
 
     # node
     nodejs_22
@@ -170,29 +167,6 @@ in
       cp -r ${./scripts}/* $out/
       chmod -R +x $out/*.sh
     '';
-
-    ".config/sketchybar" = {
-      source = ./sketchybar;
-      recursive = true;
-      onChange = "${pkgs.sketchybar}/bin/sketchybar --reload";
-    };
-    ".local/share/sketchybar_lua/sketchybar.so" = {
-      source = "${pkgs.sbarlua}/lib/sketchybar.so";
-      onChange = "${pkgs.sketchybar}/bin/sketchybar --reload";
-    };
-    ".config/sketchybar/sketchybarrc" = {
-      text = ''
-        #!/usr/bin/env ${pkgs.lua54Packages.lua}/bin/lua
-        -- Load the sketchybar-package and prepare the helper binaries
-        require("helpers")
-        require("init")
-
-        -- Enable hot reloading
-        sbar.exec("sketchybar --hotload true")
-      '';
-      executable = true;
-      onChange = "${pkgs.sketchybar}/bin/sketchybar --reload";
-    };
   };
 
   # Home Manager can also manage your environment variables through
@@ -238,6 +212,18 @@ in
   ];
 
   programs = {
+    sketchybar = {
+      enable = true;
+      package = pkgs.unstable.sketchybar;
+      config = {
+        source = ./sketchybar;
+        recursive = true;
+      };
+      configType = "lua";
+      sbarLuaPackage = pkgs.unstable.sbarlua;
+      service.enable = true;
+    };
+
     git = {
       enable = true;
       lfs.enable = true;
