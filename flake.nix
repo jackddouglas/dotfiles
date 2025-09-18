@@ -17,13 +17,9 @@
     # nix-homebrew
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 
-    # sbarlua
-    sbarlua.url = "github:lalit64/SbarLua/nix-darwin-package";
-    sbarlua.inputs.nixpkgs.follows = "nixpkgs";
-
     # minimal-tmux
     minimal-tmux.url = "github:niksingh710/minimal-tmux-status";
-    minimal-tmux.inputs.nixpkgs.follows = "nixpkgs";
+    minimal-tmux.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -34,7 +30,6 @@
       nixpkgs-unstable,
       home-manager,
       nix-homebrew,
-      sbarlua,
       minimal-tmux,
     }:
     let
@@ -141,8 +136,7 @@
             config.input-fonts.acceptLicense = true;
             overlays = [
               (final: prev: {
-                sbarlua = inputs.sbarlua.packages."${prev.system}".sbarlua;
-                unstable = import inputs.nixpkgs-unstable {
+                stable = import inputs.nixpkgs {
                   system = prev.system;
                   config.allowUnfree = true;
                 };
@@ -204,7 +198,7 @@
               serviceConfig = {
                 Label = "com.jackdouglas.kanata";
                 ProgramArguments = [
-                  "${pkgs.unstable.kanata}/bin/kanata"
+                  "${pkgs.kanata}/bin/kanata"
                   "-c"
                   "/Users/jackdouglas/.config/kanata/kanata.kbd"
                 ];
@@ -305,12 +299,6 @@
               "Mona" = 1659154653;
               "Final Cut Pro" = 424389933;
               "Flighty" = 1358823008;
-              "Vimlike" = 1584519802;
-              "1Password for Safari" = 1569813296;
-              "Consent-O-Matic" = 1606897889;
-              "Kagi for Safari" = 1622835804;
-              "uBlock Origin Lite" = 6745342698;
-              "Save to Reader" = 1640236961;
             };
 
             onActivation = {
