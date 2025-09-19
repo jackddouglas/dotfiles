@@ -199,7 +199,8 @@
                 Label = "com.jackdouglas.kanata";
                 ProgramArguments = [
                   "${pkgs.kanata}/bin/kanata"
-                  "-c"
+                  "--quiet"
+                  "--cfg"
                   "/Users/jackdouglas/.config/kanata/kanata.kbd"
                 ];
                 RunAtLoad = true;
