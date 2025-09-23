@@ -13,4 +13,4 @@ vim.opt.laststatus = 3
 vim.g.lazyvim_prettier_needs_config = true
 
 -- Use telescope over snacks picker
-vim.g.lazyvim_picker = "telescope"
+-- vim.g.lazyvim_picker = "telescope"
