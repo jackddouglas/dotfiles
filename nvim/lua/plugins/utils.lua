@@ -73,7 +73,7 @@ return {
     opts = {},
   },
   {
-    "echasnovski/mini.diff",
+    "nvim-mini/mini.diff",
     config = function()
       local diff = require("mini.diff")
       diff.setup({
