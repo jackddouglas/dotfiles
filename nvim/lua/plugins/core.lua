@@ -3,6 +3,9 @@ return {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "zenwritten",
+      news = {
+        lazyvim = false,
+      },
     },
   },
   {
