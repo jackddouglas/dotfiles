@@ -275,7 +275,7 @@
               "font-sf-mono"
               "font-iosevka-ss08"
               "transmission"
-              "docker-desktop"
+              "orbstack"
               "via"
               "automattic-texts"
               "zen"
