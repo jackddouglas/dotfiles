@@ -12,5 +12,5 @@ vim.opt.laststatus = 3
 -- If no prettier config file is found, the formatter will not be used
 vim.g.lazyvim_prettier_needs_config = true
 
--- Use telescope over snacks picker
--- vim.g.lazyvim_picker = "telescope"
+-- Link operators to the Operator group instead of Statement
+vim.api.nvim_set_hl(0, "@operator.rust", { link = "Operator" })
