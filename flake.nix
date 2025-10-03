@@ -277,7 +277,6 @@
               "transmission"
               "orbstack"
               "via"
-              "automattic-texts"
               "zen"
               "element"
               "display-pilot"
@@ -290,6 +289,7 @@
               "hyprnote"
               "clop"
               "ungoogled-chromium"
+              "signal"
             ];
 
             masApps = {

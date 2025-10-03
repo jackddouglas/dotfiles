@@ -109,6 +109,7 @@ in
     slack
     discord
     telegram-desktop
+    whatsapp-for-mac
 
     # research
     zotero
