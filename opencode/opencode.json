@@ -1,37 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "mode": {
-    "review": {
-      "prompt": "{file:./prompts/review.txt}",
-      "tools": {
-        "bash": false,
-        "edit": false,
-        "write": false,
-        "patch": false
-      }
-    },
-    "debug": {
-      "prompt": "{file:./prompts/debug.txt}",
-      "tools": {
-        "edit": false,
-        "write": false,
-        "patch": false
-      }
-    },
-    "docs": {
-      "prompt": "{file:./prompts/docs.txt}",
-      "tools": {
-        "bash": false
-      }
-    },
-    "learn": {
-      "prompt": "{file:./prompts/learn.txt}",
-      "tools": {
-        "bash": false,
-        "edit": false,
-        "write": false,
-        "patch": false
-      }
-    }
-  }
+  "permission": {
+    "edit": "ask",
+    "bash": "ask",
+    "webfetch": "allow"
+  },
 }
