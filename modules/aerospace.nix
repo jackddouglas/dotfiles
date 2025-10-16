@@ -63,7 +63,7 @@
           "ctrl-d" = "exec-and-forget open -a Discord";
           "ctrl-o" = "exec-and-forget open -a Obsidian";
           "ctrl-i" = "exec-and-forget open -a Linear";
-          "ctrl-t" = "exec-and-forget open -a Texts";
+          "ctrl-t" = "exec-and-forget open -a Messages";
           "ctrl-s" = "exec-and-forget open -a Slack";
 
           "alt-slash" = "layout tiles horizontal vertical";
