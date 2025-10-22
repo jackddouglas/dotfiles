@@ -290,6 +290,7 @@
               "clop"
               "ungoogled-chromium"
               "signal"
+              "TheBoredTeam/boring-notch/boring-notch"
             ];
 
             masApps = {
