@@ -301,6 +301,7 @@
               "Mona" = 1659154653;
               "Final Cut Pro" = 424389933;
               "Flighty" = 1358823008;
+              "Daft Music" = 6748985865;
             };
 
             onActivation = {

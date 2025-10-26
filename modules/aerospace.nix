@@ -57,7 +57,7 @@
         main.binding = {
           "ctrl-enter" = "exec-and-forget open -a Ghostty";
           "ctrl-shift-enter" = "exec-and-forget open -a 'Zen'";
-          "ctrl-m" = "exec-and-forget open -a Tidal";
+          "ctrl-m" = "exec-and-forget open -a Music";
           "ctrl-e" = "exec-and-forget open -a Mail";
           "ctrl-z" = "exec-and-forget open -a Zed";
           "ctrl-d" = "exec-and-forget open -a Discord";
