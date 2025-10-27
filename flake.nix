@@ -241,6 +241,7 @@
               "FelixKratz/formulae"
               "sst/tap"
               "fastrepl/hyprnote"
+              "TheBoredTeam/boring-notch"
             ];
 
             brews = [
@@ -290,7 +291,7 @@
               "clop"
               "ungoogled-chromium"
               "signal"
-              "TheBoredTeam/boring-notch/boring-notch"
+              "boring-notch"
             ];
 
             masApps = {

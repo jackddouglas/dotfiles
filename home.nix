@@ -108,12 +108,12 @@ in
     zoom-us
     slack
     discord
-    telegram-desktop
+    # telegram-desktop
     whatsapp-for-mac
 
     # research
     zotero
-    sioyek
+    # sioyek
 
     # fonts
     input-fonts
@@ -189,9 +189,11 @@ in
     git = {
       enable = true;
       lfs.enable = true;
-      userEmail = "cincomc@proton.me";
-      userName = "Jack D. Douglas";
-      extraConfig = {
+      settings = {
+        user = {
+          email = "cincomc@proton.me";
+          name = "Jack D. Douglas";
+        };
         commit.gpgsign = true;
         gpg.format = "ssh";
         gpg.ssh.program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
