@@ -108,6 +108,7 @@ in
     zoom-us
     slack
     discord
+    discordo
     # telegram-desktop
     whatsapp-for-mac
 
