@@ -60,7 +60,6 @@
           "ctrl-m" = "exec-and-forget open -a Music";
           "ctrl-e" = "exec-and-forget open -a Mail";
           "ctrl-z" = "exec-and-forget open -a Zed";
-          "ctrl-d" = "exec-and-forget open -a Discord";
           "ctrl-o" = "exec-and-forget open -a Obsidian";
           "ctrl-i" = "exec-and-forget open -a Linear";
           "ctrl-t" = "exec-and-forget open -a Messages";
