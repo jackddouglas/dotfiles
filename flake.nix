@@ -269,7 +269,6 @@
               "proton-drive"
               "protonvpn"
               "soulseek"
-              "tidal"
               "vlc"
               "homerow"
               "font-sf-pro"
