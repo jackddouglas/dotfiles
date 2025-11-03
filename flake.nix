@@ -269,7 +269,6 @@
               "proton-drive"
               "protonvpn"
               "soulseek"
-              "vlc"
               "homerow"
               "font-sf-pro"
               "font-sf-mono"
@@ -292,6 +291,7 @@
               "signal"
               "boring-notch"
               "antinote"
+              "jordanbaird-ice"
             ];
 
             masApps = {

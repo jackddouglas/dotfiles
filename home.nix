@@ -95,6 +95,7 @@ in
     betterdisplay
     imagemagick
     xz
+    iina
 
     # music
     cmus
@@ -109,12 +110,12 @@ in
     slack
     discord
     discordo
-    # telegram-desktop
+    telegram-desktop
     whatsapp-for-mac
 
     # research
     zotero
-    # sioyek
+    sioyek
 
     # fonts
     input-fonts
