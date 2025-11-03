@@ -291,6 +291,7 @@
               "ungoogled-chromium"
               "signal"
               "boring-notch"
+              "antinote"
             ];
 
             masApps = {

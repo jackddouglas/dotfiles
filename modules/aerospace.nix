@@ -55,15 +55,15 @@
 
       mode = {
         main.binding = {
-          "ctrl-enter" = "exec-and-forget open -a Ghostty";
-          "ctrl-shift-enter" = "exec-and-forget open -a 'Zen'";
-          "ctrl-m" = "exec-and-forget open -a Music";
-          "ctrl-e" = "exec-and-forget open -a Mail";
-          "ctrl-z" = "exec-and-forget open -a Zed";
-          "ctrl-o" = "exec-and-forget open -a Obsidian";
-          "ctrl-i" = "exec-and-forget open -a Linear";
-          "ctrl-t" = "exec-and-forget open -a Messages";
-          "ctrl-s" = "exec-and-forget open -a Slack";
+          "alt-enter" = "exec-and-forget open -a Ghostty";
+          "alt-shift-enter" = "exec-and-forget open -a 'Zen'";
+          "alt-m" = "exec-and-forget open -a Music";
+          "alt-e" = "exec-and-forget open -a Mail";
+          "alt-z" = "exec-and-forget open -a Zed";
+          "alt-o" = "exec-and-forget open -a Obsidian";
+          "alt-i" = "exec-and-forget open -a Linear";
+          "alt-t" = "exec-and-forget open -a Messages";
+          "alt-s" = "exec-and-forget open -a Slack";
 
           "alt-slash" = "layout tiles horizontal vertical";
           "alt-comma" = "layout accordion horizontal vertical";
