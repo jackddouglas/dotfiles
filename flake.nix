@@ -53,6 +53,15 @@
           };
 
           system = {
+            primaryUser = "jackdouglas";
+
+            # Set Git commit hash for darwin-version.
+            configurationRevision = self.rev or self.dirtyRev or null;
+
+            # Used for backwards compatibility, please read the changelog before changing.
+            # $ darwin-rebuild changelog
+            stateVersion = 4;
+
             keyboard.enableKeyMapping = true;
             keyboard.remapCapsLockToEscape = true;
 
@@ -144,7 +153,6 @@
             ];
           };
 
-          system.primaryUser = "jackdouglas";
           users.users.jackdouglas.home = "/Users/jackdouglas";
           home-manager.backupFileExtension = "backup";
 
@@ -176,13 +184,6 @@
               Minute = 0;
             }; # Sunday at 3 AM
           };
-
-          # Set Git commit hash for darwin-version.
-          system.configurationRevision = self.rev or self.dirtyRev or null;
-
-          # Used for backwards compatibility, please read the changelog before changing.
-          # $ darwin-rebuild changelog
-          system.stateVersion = 4;
 
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";

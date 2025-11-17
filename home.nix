@@ -56,6 +56,7 @@ in
 
     # nix
     nixfmt-rfc-style
+    statix
 
     # haskell
     ghc
