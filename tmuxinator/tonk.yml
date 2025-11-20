@@ -45,11 +45,9 @@ root: ~/tonk/tonk/
 # attach: false
 
 windows:
-  - cli: cd ~/tonk/tonk/packages/cli/ && nvim
-  - auth: cd ~/tonk/knot/tonk-auth/ && nvim
-  - create: cd ~/tonk/tonk/packages/create/ && nvim
-  - keepsync: cd ~/tonk/tonk/packages/keepsync/ && nvim
-  - server: cd ~/tonk/tonk/packages/server/ && nvim
-  - deploy: cd ~/tonk/tonk-deploy/ && nvim
-  - test: cd ~/tonk/tonk/examples/
+  - core: cd ~/tonk/tonk/packages/core/ && nvim
+  - core-js: cd ~/tonk/tonk/packages/core-js/ && nvim
+  - relay: cd ~/tonk/tonk/packages/relay/ && nvim
+  - host-web: cd ~/tonk/tonk/packages/host-web/ && nvim
+  - test: cd ~/tonk/tonk/tests/ && nvim
   - misc:

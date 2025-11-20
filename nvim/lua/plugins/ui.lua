@@ -52,34 +52,30 @@ return {
       "TmuxNavigatePrevious",
       "TmuxNavigatorProcessList",
     },
-    keys = {
-      {
-        "<c-h>",
-        function()
-          TmuxNavigateIgnore("TmuxNavigateLeft", "nofile")
-        end,
-      },
-      {
-        "<c-j>",
-        function()
-          TmuxNavigateIgnore("TmuxNavigateDown", "nofile")
-        end,
-      },
-      {
-        "<c-k>",
-        function()
-          TmuxNavigateIgnore("TmuxNavigateUp", "nofile")
-        end,
-      },
-      {
-        "<c-l>",
-        function()
-          TmuxNavigateIgnore("TmuxNavigateRight", "nofile")
-        end,
-      },
-    },
     init = function()
       vim.g.tmux_navigator_no_mappings = 1
+
+      local function set_keymaps()
+        vim.keymap.set({ "n", "t" }, "<c-h>", function()
+          TmuxNavigateIgnore("TmuxNavigateLeft", "nofile")
+        end)
+        vim.keymap.set({ "n", "t" }, "<c-j>", function()
+          TmuxNavigateIgnore("TmuxNavigateDown", "nofile")
+        end)
+        vim.keymap.set({ "n", "t" }, "<c-k>", function()
+          TmuxNavigateIgnore("TmuxNavigateUp", "nofile")
+        end)
+        vim.keymap.set({ "n", "t" }, "<c-l>", function()
+          TmuxNavigateIgnore("TmuxNavigateRight", "nofile")
+        end)
+      end
+
+      set_keymaps()
+
+      vim.api.nvim_create_autocmd("TermOpen", {
+        callback = set_keymaps,
+      })
+
       -- These autocommands will focus on the last buffer that was not ignored, when we go from a tmux pane to a vim split
       vim.api.nvim_create_autocmd({ "VimEnter", "FocusGained", "TabEnter" }, {
         pattern = { "*" },
