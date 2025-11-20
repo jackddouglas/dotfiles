@@ -3,7 +3,7 @@
 
   inputs = {
     # nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # nix-darwin
@@ -146,43 +146,55 @@
             overlays = [
               (final: prev: {
                 stable = import inputs.nixpkgs {
-                  system = prev.system;
+                  inherit (prev) system;
                   config.allowUnfree = true;
                 };
               })
             ];
           };
 
-          users.users.jackdouglas.home = "/Users/jackdouglas";
+          users = {
+            # Use fish as default shell
+            knownUsers = [ "jackdouglas" ];
+
+            users.jackdouglas = {
+              uid = 501;
+              shell = pkgs.fish;
+              home = "/Users/jackdouglas";
+            };
+          };
+
           home-manager.backupFileExtension = "backup";
 
           # Set configured group ID to match actual value
           ids.gids.nixbld = 350;
 
-          # Auto upgrade nix package
-          nix.package = pkgs.nix;
+          nix = {
+            # Auto upgrade nix package
+            package = pkgs.nix;
 
-          # Necessary for using flakes on this system.
-          nix.settings.experimental-features = "nix-command flakes";
+            # Necessary for using flakes on this system.
+            settings.experimental-features = "nix-command flakes";
 
-          # Automatic garbage collection and store optimization
-          nix.gc = {
-            automatic = true;
-            interval = {
-              Weekday = 0;
-              Hour = 2;
-              Minute = 0;
-            }; # Sunday at 2 AM
-            options = "--delete-older-than 30d";
-          };
+            # Automatic garbage collection and store optimization
+            gc = {
+              automatic = true;
+              interval = {
+                Weekday = 0;
+                Hour = 2;
+                Minute = 0;
+              }; # Sunday at 2 AM
+              options = "--delete-older-than 30d";
+            };
 
-          nix.optimise = {
-            automatic = true;
-            interval = {
-              Weekday = 0;
-              Hour = 3;
-              Minute = 0;
-            }; # Sunday at 3 AM
+            optimise = {
+              automatic = true;
+              interval = {
+                Weekday = 0;
+                Hour = 3;
+                Minute = 0;
+              }; # Sunday at 3 AM
+            };
           };
 
           # The platform the configuration will be used on.
@@ -190,9 +202,6 @@
 
           # Use fish as default shell
           programs.fish.enable = true;
-          users.knownUsers = [ "jackdouglas" ];
-          users.users.jackdouglas.uid = 501;
-          users.users.jackdouglas.shell = pkgs.fish;
 
           launchd.daemons = {
             "com.jackdouglas.kanata" = {
@@ -293,6 +302,7 @@
               "boring-notch"
               "antinote"
               "jordanbaird-ice"
+              "whatsapp"
             ];
 
             masApps = {
@@ -323,12 +333,14 @@
 
           home-manager.darwinModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.jackdouglas = import ./home.nix;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              hostname = "jack-tonk";
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.jackdouglas = import ./home.nix;
+              extraSpecialArgs = {
+                inherit inputs;
+                hostname = "jack-tonk";
+              };
             };
           }
 
@@ -357,12 +369,14 @@
 
           home-manager.darwinModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.jackdouglas = import ./home.nix;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              hostname = "laptop";
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.jackdouglas = import ./home.nix;
+              extraSpecialArgs = {
+                inherit inputs;
+                hostname = "laptop";
+              };
             };
           }
 
