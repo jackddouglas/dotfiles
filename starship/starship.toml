@@ -1,3 +1,5 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
 format = """
 $username\
 $hostname\
@@ -100,7 +102,6 @@ $character"""
 [custom.jj]
 description = "The current jj status"
 when = "jj --ignore-working-copy root"
-symbol = "🥋 "
 command = '''
 jj log --revisions @ --no-graph --ignore-working-copy --color always --limit 1 --template '
   separate(" ",
@@ -157,3 +158,360 @@ when = "! jj --ignore-working-copy root"
 command = "starship module git_branch"
 description = "Only show git_branch if we're not in a jj repo"
 style = ""
+
+[aws]
+disabled = true
+symbol = "aws "
+
+[azure]
+symbol = "az "
+
+[battery]
+full_symbol = "full "
+charging_symbol = "charging "
+discharging_symbol = "discharging "
+unknown_symbol = "unknown "
+empty_symbol = "empty "
+
+[buf]
+symbol = "buf "
+format = "with [$symbol]($style)"
+
+[bun]
+symbol = "bun "
+format = "via [$symbol]($style)"
+
+[c]
+symbol = "C "
+format = "via [$symbol($name)]($style)"
+
+[cpp]
+symbol = "C++ "
+format = "via [$symbol($name)]($style)"
+
+[cobol]
+symbol = "cobol "
+format = "via [$symbol]($style)"
+
+[conda]
+symbol = "conda "
+
+[container]
+symbol = "container "
+
+[crystal]
+symbol = "cr "
+format = "via [$symbol]($style)"
+
+[cmake]
+symbol = "cmake "
+format = "via [$symbol]($style)"
+
+[daml]
+symbol = "daml "
+format = "via [$symbol]($style)"
+
+[dart]
+symbol = "dart "
+format = "via [$symbol]($style)"
+
+[deno]
+symbol = "deno "
+format = "via [$symbol]($style)"
+
+[dotnet]
+format = "via [$symbol($version )(target $tfm )]($style)"
+symbol = ".NET "
+
+[directory]
+read_only = " ro"
+
+[docker_context]
+symbol = "docker "
+
+[elixir]
+symbol = "exs "
+format = 'via [$symbol]($style)'
+
+[elm]
+symbol = "elm "
+format = 'via [$symbol]($style)'
+
+[erlang]
+symbol = "erl "
+format = 'via [$symbol]($style)'
+
+[fennel]
+symbol = "fnl "
+format = 'via [$symbol]($style)'
+
+[fortran]
+symbol = "fortran "
+format = 'via [$symbol]($style)'
+
+[fossil_branch]
+symbol = "fossil "
+truncation_symbol = "..."
+
+[gcloud]
+symbol = "gcp "
+
+[gleam]
+symbol = "gleam "
+format = 'via [$symbol]($style)'
+
+[golang]
+symbol = "go "
+format = 'via [$symbol]($style)'
+
+[gradle]
+symbol = "gradle "
+format = 'via [$symbol]($style)'
+
+[guix_shell]
+symbol = "guix "
+
+[haskell]
+symbol = "haskell "
+format = 'via [$symbol]($style)'
+
+[haxe]
+symbol = "hx "
+format = 'via [$symbol]($style)'
+
+[helm]
+symbol = "helm "
+format = 'via [$symbol]($style)'
+
+[hg_branch]
+symbol = "hg "
+truncation_symbol = "..."
+
+[hostname]
+ssh_symbol = "ssh "
+
+[java]
+symbol = "java "
+format = 'via [$symbol]($style)'
+
+[jobs]
+symbol = "*"
+
+[julia]
+symbol = "jl "
+format = 'via [$symbol]($style)'
+
+[kotlin]
+symbol = "kt "
+format = 'via [$symbol]($style)'
+
+[kubernetes]
+symbol = "kubernetes "
+
+[lua]
+symbol = "lua "
+format = 'via [$symbol]($style)'
+
+[nodejs]
+symbol = "nodejs "
+format = 'via [$symbol]($style)'
+
+[memory_usage]
+symbol = "memory "
+
+[meson]
+symbol = "meson "
+truncation_symbol = "..."
+format = 'via [$symbol]($style)'
+
+[mojo]
+symbol = "mojo "
+format = 'with [$symbol]($style)'
+
+[nats]
+symbol = "nats "
+
+[netns]
+symbol = "netns "
+
+[nim]
+symbol = "nim "
+format = 'via [$symbol]($style)'
+
+[nix_shell]
+symbol = "nix "
+
+[ocaml]
+symbol = "ml "
+format = 'via [$symbol(\($switch_indicator$switch_name\) )]($style)'
+
+[odin]
+symbol = "odin "
+format = 'via [$symbol]($style)'
+
+[opa]
+symbol = "opa "
+format = 'via [$symbol]($style)'
+
+[openstack]
+symbol = "openstack "
+
+[os.symbols]
+AIX = "aix "
+Alpaquita = "alq "
+AlmaLinux = "alma "
+Alpine = "alp "
+Amazon = "amz "
+Android = "andr "
+AOSC = "aosc "
+Arch = "rch "
+Artix = "atx "
+Bluefin = "blfn "
+CachyOS = "cach "
+CentOS = "cent "
+Debian = "deb "
+DragonFly = "dfbsd "
+Emscripten = "emsc "
+EndeavourOS = "ndev "
+Fedora = "fed "
+FreeBSD = "fbsd "
+Garuda = "garu "
+Gentoo = "gent "
+HardenedBSD = "hbsd "
+Illumos = "lum "
+Kali = "kali "
+Linux = "lnx "
+Mabox = "mbox "
+Macos = "mac "
+Manjaro = "mjo "
+Mariner = "mrn "
+MidnightBSD = "mid "
+Mint = "mint "
+NetBSD = "nbsd "
+NixOS = "nix "
+Nobara = "nbra "
+OpenBSD = "obsd "
+OpenCloudOS = "ocos "
+openEuler = "oeul "
+openSUSE = "osuse "
+OracleLinux = "orac "
+Pop = "pop "
+Raspbian = "rasp "
+Redhat = "rhl "
+RedHatEnterprise = "rhel "
+RockyLinux = "rky "
+Redox = "redox "
+Solus = "sol "
+SUSE = "suse "
+Ubuntu = "ubnt "
+Ultramarine = "ultm "
+Unknown = "unk "
+Uos = "uos "
+Void = "void "
+Windows = "win "
+
+[package]
+symbol = "pkg "
+
+[perl]
+symbol = "pl "
+format = 'via [$symbol]($style)'
+
+[php]
+symbol = "php "
+format = 'via [$symbol]($style)'
+
+[pijul_channel]
+symbol = "pijul "
+truncation_symbol = "..."
+
+[pixi]
+symbol = "pixi "
+format = 'via [$symbol($environment )]($style)'
+
+[pulumi]
+symbol = "pulumi "
+format = 'via [$symbol$stack]($style)'
+
+[purescript]
+symbol = "purs "
+format = 'via [$symbol]($style)'
+
+[python]
+symbol = "py "
+format = 'via [$symbol]($style)'
+
+[quarto]
+symbol = "quarto "
+format = 'via [$symbol]($style)'
+
+[raku]
+symbol = "raku "
+format = 'via [$symbol]($style)'
+
+[red]
+symbol = "red "
+format = 'via [$symbol]($style)'
+
+[rlang]
+symbol = "r "
+format = 'via [$symbol]($style)'
+
+[ruby]
+symbol = "rb "
+format = 'via [$symbol]($style)'
+
+[rust]
+symbol = "rs "
+format = 'via [$symbol]($style)'
+
+[scala]
+symbol = "scala "
+format = 'via [$symbol]($style)'
+
+[shlvl]
+symbol = "shlvl "
+
+[spack]
+symbol = "spack "
+
+[solidity]
+symbol = "solidity "
+format = 'via [$symbol]($style)'
+
+[status]
+symbol = "[x](bold red) "
+not_executable_symbol = "noexec"
+not_found_symbol = "notfound"
+sigint_symbol = "sigint"
+signal_symbol = "sig"
+
+[sudo]
+symbol = "sudo "
+
+[swift]
+symbol = "swift "
+format = 'via [$symbol]($style)'
+
+[typst]
+symbol = "typst "
+format = 'via [$symbol]($style)'
+
+[vagrant]
+symbol = "vagrant "
+format = 'via [$symbol]($style)'
+
+[terraform]
+symbol = "terraform "
+
+[xmake]
+symbol = "xmake "
+format = "via [$symbol]($style)"
+
+[zig]
+symbol = "zig "
+format = 'via [$symbol]($style)'
+
+[vlang]
+symbol = "vlang "
+format = 'via [$symbol]($style)'
