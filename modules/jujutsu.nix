@@ -27,19 +27,28 @@
       fix = {
         tools = {
           biome = {
-            enabled = false;
             command = [
               "biome"
               "check"
-              "--stdin-file-path=$path"
+              "--stdin-file-path"
+              "$path"
               "--write"
+              "--config-path=/Users/jackdouglas/tonk/tonk/biome.json"
             ];
             patterns = [
               "glob:'**/*.js'"
               "glob:'**/*.jsx'"
+              "glob:'**/*.mjs'"
+              "glob:'**/*.cjs'"
               "glob:'**/*.ts'"
               "glob:'**/*.tsx'"
+              "glob:'**/*.mts'"
+              "glob:'**/*.cts'"
+              "glob:'**/*.d.ts'"
               "glob:'**/*.json'"
+              "glob:'**/*.jsonc'"
+              "glob:'**/*.html'"
+              "glob:'**/*.css'"
             ];
           };
 
@@ -53,12 +62,20 @@
             patterns = [
               "glob:'**/*.js'"
               "glob:'**/*.jsx'"
+              "glob:'**/*.mjs'"
+              "glob:'**/*.cjs'"
               "glob:'**/*.ts'"
               "glob:'**/*.tsx'"
+              "glob:'**/*.mts'"
+              "glob:'**/*.cts'"
+              "glob:'**/*.d.ts'"
               "glob:'**/*.json'"
+              "glob:'**/*.jsonc'"
               "glob:'**/*.html'"
               "glob:'**/*.md'"
               "glob:'**/*.css'"
+              "glob:'**/*.yaml'"
+              "glob:'**/*.yml'"
             ];
           };
 
