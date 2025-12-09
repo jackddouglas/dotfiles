@@ -55,25 +55,23 @@ return {
     init = function()
       vim.g.tmux_navigator_no_mappings = 1
 
-      local function set_keymaps()
-        vim.keymap.set({ "n", "t" }, "<c-h>", function()
-          TmuxNavigateIgnore("TmuxNavigateLeft", "nofile")
-        end)
-        vim.keymap.set({ "n", "t" }, "<c-j>", function()
-          TmuxNavigateIgnore("TmuxNavigateDown", "nofile")
-        end)
-        vim.keymap.set({ "n", "t" }, "<c-k>", function()
-          TmuxNavigateIgnore("TmuxNavigateUp", "nofile")
-        end)
-        vim.keymap.set({ "n", "t" }, "<c-l>", function()
-          TmuxNavigateIgnore("TmuxNavigateRight", "nofile")
-        end)
-      end
-
-      set_keymaps()
-
+      -- Set terminal mode keymaps
       vim.api.nvim_create_autocmd("TermOpen", {
-        callback = set_keymaps,
+        callback = function()
+          local opts = { buffer = true }
+          vim.keymap.set("t", "<C-h>", function()
+            TmuxNavigateIgnore("TmuxNavigateLeft", "nofile")
+          end, opts)
+          vim.keymap.set("t", "<C-j>", function()
+            TmuxNavigateIgnore("TmuxNavigateDown", "nofile")
+          end, opts)
+          vim.keymap.set("t", "<C-k>", function()
+            TmuxNavigateIgnore("TmuxNavigateUp", "nofile")
+          end, opts)
+          vim.keymap.set("t", "<C-l>", function()
+            TmuxNavigateIgnore("TmuxNavigateRight", "nofile")
+          end, opts)
+        end,
       })
 
       -- These autocommands will focus on the last buffer that was not ignored, when we go from a tmux pane to a vim split
@@ -84,5 +82,31 @@ return {
         end,
       })
     end,
+    keys = {
+      {
+        "<c-h>",
+        function()
+          TmuxNavigateIgnore("TmuxNavigateLeft", "nofile")
+        end,
+      },
+      {
+        "<c-j>",
+        function()
+          TmuxNavigateIgnore("TmuxNavigateDown", "nofile")
+        end,
+      },
+      {
+        "<c-k>",
+        function()
+          TmuxNavigateIgnore("TmuxNavigateUp", "nofile")
+        end,
+      },
+      {
+        "<c-l>",
+        function()
+          TmuxNavigateIgnore("TmuxNavigateRight", "nofile")
+        end,
+      },
+    },
   },
 }
