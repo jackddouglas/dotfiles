@@ -64,6 +64,7 @@
           "alt-i" = "exec-and-forget open -a Linear";
           "alt-t" = "exec-and-forget open -a Messages";
           "alt-s" = "exec-and-forget open -a Slack";
+          "alt-d" = "exec-and-forget open -a Discord";
 
           "alt-slash" = "layout tiles horizontal vertical";
           "alt-comma" = "layout accordion horizontal vertical";
