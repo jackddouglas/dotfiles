@@ -17,6 +17,14 @@
         name = "forgit";
         src = pkgs.fishPlugins.forgit.src;
       }
+      {
+        name = "autopair";
+        src = pkgs.fishPlugins.autopair.src;
+      }
+      {
+        name = "hydro";
+        src = pkgs.fishPlugins.hydro.src;
+      }
     ];
     shellAliases = {
       vim = "nvim";

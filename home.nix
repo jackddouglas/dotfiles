@@ -43,17 +43,17 @@ in
       flyctl
       pm2
       jjui
-      (rustPlatform.buildRustPackage rec {
-        pname = "starship-jj";
-        version = "0.5.1";
-
-        src = fetchCrate {
-          inherit pname version;
-          sha256 = "sha256-tQEEsjKXhWt52ZiickDA/CYL+1lDtosLYyUcpSQ+wMo=";
-        };
-
-        cargoHash = "sha256-+rLejMMWJyzoKcjO7hcZEDHz5IzKeAGk1NinyJon4PY=";
-      })
+      # (rustPlatform.buildRustPackage rec {
+      #   pname = "starship-jj";
+      #   version = "0.5.1";
+      #
+      #   src = fetchCrate {
+      #     inherit pname version;
+      #     sha256 = "sha256-tQEEsjKXhWt52ZiickDA/CYL+1lDtosLYyUcpSQ+wMo=";
+      #   };
+      #
+      #   cargoHash = "sha256-+rLejMMWJyzoKcjO7hcZEDHz5IzKeAGk1NinyJon4PY=";
+      # })
 
       # nix
       nixfmt-rfc-style
@@ -246,7 +246,7 @@ in
     };
 
     starship = {
-      enable = true;
+      enable = false;
       enableFishIntegration = true;
     };
 
