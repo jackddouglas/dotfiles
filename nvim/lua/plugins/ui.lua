@@ -56,7 +56,7 @@ return {
       vim.g.tmux_navigator_no_mappings = 1
 
       -- Set terminal mode keymaps
-      vim.api.nvim_create_autocmd("TermOpen", {
+      vim.api.nvim_create_autocmd("TermEnter", {
         callback = function()
           local opts = { buffer = true }
           vim.keymap.set("t", "<C-h>", function()
