@@ -108,6 +108,7 @@ return {
 	["Google Chrome"] = ":google_chrome:",
 	["Google Chrome Canary"] = ":google_chrome:",
 	["Grammarly Editor"] = ":grammarly:",
+	["Helium"] = ":helium:",
 	["Home Assistant"] = ":home_assistant:",
 	["Hyper"] = ":hyper:",
 	["IntelliJ IDEA"] = ":idea:",

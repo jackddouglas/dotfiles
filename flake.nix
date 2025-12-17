@@ -297,7 +297,7 @@
               "karabiner-elements"
               "hyprnote"
               "clop"
-              "ungoogled-chromium"
+              "helium-browser"
               "signal"
               "boring-notch"
               "antinote"
