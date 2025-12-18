@@ -29,11 +29,10 @@
           biome = {
             command = [
               "biome"
-              "check"
+              "format"
               "--stdin-file-path"
               "$path"
               "--write"
-              "--config-path=/Users/jackdouglas/tonk/tonk/biome.json"
             ];
             patterns = [
               "glob:'**/*.js'"
