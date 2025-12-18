@@ -304,6 +304,7 @@
               "jordanbaird-ice"
               "whatsapp"
               "calibre"
+              "osaurus"
             ];
 
             masApps = {
