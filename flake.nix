@@ -300,7 +300,7 @@
               "whatsapp"
               "calibre"
               "osaurus"
-              "kindavim"
+              "hammerspoon"
             ];
 
             masApps = {
