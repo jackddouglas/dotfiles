@@ -131,7 +131,6 @@ in
     file = {
       ".hushlogin".source = ./hushlogin/.hushlogin;
       ".config/nvim".source = ./nvim;
-      ".config/svim".source = ./svim;
       ".config/tmuxinator".source = ./tmuxinator;
       "Library/Application Support/com.mitchellh.ghostty/config".source = ./ghostty/config;
       ".config/ghostty/themes".source = ./ghostty/themes;

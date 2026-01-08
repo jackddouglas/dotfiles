@@ -255,11 +255,6 @@
             ];
 
             brews = [
-              {
-                name = "felixkratz/formulae/svim";
-                restart_service = "changed";
-              }
-
               "mas"
               "sst/tap/opencode"
               "ollama"
@@ -305,6 +300,7 @@
               "whatsapp"
               "calibre"
               "osaurus"
+              "kindavim"
             ];
 
             masApps = {
