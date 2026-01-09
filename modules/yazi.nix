@@ -11,7 +11,7 @@
           owner = "yazi-rs";
           repo = "plugins";
           rev = "HEAD";
-          hash = "sha256-29K8PmBoqAMcQhDIfOVnbJt2FU4BR6k23Es9CqyEloo=";
+          hash = "sha256-6iA/C0dzbLPkEDbdEs8oAnVfG6W+L8/dYyjTuO5euOw=";
         }
         + "/git.yazi";
       piper =
@@ -19,7 +19,7 @@
           owner = "yazi-rs";
           repo = "plugins";
           rev = "HEAD";
-          hash = "sha256-29K8PmBoqAMcQhDIfOVnbJt2FU4BR6k23Es9CqyEloo=";
+          hash = "sha256-6iA/C0dzbLPkEDbdEs8oAnVfG6W+L8/dYyjTuO5euOw=";
         }
         + "/piper.yazi";
     };
