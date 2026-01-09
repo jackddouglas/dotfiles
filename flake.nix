@@ -169,33 +169,7 @@
           # Set configured group ID to match actual value
           ids.gids.nixbld = 350;
 
-          nix = {
-            # Auto upgrade nix package
-            package = pkgs.nix;
-
-            # Necessary for using flakes on this system.
-            settings.experimental-features = "nix-command flakes";
-
-            # Automatic garbage collection and store optimization
-            gc = {
-              automatic = true;
-              interval = {
-                Weekday = 0;
-                Hour = 2;
-                Minute = 0;
-              }; # Sunday at 2 AM
-              options = "--delete-older-than 30d";
-            };
-
-            optimise = {
-              automatic = true;
-              interval = {
-                Weekday = 0;
-                Hour = 3;
-                Minute = 0;
-              }; # Sunday at 3 AM
-            };
-          };
+          nix.enable = false;
 
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";
