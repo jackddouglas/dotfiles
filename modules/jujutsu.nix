@@ -27,6 +27,17 @@
         origin.auto-track-bookmarks = "glob:*";
       };
 
+      aliases = {
+        tug = [
+          "bookmark"
+          "move"
+          "--from"
+          "heads(::@- & bookmarks())"
+          "--to"
+          "@-"
+        ];
+      };
+
       fix = {
         tools = {
           biome = {
