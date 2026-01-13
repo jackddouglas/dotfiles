@@ -7,10 +7,6 @@
     settings = {
       after-login-command = [ ];
 
-      after-startup-command = [
-        # "exec-and-forget /etc/profiles/per-user/jackdouglas/bin/borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0"
-      ];
-
       exec-on-workspace-change = [
         "/bin/bash"
         "-c"
@@ -66,8 +62,8 @@
           "alt-s" = "exec-and-forget open -a Slack";
           "alt-d" = "exec-and-forget open -a Discord";
 
-          "alt-slash" = "layout tiles horizontal vertical";
-          "alt-comma" = "layout accordion horizontal vertical";
+          "alt-slash" = "layout tiles vertical horizontal";
+          "alt-comma" = "layout accordion vertical horizontal";
 
           "alt-h" = "focus left";
           "alt-j" = "focus down";
@@ -78,11 +74,6 @@
           "alt-shift-j" = "move down";
           "alt-shift-k" = "move up";
           "alt-shift-l" = "move right";
-
-          "alt-minus" = "resize smart -50";
-          "alt-equal" = "resize smart +50";
-
-          "alt-shift-0" = "balance-sizes";
 
           "alt-f" = "fullscreen";
 
@@ -95,6 +86,7 @@
           "alt-7" = "workspace 7";
           "alt-8" = "workspace 8";
           "alt-9" = "workspace 9";
+          "alt-0" = "workspace 0";
 
           "alt-shift-1" = "move-node-to-workspace 1 --focus-follows-window";
           "alt-shift-2" = "move-node-to-workspace 2 --focus-follows-window";
@@ -105,11 +97,24 @@
           "alt-shift-7" = "move-node-to-workspace 7 --focus-follows-window";
           "alt-shift-8" = "move-node-to-workspace 8 --focus-follows-window";
           "alt-shift-9" = "move-node-to-workspace 9 --focus-follows-window";
+          "alt-shift-0" = "move-node-to-workspace 0 --focus-follows-window";
 
           "alt-tab" = "workspace-back-and-forth";
           "alt-shift-tab" = "move-workspace-to-monitor --wrap-around next";
 
+          "alt-r" = "mode resize";
+
           "alt-shift-semicolon" = "mode service";
+        };
+
+        resize.binding = {
+          "h" = "resize width -50";
+          "j" = "resize height -50";
+          "k" = "resize height +50";
+          "l" = "resize width +50";
+          "0" = "balance-sizes";
+          "enter" = "mode main";
+          "esc" = "mode main";
         };
 
         service.binding = {
@@ -117,18 +122,22 @@
             "reload-config"
             "mode main"
           ];
+
           "s" = [
             "exec-and-forget /etc/profiles/per-user/jackdouglas/bin/sketchybar --reload"
             "mode main"
           ];
+
           "r" = [
             "flatten-workspace-tree"
             "mode main"
           ];
+
           "f" = [
             "layout floating tiling"
             "mode main"
           ];
+
           "backspace" = [
             "close-all-windows-but-current"
             "mode main"
@@ -138,35 +147,66 @@
             "join-with left"
             "mode main"
           ];
+
           "alt-shift-j" = [
             "join-with down"
             "mode main"
           ];
+
           "alt-shift-k" = [
             "join-with up"
             "mode main"
           ];
+
           "alt-shift-l" = [
             "join-with right"
-            "mode main"
-          ];
-
-          "down" = "volume down";
-          "up" = "volume up";
-          "shift-down" = [
-            "volume set 0"
             "mode main"
           ];
         };
       };
 
-      workspace-to-monitor-force-assignment = {
-        home = "main";
-        web = "main";
-        code = "main";
-        chat = "main";
-        music = "main";
-      };
+      on-window-detected = [
+        {
+          "if".app-id = "md.obsidian";
+          run = "move-node-to-workspace 1";
+        }
+        {
+          "if".app-id = "com.linear";
+          run = "move-node-to-workspace 1";
+        }
+        {
+          "if".app-id = "com.apple.iCal";
+          run = "move-node-to-workspace 1";
+        }
+        {
+          "if".app-id = "app.zen-browser.zen";
+          run = "move-node-to-workspace 2";
+        }
+        {
+          "if".app-id = "com.mitchellh.ghostty";
+          run = "move-node-to-workspace 3";
+        }
+        {
+          "if".app-id = "com.apple.mail";
+          run = "move-node-to-workspace 4";
+        }
+        {
+          "if".app-id = "com.apple.MobileSMS";
+          run = "move-node-to-workspace 4";
+        }
+        {
+          "if".app-id = "net.whatsapp.WhatsApp";
+          run = "move-node-to-workspace 4";
+        }
+        {
+          "if".app-id = "com.hnc.Discord";
+          run = "move-node-to-workspace 4";
+        }
+        {
+          "if".app-id = "com.apple.Music";
+          run = "move-node-to-workspace 5";
+        }
+      ];
     };
   };
 }
