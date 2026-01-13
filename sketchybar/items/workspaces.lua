@@ -1,4 +1,5 @@
 local colors = require("colors")
+local icons = require("icons")
 local settings = require("settings")
 local app_icons = require("helpers.app_icons")
 
@@ -180,7 +181,7 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 	for _, entry in ipairs(workspaces_and_monitors) do
 		local workspace_index = entry.workspace
 
-		local workspace = sbar.add("item", {
+		local workspace = sbar.add("item", "workspace." .. workspace_index, {
 			icon = {
 				color = colors.with_alpha(colors.white, 0.3),
 				-- highlight_color = colors.red,
@@ -228,6 +229,67 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 			end)
 		end)
 	end
+
+	-- Toggle indicator (created after workspace items so it appears at the end)
+	local workspaces_indicator = sbar.add("item", {
+		padding_left = settings.group_paddings,
+		padding_right = 0,
+		icon = {
+			padding_left = 8,
+			padding_right = 9,
+			color = colors.grey,
+			string = icons.switch.on,
+		},
+		label = {
+			width = 0,
+			padding_left = 0,
+			padding_right = 8,
+			string = "Menu",
+			color = colors.bg1,
+		},
+		background = {
+			color = colors.with_alpha(colors.grey, 0.0),
+			border_color = colors.with_alpha(colors.bg1, 0.0),
+		},
+	})
+
+	workspaces_indicator:subscribe("swap_menus_and_spaces", function(env)
+		local currently_on = workspaces_indicator:query().icon.value == icons.switch.on
+		workspaces_indicator:set({
+			icon = { string = currently_on and icons.switch.off or icons.switch.on },
+			label = { string = currently_on and "Spaces" or "Menu" },
+		})
+	end)
+
+	workspaces_indicator:subscribe("mouse.entered", function(env)
+		sbar.animate("tanh", 30, function()
+			workspaces_indicator:set({
+				background = {
+					color = { alpha = 1.0 },
+					border_color = { alpha = 1.0 },
+				},
+				icon = { color = colors.bg1 },
+				label = { width = "dynamic" },
+			})
+		end)
+	end)
+
+	workspaces_indicator:subscribe("mouse.exited", function(env)
+		sbar.animate("tanh", 30, function()
+			workspaces_indicator:set({
+				background = {
+					color = { alpha = 0.0 },
+					border_color = { alpha = 0.0 },
+				},
+				icon = { color = colors.grey },
+				label = { width = 0 },
+			})
+		end)
+	end)
+
+	workspaces_indicator:subscribe("mouse.clicked", function(env)
+		sbar.trigger("swap_menus_and_spaces")
+	end)
 
 	-- initial setup
 	updateWindows()

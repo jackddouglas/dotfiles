@@ -43,13 +43,12 @@ sbar.add("bracket", { "/menu\\..*/" }, {
 
 local menu_padding = sbar.add("item", "menu.padding", {
 	drawing = false,
-	width = 5,
+	width = settings.group_paddings,
 })
 
 local function update_menus(env)
 	sbar.exec("$CONFIG_DIR/helpers/menus/bin/menus -l", function(menus)
 		sbar.set("/menu\\..*/", { drawing = false })
-		menu_padding:set({ drawing = true })
 		id = 1
 		for menu in string.gmatch(menus, "[^\r\n]+") do
 			if id < max_items then
@@ -69,11 +68,11 @@ space_menu_swap:subscribe("swap_menus_and_spaces", function(env)
 	if drawing then
 		menu_watcher:set({ updates = false })
 		sbar.set("/menu\\..*/", { drawing = false })
-		sbar.set("/space\\..*/", { drawing = true })
+		sbar.set("/workspace\\..*/", { drawing = true })
 		sbar.set("front_app", { drawing = true })
 	else
 		menu_watcher:set({ updates = true })
-		sbar.set("/space\\..*/", { drawing = false })
+		sbar.set("/workspace\\..*/", { drawing = false })
 		sbar.set("front_app", { drawing = false })
 		update_menus()
 	end

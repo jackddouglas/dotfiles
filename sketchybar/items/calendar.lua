@@ -21,7 +21,6 @@ local cal = sbar.add("item", {
 		font = { family = settings.font.numbers },
 	},
 	position = "right",
-	update_freq = 30,
 	padding_left = 1,
 	padding_right = 1,
 	background = {
@@ -44,6 +43,12 @@ sbar.add("bracket", { cal.name }, {
 -- Padding item required because of bracket
 sbar.add("item", { position = "right", width = settings.group_paddings })
 
-cal:subscribe({ "forced", "routine", "system_woke" }, function(env)
+local function update_calendar()
 	cal:set({ icon = os.date("%a %d %b"), label = os.date("%H:%M") })
-end)
+
+	-- Schedule next update at exact minute boundary
+	local seconds_until_next_minute = 60 - (os.time() % 60)
+	sbar.delay(seconds_until_next_minute, update_calendar)
+end
+
+cal:subscribe({ "forced", "routine", "system_woke" }, update_calendar)
