@@ -45,7 +45,7 @@ in
       jjui
 
       # nix
-      nixfmt-rfc-style
+      nixfmt
       statix
 
       # haskell
