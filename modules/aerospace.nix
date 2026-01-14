@@ -65,10 +65,10 @@
           "alt-slash" = "layout tiles vertical horizontal";
           "alt-comma" = "layout accordion vertical horizontal";
 
-          "alt-h" = "focus left";
-          "alt-j" = "focus down";
-          "alt-k" = "focus up";
-          "alt-l" = "focus right";
+          "alt-h" = "focus --boundaries-action wrap-around-the-workspace left";
+          "alt-j" = "focus --boundaries-action wrap-around-the-workspace down";
+          "alt-k" = "focus --boundaries-action wrap-around-the-workspace up";
+          "alt-l" = "focus --boundaries-action wrap-around-the-workspace right";
 
           "alt-shift-h" = "move left";
           "alt-shift-j" = "move down";
