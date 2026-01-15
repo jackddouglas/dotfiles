@@ -275,6 +275,7 @@
               "calibre"
               "osaurus"
               "hammerspoon"
+              "firefox"
             ];
 
             masApps = {
