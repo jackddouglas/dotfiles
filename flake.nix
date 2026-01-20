@@ -49,7 +49,12 @@
               "/Users/jackdouglas/.cargo/bin"
               "/Users/jackdouglas/Library/pnpm"
             ];
+
             pathsToLink = [ "/Applications" ];
+
+            etc."nix/nix.custom.conf".text = ''
+              trusted-users = root jackdouglas
+            '';
           };
 
           system = {
