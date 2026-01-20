@@ -143,7 +143,10 @@
             blacklist = [ "Screen Studio" ];
           };
 
-          imports = [ ./modules/aerospace.nix ];
+          imports = [
+            ./modules/aerospace.nix
+            ./modules/homebrew.nix
+          ];
 
           nixpkgs = {
             config.allowUnfree = true;
@@ -223,82 +226,6 @@
             };
           };
 
-          homebrew = {
-            enable = true;
-
-            taps = [
-              "FelixKratz/formulae"
-              "sst/tap"
-              "fastrepl/hyprnote"
-              "TheBoredTeam/boring-notch"
-            ];
-
-            brews = [
-              "mas"
-              "sst/tap/opencode"
-              "ollama"
-            ];
-
-            casks = [
-              "1password"
-              "anki"
-              "claude"
-              "figma"
-              "ghostty"
-              "linear-linear"
-              "notion"
-              "obsidian"
-              "proton-mail"
-              "proton-mail-bridge"
-              "proton-drive"
-              "protonvpn"
-              "soulseek"
-              "homerow"
-              "font-sf-pro"
-              "font-sf-mono"
-              "font-iosevka-ss08"
-              "transmission"
-              "orbstack"
-              "via"
-              "zen"
-              "element"
-              "display-pilot"
-              "keymapp"
-              "betterdiscord-installer"
-              "plex"
-              "plexamp"
-              "plex-media-server"
-              "karabiner-elements"
-              "hyprnote"
-              "clop"
-              "helium-browser"
-              "signal"
-              "boring-notch"
-              "antinote"
-              "jordanbaird-ice"
-              "whatsapp"
-              "calibre"
-              "osaurus"
-              "hammerspoon"
-              "firefox"
-            ];
-
-            masApps = {
-              "Gapplin" = 768053424;
-              "Muse" = 1501563902;
-              "Parcel" = 639968404;
-              "Xcode" = 497799835;
-              "Mona" = 1659154653;
-              "Final Cut Pro" = 424389933;
-              "Flighty" = 1358823008;
-            };
-
-            onActivation = {
-              autoUpdate = true;
-              cleanup = "zap";
-              upgrade = true;
-            };
-          };
         };
     in
     {
@@ -332,9 +259,6 @@
 
               # User owning the Homebrew prefix
               user = "jackdouglas";
-
-              # Automatically migrate existing Homebrew installations
-              # autoMigrate = true;
             };
           }
         ];
@@ -368,9 +292,6 @@
 
               # User owning the Homebrew prefix
               user = "jackdouglas";
-
-              # Automatically migrate existing Homebrew installations
-              # autoMigrate = true;
             };
           }
         ];
