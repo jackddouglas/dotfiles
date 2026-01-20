@@ -25,6 +25,7 @@
       # Browsers
       "firefox"
       "helium-browser"
+      "orion"
       "zen"
 
       # Communication
