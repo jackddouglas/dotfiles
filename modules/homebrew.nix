@@ -84,7 +84,6 @@
       "boring-notch"
       "clop"
       "display-pilot"
-      "hammerspoon"
       "jordanbaird-ice"
       "osaurus"
     ];

@@ -136,15 +136,6 @@ in
         cp -r ${./scripts}/* $out/
         chmod -R +x $out/*.sh
       '';
-      ".hammerspoon/init.lua".source = ./hammerspoon/init.lua;
-      ".hammerspoon/Spoons/VimMode.spoon" = {
-        source = pkgs.fetchFromGitHub {
-          owner = "dbalatero";
-          repo = "VimMode.spoon";
-          rev = "master";
-          hash = "sha256-zpx2lh/QsmjP97CBsunYwJslFJOb0cr4ng8YemN5F0Y=";
-        };
-      };
     };
 
     sessionVariables = {
