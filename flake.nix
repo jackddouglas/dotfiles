@@ -112,6 +112,11 @@
                 ShowPathbar = true;
               };
 
+              menuExtraClock = {
+                Show24Hour = true;
+                ShowSeconds = true;
+              };
+
               loginwindow.LoginwindowText = "Jack D. Douglas";
 
               # ctrl + scroll to zoom
