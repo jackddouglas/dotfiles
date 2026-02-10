@@ -4,4 +4,3 @@
 local map = vim.keymap.set
 
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save File" })
-vim.keymap.del("n", "<leader>gG")
