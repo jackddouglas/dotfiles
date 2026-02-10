@@ -47,4 +47,18 @@ return {
       vim.g.loaded_netrwPlugin = 1
     end,
   },
+  {
+    "x3rAx/jjui.nvim",
+    event = "VeryLazy",
+    dependencies = { "folke/snacks.nvim" },
+    keys = {
+      {
+        "<leader>jj",
+        mode = { "n", "v" },
+        "<cmd>JJui<cr>",
+        desc = "JJui",
+      },
+    },
+    opts = {},
+  },
 }
