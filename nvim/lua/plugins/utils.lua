@@ -48,6 +48,19 @@ return {
     end,
   },
   {
+    "NeogitOrg/neogit",
+    lazy = true,
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- required
+      "sindrets/diffview.nvim", -- optional - Diff integration
+      "folke/snacks.nvim", -- optional
+    },
+    cmd = "Neogit",
+    keys = {
+      { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
+    },
+  },
+  {
     "x3rAx/jjui.nvim",
     event = "VeryLazy",
     dependencies = { "folke/snacks.nvim" },
