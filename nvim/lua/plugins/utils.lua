@@ -60,28 +60,4 @@ return {
       { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
     },
   },
-  {
-    "x3rAx/jjui.nvim",
-    event = "VeryLazy",
-    dependencies = { "folke/snacks.nvim" },
-    keys = {
-      {
-        "<leader>jj",
-        mode = { "n", "v" },
-        "<cmd>JJui<cr>",
-        desc = "JJui",
-      },
-    },
-    opts = {},
-  },
-  {
-    "nvim-mini/mini.diff",
-    config = function()
-      local diff = require("mini.diff")
-      diff.setup({
-        -- Disabled by default
-        source = diff.gen_source.none(),
-      })
-    end,
-  },
 }
