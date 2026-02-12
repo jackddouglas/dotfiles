@@ -5,6 +5,7 @@ local whitelist = {
 	["TIDAL"] = true,
 	["Spotify"] = true,
 	["Music"] = true,
+	["Arc"] = true,
 	["Zen"] = true,
 }
 

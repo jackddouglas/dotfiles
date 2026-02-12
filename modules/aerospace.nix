@@ -52,7 +52,7 @@
       mode = {
         main.binding = {
           "alt-enter" = "exec-and-forget open -a Ghostty";
-          "alt-shift-enter" = "exec-and-forget open -a 'Zen'";
+          "alt-shift-enter" = "exec-and-forget open -a 'Arc'";
           "alt-m" = "exec-and-forget open -a Music";
           "alt-e" = "exec-and-forget open -a Mail";
           "alt-z" = "exec-and-forget open -a Zed";
@@ -177,6 +177,10 @@
         {
           "if".app-id = "com.apple.iCal";
           run = "move-node-to-workspace 1";
+        }
+        {
+          "if".app-id = "company.thebrowser.Browser";
+          run = "move-node-to-workspace 2";
         }
         {
           "if".app-id = "app.zen-browser.zen";
