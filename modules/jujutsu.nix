@@ -11,6 +11,7 @@
       ui = {
         default-command = [ "log" ];
         editor = "nvim";
+        conflict-marker-style = "git";
       };
 
       signing = {
