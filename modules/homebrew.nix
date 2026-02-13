@@ -107,7 +107,7 @@
 
       # Utilities
       "Flighty" = 1358823008;
-      "Parcel" = 639968404;
+      "Parcel" = 375589283;
     };
 
     onActivation = {
