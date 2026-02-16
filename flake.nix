@@ -74,6 +74,8 @@
               NSGlobalDomain = {
                 # Dark mode
                 AppleInterfaceStyle = "Dark";
+                # Tinted icons
+                AppleIconAppearanceTheme = "TintedDark";
                 # Show hidden files
                 AppleShowAllFiles = true;
                 # Show all file extensions
