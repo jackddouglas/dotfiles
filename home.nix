@@ -12,6 +12,25 @@ let
   };
 
   currentSigningKey = signingKeys.${hostname};
+
+  ice-app = pkgs.stdenvNoCC.mkDerivation {
+    pname = "ice";
+    version = "0.11.13-dev.2";
+
+    src = pkgs.fetchurl {
+      url = "https://github.com/jordanbaird/Ice/releases/download/0.11.13-dev.2/Ice.zip";
+      sha256 = "c1bbaa71f61ebfe5ee928f790af60963a9f202364d63f78d2c6b3ec5105cf4a0";
+    };
+
+    nativeBuildInputs = [ pkgs.unzip ];
+
+    sourceRoot = ".";
+
+    installPhase = ''
+      mkdir -p $out/Applications
+      cp -r Ice.app $out/Applications/
+    '';
+  };
 in
 {
   home = {
@@ -25,6 +44,7 @@ in
       jankyborders
       aerospace
       sketchybar-app-font
+      ice-app
 
       # dev tools
       neovim

@@ -86,7 +86,6 @@
       "clop"
       "display-pilot"
       "finetune"
-      "jordanbaird-ice"
       "osaurus"
     ];
 
