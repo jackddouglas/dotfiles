@@ -85,6 +85,7 @@
       "boring-notch"
       "clop"
       "display-pilot"
+      "finetune"
       "jordanbaird-ice"
       "osaurus"
     ];
