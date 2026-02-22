@@ -23,7 +23,6 @@
 
     casks = [
       # Browsers
-      "arc"
       "firefox"
       "helium-browser"
       "orion"

@@ -52,7 +52,7 @@
       mode = {
         main.binding = {
           "alt-enter" = "exec-and-forget open -a Ghostty";
-          "alt-shift-enter" = "exec-and-forget open -a 'Arc'";
+          "alt-shift-enter" = "exec-and-forget open -a 'Zen'";
           "alt-m" = "exec-and-forget open -a Music";
           "alt-e" = "exec-and-forget open -a Mail";
           "alt-z" = "exec-and-forget open -a Zed";
