@@ -19,6 +19,7 @@
 
       # Utilities
       "mas"
+      "mole"
     ];
 
     casks = [
@@ -76,6 +77,7 @@
       "proton-mail"
       "proton-mail-bridge"
       "protonvpn"
+      "superwhisper"
 
       # Social
       "betterdiscord-installer"
