@@ -71,6 +71,7 @@
 
       # Productivity
       "1password"
+      "dot"
       "homerow"
       "linear-linear"
       "proton-drive"
