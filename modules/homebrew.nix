@@ -74,6 +74,7 @@
       "dot"
       "homerow"
       "linear-linear"
+      "microsoft-excel"
       "proton-drive"
       "proton-mail"
       "proton-mail-bridge"
