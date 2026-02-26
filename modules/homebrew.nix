@@ -99,6 +99,9 @@
       # Development
       "Xcode" = 497799835;
 
+      # Knowledge
+      "GoodLinks" = 1474335294;
+
       # Media
       "Final Cut Pro" = 424389933;
 
