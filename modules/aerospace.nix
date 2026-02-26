@@ -61,6 +61,7 @@
           "alt-t" = "exec-and-forget open -a Messages";
           "alt-s" = "exec-and-forget open -a Slack";
           "alt-d" = "exec-and-forget open -a Discord";
+          "alt-b" = "exec-and-forget open -a Finder";
 
           "alt-slash" = "layout tiles vertical horizontal";
           "alt-comma" = "layout accordion vertical horizontal";
