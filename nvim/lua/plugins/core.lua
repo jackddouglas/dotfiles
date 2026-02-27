@@ -9,14 +9,6 @@ return {
     },
   },
   {
-    "mason-org/mason.nvim",
-    opts = {
-      ensure_installed = {
-        "ormolu",
-      },
-    },
-  },
-  {
     "snacks.nvim",
     opts = {
       dashboard = {
