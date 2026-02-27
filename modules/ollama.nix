@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -9,7 +8,7 @@
   launchd.agents.ollama = {
     enable = true;
     config = {
-      Label = "com.user.ollama";
+      Label = "com.jackdouglas.ollama";
       ProgramArguments = [
         "/opt/homebrew/bin/ollama"
         "serve"

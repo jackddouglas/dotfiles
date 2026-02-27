@@ -20,6 +20,10 @@
     # minimal-tmux
     minimal-tmux.url = "github:niksingh710/minimal-tmux-status";
     minimal-tmux.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
+    # aerohints
+    aerohints.url = "github:jackddouglas/AeroHints";
+    aerohints.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -31,6 +35,7 @@
       home-manager,
       nix-homebrew,
       minimal-tmux,
+      aerohints,
     }:
     let
       configuration =
@@ -240,6 +245,7 @@
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#[hostname]
       darwinConfigurations."jack-tonk" = nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit inputs; };
         modules = [
           configuration
 
@@ -273,6 +279,7 @@
       };
 
       darwinConfigurations."laptop" = nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit inputs; };
         modules = [
           configuration
 

@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "aerohints": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772295371,
+        "narHash": "sha256-oocdMhv2biH5qSWw2NEBQRUPRx7E5PJORbjmfIBXpV8=",
+        "owner": "jackddouglas",
+        "repo": "AeroHints",
+        "rev": "24fc203a9031326002539b0403e052f35d41ec9b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jackddouglas",
+        "repo": "AeroHints",
+        "type": "github"
+      }
+    },
     "brew-src": {
       "flake": false,
       "locked": {
@@ -129,6 +149,7 @@
     },
     "root": {
       "inputs": {
+        "aerohints": "aerohints",
         "home-manager": "home-manager",
         "minimal-tmux": "minimal-tmux",
         "nix-darwin": "nix-darwin",

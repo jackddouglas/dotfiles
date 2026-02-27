@@ -1,4 +1,71 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
+let
+  aerohints = "${inputs.aerohints.packages.${pkgs.system}.default}/bin/AeroHints";
+  sketchybar = "${pkgs.sketchybar}/bin/sketchybar";
+
+  # Helper: enter a named mode and notify AeroHints
+  enterMode = mode: [
+    "mode ${mode}"
+    "exec-and-forget ${aerohints} --notify mode-enter ${mode}"
+  ];
+
+  # Helper: exit current mode back to main and notify AeroHints
+  exitMode =
+    cmd:
+    [ cmd ]
+    ++ [
+      "exec-and-forget ${aerohints} --notify mode-exit"
+      "mode main"
+    ];
+
+  # Helper: exit mode without a preceding command (esc/enter)
+  exitModeOnly = [
+    "exec-and-forget ${aerohints} --notify mode-exit"
+    "mode main"
+  ];
+
+  # Generate workspace switch bindings: alt-N -> workspace N
+  workspaceBindings = builtins.listToAttrs (
+    map
+      (n: {
+        name = "alt-${toString n}";
+        value = "workspace ${toString n}";
+      })
+      [
+        1
+        2
+        3
+        4
+        5
+        6
+        7
+        8
+        9
+        0
+      ]
+  );
+
+  # Generate workspace move bindings: alt-shift-N -> move to workspace N
+  workspaceMoveBindings = builtins.listToAttrs (
+    map
+      (n: {
+        name = "alt-shift-${toString n}";
+        value = "move-node-to-workspace ${toString n} --focus-follows-window";
+      })
+      [
+        1
+        2
+        3
+        4
+        5
+        6
+        7
+        8
+        9
+        0
+      ]
+  );
+in
 {
   services.aerospace = {
     enable = true;
@@ -10,11 +77,11 @@
       exec-on-workspace-change = [
         "/bin/bash"
         "-c"
-        "${pkgs.sketchybar}/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
+        "${sketchybar} --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
       ];
 
       on-focus-changed = [
-        "exec-and-forget ${pkgs.sketchybar}/bin/sketchybar --trigger aerospace_focus_change"
+        "exec-and-forget ${sketchybar} --trigger aerospace_focus_change"
       ];
 
       enable-normalization-flatten-containers = true;
@@ -29,9 +96,7 @@
 
       automatically-unhide-macos-hidden-apps = false;
 
-      key-mapping = {
-        preset = "qwerty";
-      };
+      key-mapping.preset = "qwerty";
 
       gaps = {
         inner = {
@@ -51,6 +116,7 @@
 
       mode = {
         main.binding = {
+          # Apps
           "alt-enter" = "exec-and-forget open -a Ghostty";
           "alt-shift-enter" = "exec-and-forget open -a 'Zen'";
           "alt-m" = "exec-and-forget open -a Music";
@@ -63,51 +129,34 @@
           "alt-d" = "exec-and-forget open -a Discord";
           "alt-b" = "exec-and-forget open -a Finder";
 
+          # Layout
           "alt-slash" = "layout tiles vertical horizontal";
           "alt-comma" = "layout accordion vertical horizontal";
+          "alt-f" = "fullscreen";
 
+          # Focus
           "alt-h" = "focus --boundaries-action wrap-around-the-workspace left";
           "alt-j" = "focus --boundaries-action wrap-around-the-workspace down";
           "alt-k" = "focus --boundaries-action wrap-around-the-workspace up";
           "alt-l" = "focus --boundaries-action wrap-around-the-workspace right";
 
+          # Move windows
           "alt-shift-h" = "move left";
           "alt-shift-j" = "move down";
           "alt-shift-k" = "move up";
           "alt-shift-l" = "move right";
 
-          "alt-f" = "fullscreen";
-
-          "alt-1" = "workspace 1";
-          "alt-2" = "workspace 2";
-          "alt-3" = "workspace 3";
-          "alt-4" = "workspace 4";
-          "alt-5" = "workspace 5";
-          "alt-6" = "workspace 6";
-          "alt-7" = "workspace 7";
-          "alt-8" = "workspace 8";
-          "alt-9" = "workspace 9";
-          "alt-0" = "workspace 0";
-
-          "alt-shift-1" = "move-node-to-workspace 1 --focus-follows-window";
-          "alt-shift-2" = "move-node-to-workspace 2 --focus-follows-window";
-          "alt-shift-3" = "move-node-to-workspace 3 --focus-follows-window";
-          "alt-shift-4" = "move-node-to-workspace 4 --focus-follows-window";
-          "alt-shift-5" = "move-node-to-workspace 5 --focus-follows-window";
-          "alt-shift-6" = "move-node-to-workspace 6 --focus-follows-window";
-          "alt-shift-7" = "move-node-to-workspace 7 --focus-follows-window";
-          "alt-shift-8" = "move-node-to-workspace 8 --focus-follows-window";
-          "alt-shift-9" = "move-node-to-workspace 9 --focus-follows-window";
-          "alt-shift-0" = "move-node-to-workspace 0 --focus-follows-window";
-
+          # Workspaces
           "alt-tab" = "workspace-back-and-forth";
           "alt-shift-tab" = "move-workspace-to-monitor --wrap-around next";
 
-          "alt-r" = "mode resize";
-          "alt-g" = "mode goto";
-
-          "alt-shift-semicolon" = "mode service";
-        };
+          # Modes
+          "alt-r" = enterMode "resize";
+          "alt-g" = enterMode "goto";
+          "alt-shift-semicolon" = enterMode "service";
+        }
+        // workspaceBindings
+        // workspaceMoveBindings;
 
         resize.binding = {
           "h" = "resize width +50";
@@ -115,88 +164,33 @@
           "k" = "resize height +50";
           "l" = "resize width -50";
           "0" = "balance-sizes";
-          "enter" = "mode main";
-          "esc" = "mode main";
+          "enter" = exitModeOnly;
+          "esc" = exitModeOnly;
         };
 
         goto.binding = {
-          "h" = [
-            "exec-and-forget open ~"
-            "mode main"
-          ];
-          "l" = [
-            "exec-and-forget open ~/Downloads"
-            "mode main"
-          ];
-          "d" = [
-            "exec-and-forget open ~/Desktop"
-            "mode main"
-          ];
-          "o" = [
-            "exec-and-forget open ~/Documents"
-            "mode main"
-          ];
-          "c" = [
-            "exec-and-forget open /"
-            "mode main"
-          ];
-          "i" = [
-            "exec-and-forget open ~/Library/Mobile\\ Documents/com~apple~CloudDocs"
-            "mode main"
-          ];
-          "p" = [
-            "exec-and-forget open ~/Library/CloudStorage/ProtonDrive-cincomc@proton.me-folder"
-            "mode main"
-          ];
-          "esc" = "mode main";
-          "enter" = "mode main";
+          "h" = exitMode "exec-and-forget open ~";
+          "l" = exitMode "exec-and-forget open ~/Downloads";
+          "d" = exitMode "exec-and-forget open ~/Desktop";
+          "o" = exitMode "exec-and-forget open ~/Documents";
+          "c" = exitMode "exec-and-forget open /";
+          "i" = exitMode "exec-and-forget open ~/Library/Mobile\\ Documents/com~apple~CloudDocs";
+          "p" = exitMode "exec-and-forget open ~/Library/CloudStorage/ProtonDrive-cincomc@proton.me-folder";
+          "esc" = exitModeOnly;
+          "enter" = exitModeOnly;
         };
 
         service.binding = {
-          "esc" = [
-            "reload-config"
-            "mode main"
-          ];
-
-          "s" = [
-            "exec-and-forget /etc/profiles/per-user/jackdouglas/bin/sketchybar --reload"
-            "mode main"
-          ];
-
-          "r" = [
-            "flatten-workspace-tree"
-            "mode main"
-          ];
-
-          "f" = [
-            "layout floating tiling"
-            "mode main"
-          ];
-
-          "backspace" = [
-            "close-all-windows-but-current"
-            "mode main"
-          ];
-
-          "alt-shift-h" = [
-            "join-with left"
-            "mode main"
-          ];
-
-          "alt-shift-j" = [
-            "join-with down"
-            "mode main"
-          ];
-
-          "alt-shift-k" = [
-            "join-with up"
-            "mode main"
-          ];
-
-          "alt-shift-l" = [
-            "join-with right"
-            "mode main"
-          ];
+          "esc" = exitMode "reload-config";
+          "s" = exitMode "exec-and-forget ${sketchybar} --reload";
+          "r" = exitMode "flatten-workspace-tree";
+          "f" = exitMode "layout floating tiling";
+          "backspace" = exitMode "close-all-windows-but-current";
+          "alt-shift-h" = exitMode "join-with left";
+          "alt-shift-j" = exitMode "join-with down";
+          "alt-shift-k" = exitMode "join-with up";
+          "alt-shift-l" = exitMode "join-with right";
+          "enter" = exitModeOnly;
         };
       };
 

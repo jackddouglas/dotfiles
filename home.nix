@@ -182,6 +182,7 @@ in
   imports = [
     (import ./modules/tmux.nix { inherit pkgs inputs; })
     ./modules/ollama.nix
+    ./modules/aerohints.nix
     ./modules/yazi.nix
     (import ./modules/jujutsu.nix { inherit currentSigningKey; })
     ./modules/fish.nix
