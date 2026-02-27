@@ -7,6 +7,7 @@
       "FelixKratz/formulae"
       "TheBoredTeam/boring-notch"
       "fastrepl/hyprnote"
+      "mikker/tap"
       "sst/tap"
     ];
 
@@ -90,6 +91,7 @@
       "display-pilot"
       "finetune"
       "osaurus"
+      "mikker/tap/tuna"
     ];
 
     masApps = {

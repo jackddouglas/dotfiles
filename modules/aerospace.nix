@@ -104,6 +104,7 @@
           "alt-shift-tab" = "move-workspace-to-monitor --wrap-around next";
 
           "alt-r" = "mode resize";
+          "alt-g" = "mode goto";
 
           "alt-shift-semicolon" = "mode service";
         };
@@ -116,6 +117,39 @@
           "0" = "balance-sizes";
           "enter" = "mode main";
           "esc" = "mode main";
+        };
+
+        goto.binding = {
+          "h" = [
+            "exec-and-forget open ~"
+            "mode main"
+          ];
+          "l" = [
+            "exec-and-forget open ~/Downloads"
+            "mode main"
+          ];
+          "d" = [
+            "exec-and-forget open ~/Desktop"
+            "mode main"
+          ];
+          "o" = [
+            "exec-and-forget open ~/Documents"
+            "mode main"
+          ];
+          "c" = [
+            "exec-and-forget open /"
+            "mode main"
+          ];
+          "i" = [
+            "exec-and-forget open ~/Library/Mobile\\ Documents/com~apple~CloudDocs"
+            "mode main"
+          ];
+          "p" = [
+            "exec-and-forget open ~/Library/CloudStorage/ProtonDrive-cincomc@proton.me-folder"
+            "mode main"
+          ];
+          "esc" = "mode main";
+          "enter" = "mode main";
         };
 
         service.binding = {
