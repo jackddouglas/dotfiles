@@ -55,6 +55,7 @@ in
       lazydocker
       lazygit
       claude-code
+      codex
       chatgpt
       nvimpager
       ngrok

@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772295371,
-        "narHash": "sha256-oocdMhv2biH5qSWw2NEBQRUPRx7E5PJORbjmfIBXpV8=",
+        "lastModified": 1772463347,
+        "narHash": "sha256-7RMiMFjeQYY6gqflfxyBx6jAIQjL8L75O+1CjAub2uU=",
         "owner": "jackddouglas",
         "repo": "AeroHints",
-        "rev": "24fc203a9031326002539b0403e052f35d41ec9b",
+        "rev": "0d4fa780e2e228628942b885b1377f9f3ff8fa7c",
         "type": "github"
       },
       "original": {

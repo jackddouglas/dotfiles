@@ -103,12 +103,11 @@
 
       # Knowledge
       "GoodLinks" = 1474335294;
+      "iA Writer" = 775737590;
+      "Muse" = 1501563902;
 
       # Media
       "Final Cut Pro" = 424389933;
-
-      # Notes
-      "Muse" = 1501563902;
 
       # Social
       "Mona" = 1659154653;
