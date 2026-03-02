@@ -40,6 +40,16 @@ local icons = {
 			forward = "􀊌",
 			play_pause = "􀊈",
 		},
+		weather = {
+			sunny = "􀆮",
+			partly_cloudy = "􀇕",
+			cloudy = "􀇂",
+			rain = "􀇄",
+			thunder = "􀇘",
+			snow = "􀇎",
+			fog = "􀇊",
+			default = "􀇔",
+		},
 	},
 
 	-- Alternative NerdFont icons
@@ -78,9 +88,19 @@ local icons = {
 			router = "Missing Icon",
 		},
 		media = {
-			back = "",
-			forward = "",
-			play_pause = "",
+			back = "",
+			forward = "",
+			play_pause = "",
+		},
+		weather = {
+			sunny = "",
+			partly_cloudy = "",
+			cloudy = "",
+			rain = "",
+			thunder = "",
+			snow = "",
+			fog = "",
+			default = "",
 		},
 	},
 }
