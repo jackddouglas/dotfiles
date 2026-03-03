@@ -137,11 +137,15 @@ return {
   {
     "OXY2DEV/markview.nvim",
     lazy = false,
-
-    priority = 49,
-
     dependencies = {
       "saghen/blink.cmp",
+    },
+    opts = {
+      preview = {
+        icon_provider = "mini",
+        modes = { "n", "no", "c", "i" },
+        hybrid_modes = { "n", "i" },
+      },
     },
   },
   {
@@ -172,23 +176,5 @@ return {
     keys = {
       { "<leader>uz", "<cmd>ZenMode<cr>", desc = "Enable Zen Mode" },
     },
-  },
-  {
-    "preservim/vim-pencil",
-    lazy = true,
-    ft = { "markdown", "mkd", "text" },
-    config = function()
-      vim.g.pencil_wrapModeDefault = "soft"
-
-      vim.cmd([[
-        augroup pencil
-          autocmd!
-          autocmd FileType markdown,mkd call pencil#init({"conceallevel": 2, "wrap": "soft"})
-                                    \ | setl spell spl=en_gb
-          autocmd FileType text         call pencil#init({"wrap": "hard"})
-                                    \ | setl spell spl=en_gb
-        augroup END
-      ]])
-    end,
   },
 }

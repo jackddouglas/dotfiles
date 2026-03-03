@@ -20,11 +20,6 @@ return {
     },
   },
   {
-    "nvim-treesitter/nvim-treesitter",
-    lazy = false,
-    dependencies = { "OXY2DEV/markview.nvim" },
-  },
-  {
     "saghen/blink.cmp",
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
