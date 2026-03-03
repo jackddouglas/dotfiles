@@ -6,7 +6,7 @@ sbar.add("item", { position = "right", width = settings.group_paddings })
 
 local cal = sbar.add("item", {
 	icon = {
-		color = colors.white,
+		color = colors.text.secondary,
 		padding_left = 8,
 		font = {
 			style = settings.font.style_map["Black"],
@@ -14,7 +14,7 @@ local cal = sbar.add("item", {
 		},
 	},
 	label = {
-		color = colors.white,
+		color = colors.text.primary,
 		padding_right = 8,
 		width = 49,
 		align = "right",
@@ -24,24 +24,27 @@ local cal = sbar.add("item", {
 	padding_left = 1,
 	padding_right = 1,
 	background = {
-		color = colors.bg2,
-		border_color = colors.black,
-		border_width = 1,
+		color = colors.transparent,
+		height = 28,
+		corner_radius = 9,
 	},
 	click_script = "open -a 'Calendar'",
 })
 
--- Double border for calendar using a single item bracket
-sbar.add("bracket", { cal.name }, {
-	background = {
-		color = colors.transparent,
-		height = 30,
-		border_color = colors.grey,
-	},
-})
-
--- Padding item required because of bracket
+-- Padding item
 sbar.add("item", { position = "right", width = settings.group_paddings })
+
+cal:subscribe("mouse.entered", function()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		cal:set({ background = { color = colors.hover_bg } })
+	end)
+end)
+
+cal:subscribe("mouse.exited", function()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		cal:set({ background = { color = colors.transparent } })
+	end)
+end)
 
 local function update_calendar()
 	cal:set({ icon = os.date("%a %d %b"), label = os.date("%H:%M") })

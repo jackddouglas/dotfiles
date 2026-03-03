@@ -11,6 +11,7 @@ local volume_percent = sbar.add("item", "widgets.volume1", {
 		string = "??%",
 		padding_left = -1,
 		font = { family = settings.font.numbers },
+		color = colors.text.primary,
 	},
 })
 
@@ -21,7 +22,7 @@ local volume_icon = sbar.add("item", "widgets.volume2", {
 		string = icons.volume._100,
 		width = 0,
 		align = "left",
-		color = colors.grey,
+		color = colors.text.secondary,
 		font = {
 			style = settings.font.style_map["Regular"],
 			size = 14.0,
@@ -37,11 +38,12 @@ local volume_icon = sbar.add("item", "widgets.volume2", {
 	},
 })
 
+-- Pill background bracket
 local volume_bracket = sbar.add("bracket", "widgets.volume.bracket", {
 	volume_icon.name,
 	volume_percent.name,
 }, {
-	background = { color = colors.bg1 },
+	background = { color = colors.transparent },
 	popup = { align = "center" },
 })
 
@@ -53,7 +55,7 @@ sbar.add("item", "widgets.volume.padding", {
 local volume_slider = sbar.add("slider", popup_width, {
 	position = "popup." .. volume_bracket.name,
 	slider = {
-		highlight_color = colors.blue,
+		highlight_color = colors.accent,
 		background = {
 			height = 6,
 			corner_radius = 3,
@@ -114,13 +116,12 @@ local function volume_toggle_details(env)
 			current_audio_device = result:sub(1, -2)
 			sbar.exec("SwitchAudioSource -a -t output", function(available)
 				current = current_audio_device
-				local color = colors.grey
 				local counter = 0
 
 				for device in string.gmatch(available, "[^\r\n]+") do
-					local color = colors.grey
+					local color = colors.text.secondary
 					if current == device then
-						color = colors.white
+						color = colors.text.primary
 					end
 					sbar.add("item", "volume.device." .. counter, {
 						position = "popup." .. volume_bracket.name,
@@ -130,9 +131,9 @@ local function volume_toggle_details(env)
 						click_script = 'SwitchAudioSource -s "'
 							.. device
 							.. '" && sketchybar --set /volume.device\\.*/ label.color='
-							.. colors.grey
+							.. colors.text.secondary
 							.. " --set $NAME label.color="
-							.. colors.white,
+							.. colors.text.primary,
 					})
 					counter = counter + 1
 				end
@@ -152,8 +153,26 @@ local function volume_scroll(env)
 	sbar.exec('osascript -e "set volume output volume (output volume of (get volume settings) + ' .. delta .. ')"')
 end
 
+-- Hover animations
+local function volume_hover_on()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		volume_bracket:set({ background = { color = colors.hover_bg } })
+	end)
+end
+
+local function volume_hover_off()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		volume_bracket:set({ background = { color = colors.transparent } })
+	end)
+end
+
 volume_icon:subscribe("mouse.clicked", volume_toggle_details)
 volume_icon:subscribe("mouse.scrolled", volume_scroll)
+volume_icon:subscribe("mouse.entered", volume_hover_on)
+volume_icon:subscribe("mouse.exited", volume_hover_off)
+volume_icon:subscribe("mouse.exited.global", volume_collapse_details)
 volume_percent:subscribe("mouse.clicked", volume_toggle_details)
 volume_percent:subscribe("mouse.exited.global", volume_collapse_details)
 volume_percent:subscribe("mouse.scrolled", volume_scroll)
+volume_percent:subscribe("mouse.entered", volume_hover_on)
+volume_percent:subscribe("mouse.exited", volume_hover_off)

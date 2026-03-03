@@ -24,6 +24,7 @@ for i = 1, max_items, 1 do
 			font = {
 				style = settings.font.style_map[i == 1 and "Heavy" or "Semibold"],
 			},
+			color = i == 1 and colors.text.primary or colors.text.secondary,
 			padding_left = 6,
 			padding_right = 6,
 		},
@@ -34,11 +35,7 @@ for i = 1, max_items, 1 do
 end
 
 sbar.add("bracket", { "/menu\\..*/" }, {
-	background = {
-		color = colors.transparent,
-		border_color = colors.grey,
-		border_width = 1,
-	},
+	background = { color = colors.transparent },
 })
 
 local menu_padding = sbar.add("item", "menu.padding", {

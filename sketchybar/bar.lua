@@ -1,10 +1,12 @@
 local colors = require("colors")
 
--- Equivalent to the --bar domain
+-- Fully transparent bar -- items appear as standalone pills
 sbar.bar({
 	height = 40,
-	color = colors.bar.bg,
+	color = colors.transparent,
 	padding_right = 2,
 	padding_left = 2,
-	blur_radius = 300,
+	blur_radius = 0,
+	shadow = false,
+	font_smoothing = true,
 })

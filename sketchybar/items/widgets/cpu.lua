@@ -8,14 +8,17 @@ sbar.exec("killall cpu_load >/dev/null; $CONFIG_DIR/helpers/event_providers/cpu_
 
 local cpu = sbar.add("graph", "widgets.cpu", 42, {
 	position = "right",
-	graph = { color = colors.blue },
+	graph = { color = colors.accent },
 	background = {
 		height = 22,
 		color = { alpha = 0 },
 		border_color = { alpha = 0 },
 		drawing = true,
 	},
-	icon = { string = icons.cpu },
+	icon = {
+		string = icons.cpu,
+		color = colors.white,
+	},
 	label = {
 		string = "cpu ??%",
 		font = {
@@ -23,6 +26,7 @@ local cpu = sbar.add("graph", "widgets.cpu", 42, {
 			style = settings.font.style_map["Bold"],
 			size = 9.0,
 		},
+		color = colors.text.primary,
 		align = "right",
 		padding_right = 0,
 		width = 0,
@@ -36,7 +40,7 @@ cpu:subscribe("cpu_update", function(env)
 	local load = tonumber(env.total_load)
 	cpu:push({ load / 100. })
 
-	local color = colors.blue
+	local color = colors.accent
 	if load > 30 then
 		if load < 60 then
 			color = colors.yellow
@@ -57,12 +61,23 @@ cpu:subscribe("mouse.clicked", function(env)
 	sbar.exec("open -a 'Activity Monitor'")
 end)
 
--- Background around the cpu item
 sbar.add("bracket", "widgets.cpu.bracket", { cpu.name }, {
-	background = { color = colors.bg1 },
+	background = { color = colors.transparent },
 })
 
--- Background around the cpu item
+cpu:subscribe("mouse.entered", function()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		sbar.set("widgets.cpu.bracket", { background = { color = colors.hover_bg } })
+	end)
+end)
+
+cpu:subscribe("mouse.exited", function()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		sbar.set("widgets.cpu.bracket", { background = { color = colors.transparent } })
+	end)
+end)
+
+-- Padding
 sbar.add("item", "widgets.cpu.padding", {
 	position = "right",
 	width = settings.group_paddings,

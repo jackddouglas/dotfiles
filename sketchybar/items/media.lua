@@ -1,5 +1,6 @@
 local icons = require("icons")
 local colors = require("colors")
+local settings = require("settings")
 
 local whitelist = {
 	["TIDAL"] = true,
@@ -38,7 +39,7 @@ local media_artist = sbar.add("item", {
 	label = {
 		width = 0,
 		font = { size = 9 },
-		color = colors.with_alpha(colors.white, 0.6),
+		color = colors.text.tertiary,
 		max_chars = 18,
 		y_offset = 6,
 	},
@@ -55,6 +56,7 @@ local media_title = sbar.add("item", {
 		width = 0,
 		max_chars = 16,
 		y_offset = -5,
+		color = colors.text.primary,
 	},
 })
 

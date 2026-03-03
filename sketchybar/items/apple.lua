@@ -15,22 +15,25 @@ local apple = sbar.add("item", {
 	label = { drawing = false },
 	background = {
 		color = colors.transparent,
-		border_color = colors.black,
-		border_width = 1,
+		height = 28,
+		corner_radius = 9,
 	},
 	padding_left = 1,
 	padding_right = 1,
 	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 0",
 })
 
--- Double border for apple using a single item bracket
-sbar.add("bracket", { apple.name }, {
-	background = {
-		color = colors.transparent,
-		height = 30,
-		border_color = colors.grey,
-	},
-})
+apple:subscribe("mouse.entered", function()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		apple:set({ background = { color = colors.bar.bg } })
+	end)
+end)
 
--- Padding item required because of bracket
+apple:subscribe("mouse.exited", function()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		apple:set({ background = { color = colors.transparent } })
+	end)
+end)
+
+-- Padding item
 sbar.add("item", { width = 7 })

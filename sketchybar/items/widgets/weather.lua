@@ -139,10 +139,12 @@ local weather = sbar.add("item", "widgets.weather", {
 			style = settings.font.style_map["Regular"],
 			size = 16.0,
 		},
+		color = colors.white,
 	},
 	label = {
 		string = "...",
 		font = { family = settings.font.numbers },
+		color = colors.text.primary,
 	},
 	update_freq = 1800,
 	popup = { align = "center" },
@@ -155,6 +157,7 @@ local location_label = sbar.add("item", {
 		width = popup_width / 2,
 		align = "left",
 		font = { style = settings.font.style_map["Bold"] },
+		color = colors.text.secondary,
 	},
 	label = {
 		string = get_location(),
@@ -168,7 +171,7 @@ local location_label = sbar.add("item", {
 	},
 	background = {
 		height = 2,
-		color = colors.grey,
+		color = colors.text.quaternary,
 		y_offset = -15,
 	},
 })
@@ -179,6 +182,7 @@ local description_item = sbar.add("item", {
 		string = "Conditions:",
 		width = popup_width / 2,
 		align = "left",
+		color = colors.text.secondary,
 	},
 	label = {
 		string = "...",
@@ -194,6 +198,7 @@ local feels_like_item = sbar.add("item", {
 		string = "Feels like:",
 		width = popup_width / 2,
 		align = "left",
+		color = colors.text.secondary,
 	},
 	label = {
 		string = "...",
@@ -208,6 +213,7 @@ local humidity_item = sbar.add("item", {
 		string = "Humidity:",
 		width = popup_width / 2,
 		align = "left",
+		color = colors.text.secondary,
 	},
 	label = {
 		string = "...",
@@ -222,6 +228,7 @@ local wind_item = sbar.add("item", {
 		string = "Wind:",
 		width = popup_width / 2,
 		align = "left",
+		color = colors.text.secondary,
 	},
 	label = {
 		string = "...",
@@ -237,12 +244,12 @@ local change_location_item = sbar.add("item", {
 		string = "Change Location...",
 		width = popup_width,
 		align = "center",
-		color = colors.blue,
+		color = colors.accent,
 		font = { style = settings.font.style_map["Bold"] },
 	},
 	background = {
 		height = 2,
-		color = colors.grey,
+		color = colors.text.quaternary,
 		y_offset = 15,
 	},
 })
@@ -381,6 +388,22 @@ end
 weather:subscribe("mouse.clicked", toggle_details)
 weather:subscribe("mouse.exited.global", hide_details)
 
+sbar.add("bracket", "widgets.weather.bracket", { weather.name }, {
+	background = { color = colors.transparent },
+})
+
+weather:subscribe("mouse.entered", function()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		sbar.set("widgets.weather.bracket", { background = { color = colors.hover_bg } })
+	end)
+end)
+
+weather:subscribe("mouse.exited", function()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		sbar.set("widgets.weather.bracket", { background = { color = colors.transparent } })
+	end)
+end)
+
 -- Change location via osascript dialog
 change_location_item:subscribe("mouse.clicked", function()
 	local current = get_location()
@@ -399,10 +422,6 @@ change_location_item:subscribe("mouse.clicked", function()
 		end
 	)
 end)
-
-sbar.add("bracket", "widgets.weather.bracket", { weather.name }, {
-	background = { color = colors.bg1 },
-})
 
 sbar.add("item", "widgets.weather.padding", {
 	position = "right",

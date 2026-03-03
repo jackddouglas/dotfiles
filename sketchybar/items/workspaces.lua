@@ -34,9 +34,8 @@ local root = sbar.add("item", {
 	},
 	background = {
 		color = colors.transparent,
-		border_width = 1,
+		border_width = 0,
 		height = 28,
-		border_color = colors.black,
 		corner_radius = 9,
 		drawing = false,
 	},
@@ -104,7 +103,6 @@ local function updateWindow(workspace_index, args)
 					label = {
 						string = icon_line,
 						drawing = true,
-						-- padding_right = 20,
 						font = "sketchybar-app-font:Regular:16.0",
 						y_offset = -1,
 					},
@@ -133,7 +131,6 @@ local function updateWindow(workspace_index, args)
 				label = {
 					string = icon_line,
 					drawing = true,
-					-- padding_right = 20,
 					font = "sketchybar-app-font:Regular:16.0",
 					y_offset = -1,
 				},
@@ -183,9 +180,8 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 
 		local workspace = sbar.add("item", "workspace." .. workspace_index, {
 			icon = {
-				color = colors.with_alpha(colors.white, 0.3),
-				-- highlight_color = colors.red,
-				highlight_color = colors.white,
+				color = colors.text.tertiary,
+				highlight_color = colors.text.primary,
 				drawing = false,
 				font = { family = settings.font.numbers },
 				string = get_workspace_name(workspace_index),
@@ -194,9 +190,8 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 			},
 			label = {
 				padding_right = 10,
-				-- color = colors.grey,
-				color = colors.with_alpha(colors.white, 0.3),
-				highlight_color = colors.white,
+				color = colors.text.tertiary,
+				highlight_color = colors.text.secondary,
 				font = "sketchybar-app-font:Regular:16.0",
 				y_offset = -1,
 			},
@@ -204,9 +199,8 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 			padding_left = 2,
 			background = {
 				color = colors.transparent,
-				border_width = 1,
 				height = 28,
-				border_color = colors.grey,
+				corner_radius = 9,
 			},
 			click_script = "/etc/profiles/per-user/jackdouglas/bin/aerospace workspace " .. tostring(workspace_index),
 		})
@@ -217,16 +211,35 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 			local focused_workspace = env.FOCUSED_WORKSPACE
 			local is_focused = focused_workspace == workspace_index
 
-			sbar.animate("tanh", 10, function()
+			sbar.animate("sin", settings.animation.transition_duration, function()
 				workspace:set({
-					icon = { highlight = is_focused },
+					icon = {
+						highlight = is_focused,
+					},
 					label = { highlight = is_focused },
 					background = {
-						border_width = is_focused and 2 or 1,
+						color = is_focused and colors.with_alpha(colors.accent, 0.2) or colors.transparent,
 					},
-					blur_radius = 30,
 				})
 			end)
+		end)
+
+		workspace:subscribe("mouse.entered", function()
+			local is_focused = workspace:query().icon.highlight == "on"
+			if not is_focused then
+				sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+					workspace:set({ background = { color = colors.hover_bg } })
+				end)
+			end
+		end)
+
+		workspace:subscribe("mouse.exited", function()
+			local is_focused = workspace:query().icon.highlight == "on"
+			if not is_focused then
+				sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+					workspace:set({ background = { color = colors.transparent } })
+				end)
+			end
 		end)
 	end
 
@@ -309,7 +322,7 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 		workspaces[focused_workspace]:set({
 			icon = { highlight = true },
 			label = { highlight = true },
-			background = { border_width = 2 },
+			background = { color = colors.with_alpha(colors.accent, 0.2) },
 		})
 	end)
 end)

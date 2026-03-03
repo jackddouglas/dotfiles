@@ -9,9 +9,13 @@ local battery = sbar.add("item", "widgets.battery", {
 			style = settings.font.style_map["Regular"],
 			size = 19.0,
 		},
+		color = colors.white,
 	},
-	label = { font = { family = settings.font.numbers } },
-	update_freq = 180,
+	label = {
+		font = { family = settings.font.numbers },
+		color = colors.text.primary,
+	},
+	update_freq = 30,
 	popup = { align = "center" },
 })
 
@@ -40,7 +44,7 @@ battery:subscribe({ "routine", "power_source_change", "system_woke" }, function(
 			label = charge .. "%"
 		end
 
-		local color = colors.green
+		local color = colors.white
 		local charging, _, _ = batt_info:find("AC Power")
 
 		if charging then
@@ -54,25 +58,26 @@ battery:subscribe({ "routine", "power_source_change", "system_woke" }, function(
 				icon = icons.battery._50
 			elseif found and charge > 20 then
 				icon = icons.battery._25
-				color = colors.orange
 			else
 				icon = icons.battery._0
 				color = colors.red
 			end
 		end
 
-		local lead = ""
-		if found and charge < 10 then
-			lead = "0"
-		end
+		-- Check low power mode via pmset -g (not in batt output)
+		sbar.exec("pmset -g | grep lowpowermode | head -1", function(lpm_info)
+			if lpm_info:find("1") then
+				color = colors.yellow
+			end
 
-		battery:set({
-			icon = {
-				string = icon,
-				color = color,
-			},
-			label = { string = lead .. label },
-		})
+			battery:set({
+				icon = {
+					string = icon,
+					color = color,
+				},
+				label = { string = (found and charge < 10 and "0" or "") .. label },
+			})
+		end)
 	end)
 end)
 
@@ -89,9 +94,27 @@ battery:subscribe("mouse.clicked", function(env)
 	end
 end)
 
+local function hide_details()
+	battery:set({ popup = { drawing = false } })
+end
+
+battery:subscribe("mouse.exited.global", hide_details)
+
 sbar.add("bracket", "widgets.battery.bracket", { battery.name }, {
-	background = { color = colors.bg1 },
+	background = { color = colors.transparent },
 })
+
+battery:subscribe("mouse.entered", function()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		sbar.set("widgets.battery.bracket", { background = { color = colors.hover_bg } })
+	end)
+end)
+
+battery:subscribe("mouse.exited", function()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		sbar.set("widgets.battery.bracket", { background = { color = colors.transparent } })
+	end)
+end)
 
 sbar.add("item", "widgets.battery.padding", {
 	position = "right",

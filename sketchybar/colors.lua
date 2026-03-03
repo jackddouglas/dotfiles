@@ -1,25 +1,69 @@
+-- Detect macOS system accent color at startup
+local accent_map = {
+	["-1"] = 0xFF8E8E93, -- Graphite (systemGray)
+	["0"] = 0xFFFF3B30, -- Red
+	["1"] = 0xFFFF9F0A, -- Orange
+	["2"] = 0xFFFFD60A, -- Yellow
+	["3"] = 0xFF30D158, -- Green
+	["5"] = 0xFFBF5AF2, -- Purple
+	["6"] = 0xFFFF375F, -- Pink
+}
+
+local function get_system_accent()
+	local handle = io.popen("defaults read -g AppleAccentColor 2>/dev/null")
+	if handle then
+		local result = handle:read("*l")
+		handle:close()
+		if result and accent_map[result] then
+			return accent_map[result]
+		end
+	end
+	return 0xFF007AFF -- Blue (macOS default)
+end
+
+local accent = get_system_accent()
+
 return {
-	black = 0xFF100F0F,
-	white = 0xFFCECDC3,
-	red = 0xFFD14D41,
-	green = 0xFF879A39,
-	blue = 0xFF4385BE,
-	yellow = 0xFFD0A215,
-	orange = 0xFFDA702C,
-	magenta = 0xFFCE5D97,
-	grey = 0xFF575653,
+	-- macOS system colors (dark mode)
+	black = 0xFF000000,
+	white = 0xFFFFFFFF,
+	red = 0xFFFF3B30,
+	green = 0xFF30D158,
+	blue = 0xFF007AFF,
+	yellow = 0xFFFFD60A,
+	orange = 0xFFFF9F0A,
+	magenta = 0xFFFF375F,
+	purple = 0xFFBF5AF2,
+	grey = 0xFF8E8E93,
 	transparent = 0x00000000,
 
+	-- System accent (respects user preference)
+	accent = accent,
+
+	-- Semantic text colors (macOS dark mode label hierarchy)
+	text = {
+		primary = 0xFFFFFFFF,
+		secondary = 0x99EBEBF5,
+		tertiary = 0x4DEBEBF5,
+		quaternary = 0x29EBEBF5,
+	},
+
+	-- Pill backgrounds (frosted glass effect -- used with blur_radius on items)
 	bar = {
-		bg = 0x7F000000,
-		border = 0xff2c2e34,
+		bg = 0x663A3A3C,
 	},
+	-- Slightly brighter on hover
+	hover_bg = 0x80484848,
+
+	-- Popup menus
 	popup = {
-		bg = 0xc02c2e34,
-		border = 0xff7f8490,
+		bg = 0xE61C1C1E,
+		border = 0x33FFFFFF,
 	},
-	bg1 = 0xFF343331,
-	bg2 = 0xFF403E3C,
+
+	-- Background fills (macOS dark mode system backgrounds)
+	bg1 = 0xFF1C1C1E,
+	bg2 = 0xFF2C2C2E,
 
 	with_alpha = function(color, alpha)
 		if alpha > 1.0 or alpha < 0.0 then

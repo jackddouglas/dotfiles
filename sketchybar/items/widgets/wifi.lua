@@ -21,6 +21,7 @@ local wifi_up = sbar.add("item", "widgets.wifi1", {
 			size = 9.0,
 		},
 		string = icons.wifi.upload,
+		color = colors.text.tertiary,
 	},
 	label = {
 		font = {
@@ -28,7 +29,7 @@ local wifi_up = sbar.add("item", "widgets.wifi1", {
 			style = settings.font.style_map["Bold"],
 			size = 9.0,
 		},
-		color = colors.red,
+		color = colors.text.tertiary,
 		string = "??? Bps",
 	},
 	y_offset = 4,
@@ -44,6 +45,7 @@ local wifi_down = sbar.add("item", "widgets.wifi2", {
 			size = 9.0,
 		},
 		string = icons.wifi.download,
+		color = colors.text.tertiary,
 	},
 	label = {
 		font = {
@@ -51,7 +53,7 @@ local wifi_down = sbar.add("item", "widgets.wifi2", {
 			style = settings.font.style_map["Bold"],
 			size = 9.0,
 		},
-		color = colors.blue,
+		color = colors.text.tertiary,
 		string = "??? Bps",
 	},
 	y_offset = -4,
@@ -62,13 +64,13 @@ local wifi = sbar.add("item", "widgets.wifi.padding", {
 	label = { drawing = false },
 })
 
--- Background around the item
+-- Pill background bracket
 local wifi_bracket = sbar.add("bracket", "widgets.wifi.bracket", {
 	wifi.name,
 	wifi_up.name,
 	wifi_down.name,
 }, {
-	background = { color = colors.bg1 },
+	background = { color = colors.transparent },
 	popup = { align = "center", height = 30 },
 })
 
@@ -92,7 +94,7 @@ local ssid = sbar.add("item", {
 	},
 	background = {
 		height = 2,
-		color = colors.grey,
+		color = colors.text.quaternary,
 		y_offset = -15,
 	},
 })
@@ -103,6 +105,7 @@ local hostname = sbar.add("item", {
 		align = "left",
 		string = "Hostname:",
 		width = popup_width / 2,
+		color = colors.text.secondary,
 	},
 	label = {
 		max_chars = 20,
@@ -118,6 +121,7 @@ local ip = sbar.add("item", {
 		align = "left",
 		string = "IP:",
 		width = popup_width / 2,
+		color = colors.text.secondary,
 	},
 	label = {
 		string = "???.???.???.???",
@@ -132,6 +136,7 @@ local mask = sbar.add("item", {
 		align = "left",
 		string = "Subnet mask:",
 		width = popup_width / 2,
+		color = colors.text.secondary,
 	},
 	label = {
 		string = "???.???.???.???",
@@ -146,6 +151,7 @@ local router = sbar.add("item", {
 		align = "left",
 		string = "Router:",
 		width = popup_width / 2,
+		color = colors.text.secondary,
 	},
 	label = {
 		string = "???.???.???.???",
@@ -157,8 +163,8 @@ local router = sbar.add("item", {
 sbar.add("item", { position = "right", width = settings.group_paddings })
 
 wifi_up:subscribe("network_update", function(env)
-	local up_color = (env.upload == "000 Bps") and colors.grey or colors.red
-	local down_color = (env.download == "000 Bps") and colors.grey or colors.blue
+	local up_color = (env.upload == "000 Bps") and colors.text.tertiary or colors.text.secondary
+	local down_color = (env.download == "000 Bps") and colors.text.tertiary or colors.text.primary
 	wifi_up:set({
 		icon = { color = up_color },
 		label = {
@@ -215,9 +221,30 @@ local function toggle_details()
 	end
 end
 
+-- Hover animations
+local function wifi_hover_on()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		wifi_bracket:set({ background = { color = colors.hover_bg } })
+	end)
+end
+
+local function wifi_hover_off()
+	sbar.animate(settings.animation.curve, settings.animation.hover_duration, function()
+		wifi_bracket:set({ background = { color = colors.transparent } })
+	end)
+end
+
 wifi_up:subscribe("mouse.clicked", toggle_details)
+wifi_up:subscribe("mouse.entered", wifi_hover_on)
+wifi_up:subscribe("mouse.exited", wifi_hover_off)
+wifi_up:subscribe("mouse.exited.global", hide_details)
 wifi_down:subscribe("mouse.clicked", toggle_details)
+wifi_down:subscribe("mouse.entered", wifi_hover_on)
+wifi_down:subscribe("mouse.exited", wifi_hover_off)
+wifi_down:subscribe("mouse.exited.global", hide_details)
 wifi:subscribe("mouse.clicked", toggle_details)
+wifi:subscribe("mouse.entered", wifi_hover_on)
+wifi:subscribe("mouse.exited", wifi_hover_off)
 wifi:subscribe("mouse.exited.global", hide_details)
 
 local function copy_label_to_clipboard(env)
