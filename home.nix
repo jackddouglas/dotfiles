@@ -149,6 +149,7 @@ in
       ".config/nvimpager".source = ./nvimpager;
       ".config/kanata/kanata.kbd".source = ./kanata/kanata.kbd;
       ".config/opencode/agent".source = ./opencode/agent;
+      ".config/opencode/commands".source = ./opencode/commands;
       ".config/opencode/providers".source = ./opencode/providers;
       ".config/opencode/opencode.json".source = ./opencode/opencode.json;
       ".config/starship.toml".source = ./starship/starship.toml;
