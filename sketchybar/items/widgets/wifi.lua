@@ -182,14 +182,66 @@ wifi_up:subscribe("network_update", function(env)
 end)
 
 wifi:subscribe({ "wifi_change", "system_woke" }, function(env)
-	sbar.exec("ipconfig getifaddr en0", function(ip)
-		local connected = not (ip == "")
-		wifi:set({
-			icon = {
-				string = connected and icons.wifi.connected or icons.wifi.disconnected,
-				color = connected and colors.white or colors.red,
-			},
-		})
+	-- Try the standard IP check first, then fall back to networksetup for
+	-- hotspot connections where DHCP is inactive but Wi-Fi is associated
+	sbar.exec("ipconfig getifaddr en0", function(ip_result)
+		local ip_addr = ip_result:gsub("%s+$", "")
+
+		if ip_addr ~= "" then
+			-- Normal Wi-Fi with a DHCP-assigned IP
+			wifi:set({
+				icon = {
+					string = icons.wifi.connected,
+					color = colors.white,
+				},
+			})
+			return
+		end
+
+		-- No IP from ipconfig — check if Wi-Fi is associated but using
+		-- CLAT46/NAT64 (personal hotspot). DHCP state will be INACTIVE
+		-- while a BSSID is present when connected to a hotspot.
+		sbar.exec(
+			"ipconfig getsummary en0 2>/dev/null | awk '/^ *DHCP : <dictionary>/ {in_dhcp=1} in_dhcp && /State :/ {gsub(/^ *State : /,\"\"); print; exit}'",
+			function(dhcp_result)
+				local dhcp_state = dhcp_result:gsub("%s+$", "")
+
+				-- Also check if we have an IP via networksetup (works for hotspots)
+				sbar.exec(
+					"networksetup -getinfo Wi-Fi | awk -F ': ' '/^IP address:/ {print $2}'",
+					function(fallback_ip_result)
+						local fallback_ip = fallback_ip_result:gsub("%s+$", "")
+						local has_fallback_ip = fallback_ip ~= "" and fallback_ip ~= "none"
+
+						if dhcp_state == "INACTIVE" and has_fallback_ip then
+							-- Wi-Fi associated, DHCP inactive, but has IP = personal hotspot
+							wifi:set({
+								icon = {
+									string = icons.wifi.hotspot,
+									color = colors.white,
+								},
+							})
+						elseif has_fallback_ip then
+							-- Has IP through networksetup but DHCP not inactive
+							wifi:set({
+								icon = {
+									string = icons.wifi.connected,
+									color = colors.white,
+								},
+							})
+						else
+							-- Truly not connected
+							wifi:set({
+								icon = {
+									string = icons.wifi.disconnected,
+									color = colors.red,
+								},
+							})
+						end
+					end
+				)
+			end
+		)
 	end)
 end)
 
@@ -204,17 +256,57 @@ local function toggle_details()
 		sbar.exec("networksetup -getcomputername", function(result)
 			hostname:set({ label = result })
 		end)
+		-- IP display: try ipconfig first, fall back to networksetup for hotspots
 		sbar.exec("ipconfig getifaddr en0", function(result)
-			ip:set({ label = result })
+			local ip_addr = result:gsub("%s+$", "")
+			if ip_addr ~= "" then
+				ip:set({ label = ip_addr })
+			else
+				sbar.exec("networksetup -getinfo Wi-Fi | awk -F ': ' '/^IP address:/ {print $2}'", function(fallback)
+					local fallback_ip = fallback:gsub("%s+$", "")
+					ip:set({ label = fallback_ip ~= "" and fallback_ip ~= "none" and fallback_ip or "N/A" })
+				end)
+			end
 		end)
 		sbar.exec("ipconfig getsummary en0 | awk -F ' SSID : '  '/ SSID : / {print $2}'", function(result)
-			ssid:set({ label = result })
+			local ssid_name = result:gsub("%s+$", "")
+			-- macOS may return <redacted> for the SSID due to privacy restrictions
+			local ssid_available = ssid_name ~= "" and ssid_name ~= "<redacted>"
+
+			-- Check DHCP state to determine if this is a personal hotspot
+			-- (DHCP INACTIVE + associated Wi-Fi = hotspot via CLAT46/NAT64)
+			sbar.exec(
+				"ipconfig getsummary en0 2>/dev/null | awk '/^ *DHCP : <dictionary>/ {in_dhcp=1} in_dhcp && /State :/ {gsub(/^ *State : /,\"\"); print; exit}'",
+				function(dhcp_result)
+					local dhcp_state = dhcp_result:gsub("%s+$", "")
+
+					sbar.exec(
+						"networksetup -getinfo Wi-Fi | awk -F ': ' '/^IP address:/ {print $2}'",
+						function(ip_result)
+							local fallback_ip = ip_result:gsub("%s+$", "")
+							local is_hotspot = dhcp_state == "INACTIVE" and fallback_ip ~= "" and fallback_ip ~= "none"
+
+							if is_hotspot then
+								ssid:set({ label = "Personal Hotspot", icon = { string = icons.wifi.hotspot } })
+							elseif ssid_available then
+								ssid:set({ label = ssid_name, icon = { string = icons.wifi.router } })
+							elseif fallback_ip ~= "" and fallback_ip ~= "none" then
+								-- Connected but SSID redacted by macOS
+								ssid:set({ label = "Wi-Fi", icon = { string = icons.wifi.router } })
+							else
+								ssid:set({ label = "Not Connected" })
+							end
+						end
+					)
+				end
+			)
 		end)
 		sbar.exec("networksetup -getinfo Wi-Fi | awk -F 'Subnet mask: ' '/^Subnet mask: / {print $2}'", function(result)
-			mask:set({ label = result })
+			local val = result:gsub("%s+$", "")
+			mask:set({ label = val ~= "" and val ~= "(null)" and val or "N/A" })
 		end)
 		sbar.exec("networksetup -getinfo Wi-Fi | awk -F 'Router: ' '/^Router: / {print $2}'", function(result)
-			router:set({ label = result })
+			router:set({ label = result ~= "" and result or "N/A" })
 		end)
 	else
 		hide_details()

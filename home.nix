@@ -64,6 +64,7 @@ in
       flyctl
       pm2
       jjui
+      tree-sitter
 
       # nix
       nixfmt

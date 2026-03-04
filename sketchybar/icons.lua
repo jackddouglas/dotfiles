@@ -33,6 +33,7 @@ local icons = {
 			download = "􀄩",
 			connected = "􀙇",
 			disconnected = "􀙈",
+			hotspot = "􀉤",
 			router = "􁓤",
 		},
 		media = {
@@ -85,6 +86,7 @@ local icons = {
 			download = "",
 			connected = "󰖩",
 			disconnected = "󰖪",
+			hotspot = "󱐻",
 			router = "Missing Icon",
 		},
 		media = {
