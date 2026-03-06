@@ -130,10 +130,8 @@ in
       sioyek
 
       # fonts
-      input-fonts
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.commit-mono
       ia-writer-quattro
+      lilex
 
       # fun
       cmatrix
