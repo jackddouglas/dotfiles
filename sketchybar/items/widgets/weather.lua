@@ -133,6 +133,7 @@ local wmo_table = {
 
 local weather = sbar.add("item", "widgets.weather", {
 	position = "right",
+	updates = "on",
 	icon = {
 		string = icons.weather.default,
 		font = {
@@ -146,7 +147,7 @@ local weather = sbar.add("item", "widgets.weather", {
 		font = { family = settings.font.numbers },
 		color = colors.text.primary,
 	},
-	update_freq = 1800,
+	update_freq = 900,
 	popup = { align = "center" },
 })
 
