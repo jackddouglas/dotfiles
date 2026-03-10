@@ -64,7 +64,6 @@ in
       flyctl
       pm2
       jjui
-      tree-sitter
 
       # nix
       nixfmt
@@ -139,7 +138,7 @@ in
 
     file = {
       ".hushlogin".source = ./hushlogin/.hushlogin;
-      # ".config/nvim".source = ./nvim;
+      ".config/nvim".source = ./nvim;
       ".config/tmuxinator".source = ./tmuxinator;
       "Library/Application Support/com.mitchellh.ghostty/config".source = ./ghostty/config;
       ".config/ghostty/themes".source = ./ghostty/themes;

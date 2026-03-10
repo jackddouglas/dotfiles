@@ -17,6 +17,7 @@
 
       # Development
       "sst/tap/opencode"
+      "tree-sitter-cli"
 
       # Utilities
       "mas"
