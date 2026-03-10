@@ -139,19 +139,16 @@ in
 
     file = {
       ".hushlogin".source = ./hushlogin/.hushlogin;
-      ".config/nvim".source = ./nvim;
+      # ".config/nvim".source = ./nvim;
       ".config/tmuxinator".source = ./tmuxinator;
       "Library/Application Support/com.mitchellh.ghostty/config".source = ./ghostty/config;
       ".config/ghostty/themes".source = ./ghostty/themes;
-      ".config/yazi/flavors/taake.yazi".source = ./yazi/taake.yazi;
       ".stack/config.yaml".source = ./stack/config.yaml;
-      ".config/nvimpager".source = ./nvimpager;
       ".config/kanata/kanata.kbd".source = ./kanata/kanata.kbd;
       ".config/opencode/agent".source = ./opencode/agent;
       ".config/opencode/commands".source = ./opencode/commands;
       ".config/opencode/providers".source = ./opencode/providers;
       ".config/opencode/opencode.json".source = ./opencode/opencode.json;
-      ".config/starship.toml".source = ./starship/starship.toml;
       "scripts".source = pkgs.runCommand "scripts" { } ''
         mkdir -p $out
         cp -r ${./scripts}/* $out/
