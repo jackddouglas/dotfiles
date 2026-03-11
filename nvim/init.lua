@@ -283,6 +283,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
+-- enable wrap for prose
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "markdown", "text", "gitcommit", "typst" },
+	callback = function()
+		vim.opt_local.wrap = true
+		vim.opt_local.linebreak = true
+	end,
+})
+
 -- highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
