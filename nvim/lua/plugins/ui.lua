@@ -114,14 +114,16 @@ return {
 					return jj_cache.value
 				end
 				local bookmark = vim.fn.system(
-					[[jj log -r 'heads(::@ & bookmarks())' --no-graph -T 'separate("", bookmarks, if(self.contained_in("@"), "", "~"))' 2>/dev/null]]
+					[[jj log --ignore-working-copy -r 'heads(::@ & bookmarks())' --no-graph -T 'separate("", bookmarks, if(self.contained_in("@"), "", "~"))' 2>/dev/null]]
 				)
 				if vim.v.shell_error ~= 0 then
 					jj_cache.value = ""
 					jj_cache.time = now
 					return jj_cache.value
 				end
-				local change_id = vim.fn.system([[jj log -r @ --no-graph -T 'change_id.shortest()' 2>/dev/null]])
+				local change_id = vim.fn.system(
+					[[jj log --ignore-working-copy -r @ --no-graph -T 'change_id.shortest()' 2>/dev/null]]
+				)
 				if vim.v.shell_error ~= 0 then
 					jj_cache.value = ""
 					jj_cache.time = now
