@@ -1,0 +1,276 @@
+# rift configuration
+
+[settings]
+default_disable = false
+
+animate = true
+animation_duration = 0.2
+animation_fps = 100.0
+
+# Mouse/Focus behavior
+focus_follows_mouse = false
+mouse_follows_focus = true
+mouse_hides_on_focus = false
+
+# Prevent certain apps from stealing focus
+auto_focus_blacklist = [
+  "com.apple.Spotlight",
+  "com.raycast.macos",
+]
+
+# Sketchybar integration via rift-cli event subscriptions
+run_on_start = [
+  "rift-cli subscribe cli --event workspace_changed --command sh --args -c --args 'sketchybar --trigger rift_workspace_changed RIFT_WORKSPACE_NAME=\"$RIFT_WORKSPACE_NAME\" RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WORKSPACE_INDEX=\"$RIFT_WORKSPACE_INDEX\"'",
+  "rift-cli subscribe cli --event windows_changed --command sh --args -c --args 'sketchybar --trigger rift_windows_changed'",
+  "rift-cli subscribe cli --event window_title_changed --command sh --args -c --args 'sketchybar --trigger rift_window_title_changed'",
+]
+
+hot_reload = true
+
+# ---------------------------------------------------------------------------
+# Layout
+# ---------------------------------------------------------------------------
+
+[settings.layout]
+mode = "bsp"
+
+[settings.layout.stack]
+stack_offset = 30.0
+default_orientation = "perpendicular"
+
+[settings.layout.gaps.outer]
+top = 12
+left = 12
+bottom = 12
+right = 12
+
+[settings.layout.gaps.inner]
+horizontal = 12
+vertical = 12
+
+# Per-display override: external monitor needs extra top gap for sketchybar
+# Find display UUID via `system_profiler SPDisplaysDataType`
+[settings.layout.gaps.per_display."U32R59x".outer]
+top = 52
+left = 12
+bottom = 12
+right = 12
+
+[settings.layout.gaps.per_display."4467A806-0E96-4E0E-B5F9-23758D2E1A95".outer]
+top = 52
+left = 12
+bottom = 12
+right = 12
+
+# ---------------------------------------------------------------------------
+# UI (experimental features)
+# ---------------------------------------------------------------------------
+
+[settings.ui.menu_bar]
+enabled = false
+
+[settings.ui.stack_line]
+enabled = false
+
+[settings.ui.mission_control]
+enabled = false
+
+# ---------------------------------------------------------------------------
+# Gestures
+# ---------------------------------------------------------------------------
+
+[settings.gestures]
+enabled = false
+
+# ---------------------------------------------------------------------------
+# Window snapping
+# ---------------------------------------------------------------------------
+
+[settings.window_snapping]
+drag_swap_fraction = 0.3
+
+# ---------------------------------------------------------------------------
+# Virtual Workspaces
+# ---------------------------------------------------------------------------
+
+[virtual_workspaces]
+enabled = true
+default_workspace_count = 5
+auto_assign_windows = true
+preserve_focus_per_workspace = true
+workspace_auto_back_and_forth = false
+reapply_app_rules_on_title_change = false
+
+workspace_names = [
+  "home",
+  "web",
+  "code",
+  "chat",
+  "music",
+]
+
+# App rules
+app_rules = [
+  # Workspace 0 (home): Obsidian, Linear, Calendar
+  { app_id = "md.obsidian", workspace = 0 },
+  { app_id = "com.linear", workspace = 0 },
+  { app_id = "com.apple.iCal", workspace = 0 },
+
+  # Workspace 1 (web): Browsers
+  { app_id = "app.zen-browser.zen", workspace = 1 },
+
+  # Workspace 2 (code): Ghostty
+  { app_id = "com.mitchellh.ghostty", workspace = 2 },
+
+  # Workspace 3 (chat): Mail, Messages, WhatsApp, Discord
+  { app_id = "com.apple.mail", workspace = 3 },
+  { app_id = "com.apple.MobileSMS", workspace = 3 },
+  { app_id = "net.whatsapp.WhatsApp", workspace = 3 },
+  { app_id = "com.hnc.Discord", workspace = 3 },
+
+  # Workspace 4 (music): Music
+  { app_id = "com.apple.Music", workspace = 4 },
+]
+
+# ---------------------------------------------------------------------------
+# Modifier Combinations
+# ---------------------------------------------------------------------------
+
+[modifier_combinations]
+comb1 = "Alt + Shift"
+
+# ---------------------------------------------------------------------------
+# Keybindings
+# ---------------------------------------------------------------------------
+
+[keys]
+# -- App Launchers --
+"Alt + Enter" = { exec = ["open", "-a", "Ghostty"] }
+"Alt + Shift + Enter" = { exec = ["open", "-a", "Zen"] }
+"Alt + M" = { exec = ["open", "-a", "Music"] }
+"Alt + E" = { exec = ["open", "-a", "Mail"] }
+"Alt + Z" = { exec = ["open", "-a", "Zed"] }
+"Alt + O" = { exec = ["open", "-a", "Obsidian"] }
+"Alt + I" = { exec = ["open", "-a", "Linear"] }
+"Alt + T" = { exec = ["open", "-a", "Messages"] }
+"Alt + S" = { exec = ["open", "-a", "Slack"] }
+"Alt + D" = { exec = ["open", "-a", "Discord"] }
+"Alt + B" = { exec = ["open", "-a", "Finder"] }
+
+# -- Focus (hjkl) --
+"Alt + H" = { move_focus = "left" }
+"Alt + J" = { move_focus = "down" }
+"Alt + K" = { move_focus = "up" }
+"Alt + L" = { move_focus = "right" }
+
+# -- Move Windows (alt+shift+hjkl) --
+"comb1 + H" = { move_node = "left" }
+"comb1 + J" = { move_node = "down" }
+"comb1 + K" = { move_node = "up" }
+"comb1 + L" = { move_node = "right" }
+
+# -- Layout --
+"Alt + Slash" = "toggle_orientation"
+"Alt + Comma" = "toggle_stack"
+"Alt + F" = "toggle_fullscreen"
+"Alt + Shift + F" = "toggle_fullscreen_within_gaps"
+
+# -- Floating --
+"Alt + Shift + Space" = "toggle_window_floating"
+"Alt + Ctrl + Space" = "toggle_focus_floating"
+
+# -- Workspaces (alt+N = switch, alt+shift+N = move) --
+# Note: alt+1 = workspace 0 (home), alt+2 = workspace 1 (web), etc.
+"Alt + 1" = { switch_to_workspace = 0 }
+"Alt + 2" = { switch_to_workspace = 1 }
+"Alt + 3" = { switch_to_workspace = 2 }
+"Alt + 4" = { switch_to_workspace = 3 }
+"Alt + 5" = { switch_to_workspace = 4 }
+"Alt + 6" = { switch_to_workspace = 5 }
+"Alt + 7" = { switch_to_workspace = 6 }
+"Alt + 8" = { switch_to_workspace = 7 }
+"Alt + 9" = { switch_to_workspace = 8 }
+"Alt + 0" = { switch_to_workspace = 9 }
+
+"comb1 + 1" = { exec = [
+  "/Users/jackdouglas/.config/rift/move-and-follow.sh",
+  "0"
+] }
+"comb1 + 2" = { exec = [
+  "/Users/jackdouglas/.config/rift/move-and-follow.sh",
+  "1"
+] }
+"comb1 + 3" = { exec = [
+  "/Users/jackdouglas/.config/rift/move-and-follow.sh",
+  "2"
+] }
+"comb1 + 4" = { exec = [
+  "/Users/jackdouglas/.config/rift/move-and-follow.sh",
+  "3"
+] }
+"comb1 + 5" = { exec = [
+  "/Users/jackdouglas/.config/rift/move-and-follow.sh",
+  "4"
+] }
+"comb1 + 6" = { exec = [
+  "/Users/jackdouglas/.config/rift/move-and-follow.sh",
+  "5"
+] }
+"comb1 + 7" = { exec = [
+  "/Users/jackdouglas/.config/rift/move-and-follow.sh",
+  "6"
+] }
+"comb1 + 8" = { exec = [
+  "/Users/jackdouglas/.config/rift/move-and-follow.sh",
+  "7"
+] }
+"comb1 + 9" = { exec = [
+  "/Users/jackdouglas/.config/rift/move-and-follow.sh",
+  "8"
+] }
+"comb1 + 0" = { exec = [
+  "/Users/jackdouglas/.config/rift/move-and-follow.sh",
+  "9"
+] }
+
+"Alt + Tab" = "switch_to_last_workspace"
+"comb1 + ." = { move_window_to_display = { selector = "right" } }
+"comb1 + ," = { move_window_to_display = { selector = "left" } }
+
+# -- Focus Display --
+"Alt + Period" = { focus_display = "right" }
+"Alt + Shift + Period" = { focus_display = "left" }
+
+# -- Resize --
+"Alt + Shift + Equal" = "resize_window_grow"
+"Alt + Shift + Minus" = "resize_window_shrink"
+
+# -- Join --
+"Alt + Shift + Left" = { join_window = "left" }
+"Alt + Shift + Right" = { join_window = "right" }
+"Alt + Shift + Up" = { join_window = "up" }
+"Alt + Shift + Down" = { join_window = "down" }
+"Alt + Ctrl + E" = "unjoin_windows"
+
+# -- Goto Folders --
+"Alt + Ctrl + H" = { exec = ["open", "/Users/jackdouglas"] }
+"Alt + Ctrl + L" = { exec = ["open", "/Users/jackdouglas/Downloads"] }
+"Alt + Ctrl + D" = { exec = ["open", "/Users/jackdouglas/Desktop"] }
+"Alt + Ctrl + O" = { exec = ["open", "/Users/jackdouglas/Documents"] }
+"Alt + Ctrl + C" = { exec = ["open", "/"] }
+"Alt + Ctrl + I" = { exec = [
+  "open",
+  "/Users/jackdouglas/Library/Mobile Documents/com~apple~CloudDocs"
+] }
+"Alt + Ctrl + P" = { exec = [
+  "open",
+  "/Users/jackdouglas/Library/CloudStorage/ProtonDrive-cincomc@proton.me-folder"
+] }
+
+# -- Service --
+"Alt + Ctrl + S" = { exec = ["sketchybar", "--reload"] }
+"Alt + Ctrl + F" = "toggle_window_floating"
+
+# -- Debug --
+"Alt + Shift + D" = "debug"
+"Alt + Ctrl + Shift + S" = "serialize"

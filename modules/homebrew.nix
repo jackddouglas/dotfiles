@@ -6,6 +6,9 @@
     taps = [
       "fastrepl/hyprnote"
       "FelixKratz/formulae"
+      "TheBoredTeam/boring-notch"
+      "acsandmann/tap"
+      "fastrepl/hyprnote"
       "mikker/tap"
       "sst/tap"
       "TheBoredTeam/boring-notch"
@@ -22,6 +25,9 @@
       # Utilities
       "mas"
       "mole"
+
+      # Window Management
+      "acsandmann/tap/rift"
     ];
 
     casks = [
