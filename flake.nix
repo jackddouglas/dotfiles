@@ -21,9 +21,9 @@
     minimal-tmux.url = "github:niksingh710/minimal-tmux-status";
     minimal-tmux.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    # aerohints
-    aerohints.url = "github:jackddouglas/AeroHints";
-    aerohints.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    # rift.lua (sketchybar integration for rift wm)
+    rift.url = "github:acsandmann/rift.lua";
+    rift.flake = false;
   };
 
   outputs =
@@ -35,7 +35,7 @@
       home-manager,
       nix-homebrew,
       minimal-tmux,
-      aerohints,
+      rift,
     }:
     let
       configuration =
@@ -157,7 +157,6 @@
           };
 
           imports = [
-            ./modules/aerospace.nix
             ./modules/homebrew.nix
           ];
 

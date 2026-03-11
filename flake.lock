@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "aerohints": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1772469519,
-        "narHash": "sha256-b1LX8x3O3kpU1sIi8k258NJ0Aabd7KnMHGlEWNmCFmQ=",
-        "owner": "jackddouglas",
-        "repo": "AeroHints",
-        "rev": "078c39d4fc0bfa528ef30a4fe3f6335d2605d9d3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jackddouglas",
-        "repo": "AeroHints",
-        "type": "github"
-      }
-    },
     "brew-src": {
       "flake": false,
       "locked": {
@@ -147,15 +127,31 @@
         "type": "github"
       }
     },
+    "rift": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771548250,
+        "narHash": "sha256-nrF+QZAENHULrpFmB2OJ4aw4G1FeaeV5xvAst4Pb5QY=",
+        "owner": "acsandmann",
+        "repo": "rift.lua",
+        "rev": "4ef184ff186431fa2c6e6f8d43938588c30b0885",
+        "type": "github"
+      },
+      "original": {
+        "owner": "acsandmann",
+        "repo": "rift.lua",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
-        "aerohints": "aerohints",
         "home-manager": "home-manager",
         "minimal-tmux": "minimal-tmux",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "rift": "rift"
       }
     }
   },

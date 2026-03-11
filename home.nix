@@ -42,7 +42,6 @@ in
     packages = with pkgs; [
       # window management
       jankyborders
-      aerospace
       sketchybar-app-font
       ice-app
 
@@ -149,6 +148,11 @@ in
       ".config/opencode/commands".source = ./opencode/commands;
       ".config/opencode/providers".source = ./opencode/providers;
       ".config/opencode/opencode.json".source = ./opencode/opencode.json;
+      ".config/rift/config.toml".source = ./rift/config.toml;
+      ".config/rift/move-and-follow.sh" = {
+        source = ./rift/move-and-follow.sh;
+        executable = true;
+      };
       "scripts".source = pkgs.runCommand "scripts" { } ''
         mkdir -p $out
         cp -r ${./scripts}/* $out/
@@ -181,7 +185,7 @@ in
   imports = [
     (import ./modules/tmux.nix { inherit pkgs inputs; })
     ./modules/ollama.nix
-    ./modules/aerohints.nix
+    ./modules/rift.nix
     ./modules/yazi.nix
     (import ./modules/jujutsu.nix { inherit currentSigningKey; })
     ./modules/fish.nix

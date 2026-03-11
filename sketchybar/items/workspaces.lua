@@ -3,119 +3,153 @@ local icons = require("icons")
 local settings = require("settings")
 local app_icons = require("helpers.app_icons")
 
--- Define workspace names for specific indexes
+-- Load rift native Mach IPC client
+-- rift.so is installed to ~/.local/share/rift.lua/ by the Nix derivation
+package.cpath = os.getenv("HOME") .. "/.local/share/rift.lua/?.so;" .. package.cpath
+local rift = require("rift")
+
+-- Define workspace names for specific indexes (0-based for rift)
 local workspace_names = {
-	["1"] = "home",
-	["2"] = "web",
-	["3"] = "code",
-	["4"] = "chat",
-	["5"] = "music",
+	["0"] = "home",
+	["1"] = "web",
+	["2"] = "code",
+	["3"] = "chat",
+	["4"] = "music",
 }
 
 -- Function to get workspace display name
 local function get_workspace_name(index)
-	return workspace_names[tostring(index)] or tostring(index)
+	return workspace_names[tostring(index)] or tostring(index + 1)
 end
 
-local query_workspaces =
-	"/etc/profiles/per-user/jackdouglas/bin/aerospace list-workspaces --all --format '%{workspace}%{monitor-appkit-nsscreen-screens-id}' --json"
-
--- Add padding to the left
-local root = sbar.add("item", {
-	icon = {
-		color = colors.with_alpha(colors.white, 0.3),
-		highlight_color = colors.white,
-		drawing = false,
-	},
-	label = {
-		color = colors.grey,
-		highlight_color = colors.white,
-		drawing = false,
-	},
-	background = {
-		color = colors.transparent,
-		border_width = 0,
-		height = 28,
-		corner_radius = 9,
-		drawing = false,
-	},
-	padding_left = 6,
-	padding_right = 0,
-})
-
-local workspaces = {}
-
-local function withWindows(f)
-	local open_windows = {}
-	local get_windows =
-		"/etc/profiles/per-user/jackdouglas/bin/aerospace list-windows --monitor all --format '%{workspace}%{app-name}' --json"
-	local query_visible_workspaces =
-		"/etc/profiles/per-user/jackdouglas/bin/aerospace list-workspaces --visible --monitor all --format '%{workspace}%{monitor-appkit-nsscreen-screens-id}' --json"
-	local get_focus_workspaces = "/etc/profiles/per-user/jackdouglas/bin/aerospace list-workspaces --focused"
-	sbar.exec(get_windows, function(workspace_and_windows)
-		for _, entry in ipairs(workspace_and_windows) do
-			local workspace_index = entry.workspace
-			local app = entry["app-name"]
-			if open_windows[workspace_index] == nil then
-				open_windows[workspace_index] = {}
-			end
-			table.insert(open_windows[workspace_index], app)
-		end
-		sbar.exec(get_focus_workspaces, function(focused_workspaces)
-			sbar.exec(query_visible_workspaces, function(visible_workspaces)
-				local args = {
-					open_windows = open_windows,
-					focused_workspaces = focused_workspaces,
-					visible_workspaces = visible_workspaces,
-				}
-				f(args)
-			end)
-		end)
-	end)
+-- Connect to rift via Mach IPC
+local client, err = rift.connect()
+if not client then
+	print("rift.lua: failed to connect: " .. (err or "unknown"))
+	return
 end
 
-local function updateWindow(workspace_index, args)
-	local open_windows = args.open_windows[workspace_index]
-	local focused_workspaces = args.focused_workspaces
-	local visible_workspaces = args.visible_workspaces
+-- Register custom sketchybar events (triggered by rift-cli subscriptions in run_on_start)
+sbar.add("event", "rift_workspace_changed")
+sbar.add("event", "rift_windows_changed")
+sbar.add("event", "rift_window_title_changed")
 
-	if open_windows == nil then
-		open_windows = {}
+-- Display mapping infrastructure
+-- Maps sketchybar arrangement-id (1-based) -> macOS space id
+local display_space_map = {}
+
+-- Refresh display mapping by querying rift and matching UUIDs
+local function refreshDisplayMapping()
+	display_space_map = {}
+
+	-- Query rift for display info (includes space ids and UUIDs)
+	local rift_resp = client:send_request('"get_displays"')
+	if not rift_resp or not rift_resp.data then
+		return
 	end
 
+	-- Build UUID -> space mapping from rift
+	local uuid_to_space = {}
+	for _, display in ipairs(rift_resp.data) do
+		if display.uuid and display.space then
+			uuid_to_space[display.uuid] = display.space
+		end
+	end
+
+	-- Query sketchybar for display info (includes arrangement-id and UUIDs)
+	-- Use synchronous approach by parsing the output directly
+	local handle = io.popen("sketchybar --query displays 2>/dev/null")
+	if handle then
+		local output = handle:read("*a")
+		handle:close()
+
+		-- Parse each display from the JSON array
+		-- Match pattern: "arrangement-id": N ... "UUID": "xxx"
+		for arr_id, uuid in output:gmatch('"arrangement%-id"%s*:%s*(%d+)[^}]-"UUID"%s*:%s*"([^"]+)"') do
+			arr_id = tonumber(arr_id)
+			if arr_id and uuid and uuid_to_space[uuid] then
+				display_space_map[arr_id] = uuid_to_space[uuid]
+			end
+		end
+
+		-- Also try reverse pattern: "UUID": "xxx" ... "arrangement-id": N
+		for uuid, arr_id in output:gmatch('"UUID"%s*:%s*"([^"]+)"[^}]-"arrangement%-id"%s*:%s*(%d+)') do
+			arr_id = tonumber(arr_id)
+			if arr_id and uuid and uuid_to_space[uuid] and not display_space_map[arr_id] then
+				display_space_map[arr_id] = uuid_to_space[uuid]
+			end
+		end
+	end
+end
+
+-- Workspace items: workspaces[display_id][workspace_index]
+local workspaces = {}
+
+-- Workspace indicator items per display
+local workspaces_indicators = {}
+
+-- Root items per display (for padding)
+local root_items = {}
+
+-- Query rift for all windows and their workspace assignments for a specific space
+local function getWindowsPerWorkspace(space_id)
+	local open_windows = {}
+	local request = space_id and ('{"get_workspaces":{"space_id":' .. space_id .. "}}") or '{"get_workspaces":{"space_id":null}}'
+
+	local resp, req_err = client:send_request(request)
+	if not resp then
+		-- Try to reconnect
+		client:reconnect()
+		resp, req_err = client:send_request(request)
+		if not resp then
+			return open_windows, nil
+		end
+	end
+
+	local focused_workspace = nil
+
+	if resp and resp.data then
+		for _, ws in ipairs(resp.data) do
+			local ws_id = tostring(ws.index or ws.id or 0)
+			if ws.is_active then
+				focused_workspace = ws_id
+			end
+			if ws.windows then
+				open_windows[ws_id] = {}
+				for _, win in ipairs(ws.windows) do
+					if win.app_name or win["app-name"] then
+						table.insert(open_windows[ws_id], win.app_name or win["app-name"])
+					end
+				end
+			end
+		end
+	end
+
+	return open_windows, focused_workspace
+end
+
+local function updateWindow(display_id, workspace_index, open_windows, focused_workspace)
+	if not workspaces[display_id] or not workspaces[display_id][workspace_index] then
+		return
+	end
+
+	local workspace = workspaces[display_id][workspace_index]
+	local windows = open_windows[workspace_index] or {}
+	local is_focused = (workspace_index == focused_workspace)
+
 	local icon_line = ""
-	local no_app = true
-	for i, open_window in ipairs(open_windows) do
-		no_app = false
-		local app = open_window
+	local no_app = (#windows == 0)
+
+	for _, app in ipairs(windows) do
 		local lookup = app_icons[app]
 		local icon = ((lookup == nil) and app_icons["Default"] or lookup)
 		icon_line = icon_line .. " " .. icon
 	end
 
 	sbar.animate("tanh", 10, function()
-		for i, visible_workspace in ipairs(visible_workspaces) do
-			if no_app and workspace_index == visible_workspace["workspace"] then
-				local monitor_id = visible_workspace["monitor-appkit-nsscreen-screens-id"]
-				icon_line = " —"
-				workspaces[workspace_index]:set({
-					icon = { drawing = true },
-					label = {
-						string = icon_line,
-						drawing = true,
-						font = "sketchybar-app-font:Regular:16.0",
-						y_offset = -1,
-					},
-					background = { drawing = true },
-					padding_right = 1,
-					padding_left = 1,
-					display = monitor_id,
-				})
-				return
-			end
-		end
-		if no_app and workspace_index ~= focused_workspaces then
-			workspaces[workspace_index]:set({
+		if no_app and not is_focused then
+			-- Hide empty unfocused workspaces
+			workspace:set({
 				icon = { drawing = false },
 				label = { drawing = false },
 				background = { drawing = false },
@@ -124,9 +158,11 @@ local function updateWindow(workspace_index, args)
 			})
 			return
 		end
-		if no_app and workspace_index == focused_workspaces then
+
+		if no_app then
+			-- Show dash for empty but focused/visible workspaces
 			icon_line = " —"
-			workspaces[workspace_index]:set({
+			workspace:set({
 				icon = { drawing = true },
 				label = {
 					string = icon_line,
@@ -138,9 +174,10 @@ local function updateWindow(workspace_index, args)
 				padding_right = 1,
 				padding_left = 1,
 			})
+			return
 		end
 
-		workspaces[workspace_index]:set({
+		workspace:set({
 			icon = { drawing = true },
 			label = { drawing = true, string = icon_line },
 			background = { drawing = true },
@@ -150,41 +187,70 @@ local function updateWindow(workspace_index, args)
 	end)
 end
 
-local function updateWindows()
-	withWindows(function(args)
-		for workspace_index, _ in pairs(workspaces) do
-			updateWindow(workspace_index, args)
-		end
-	end)
-end
+local function updateFocusHighlight(display_id, focused_ws_id)
+	if not workspaces[display_id] then
+		return
+	end
 
-local function updateWorkspaceMonitor()
-	local workspace_monitor = {}
-	sbar.exec(query_workspaces, function(workspaces_and_monitors)
-		for _, entry in ipairs(workspaces_and_monitors) do
-			local space_index = entry.workspace
-			local monitor_id = math.floor(entry["monitor-appkit-nsscreen-screens-id"])
-			workspace_monitor[space_index] = monitor_id
-		end
-		for workspace_index, _ in pairs(workspaces) do
-			workspaces[workspace_index]:set({
-				display = workspace_monitor[workspace_index],
+	for workspace_index, workspace in pairs(workspaces[display_id]) do
+		local is_focused = (workspace_index == focused_ws_id)
+		sbar.animate("sin", settings.animation.transition_duration, function()
+			workspace:set({
+				icon = { highlight = is_focused },
+				label = { highlight = is_focused },
+				background = {
+					color = is_focused and colors.with_alpha(colors.accent, 0.2) or colors.transparent,
+				},
 			})
-		end
-	end)
+		end)
+	end
 end
 
-sbar.exec(query_workspaces, function(workspaces_and_monitors)
-	for _, entry in ipairs(workspaces_and_monitors) do
-		local workspace_index = entry.workspace
+-- Update all displays
+local function updateAllDisplays()
+	for display_id, space_id in pairs(display_space_map) do
+		local open_windows, focused_workspace = getWindowsPerWorkspace(space_id)
+		if workspaces[display_id] then
+			for workspace_index, _ in pairs(workspaces[display_id]) do
+				updateWindow(display_id, workspace_index, open_windows, focused_workspace)
+			end
+			if focused_workspace then
+				updateFocusHighlight(display_id, focused_workspace)
+			end
+		end
+	end
+end
 
-		local workspace = sbar.add("item", "workspace." .. workspace_index, {
+-- Create workspace items for a specific display
+local function createWorkspacesForDisplay(display_id)
+	if workspaces[display_id] then
+		return -- Already created
+	end
+
+	workspaces[display_id] = {}
+
+	-- Add left padding for this display
+	root_items[display_id] = sbar.add("item", "workspace_root." .. display_id, {
+		display = display_id,
+		icon = { drawing = false },
+		label = { drawing = false },
+		background = { drawing = false },
+		padding_left = 6,
+		padding_right = 0,
+	})
+
+	local workspace_count = 10
+	for i = 0, workspace_count - 1 do
+		local workspace_index = tostring(i)
+
+		local workspace = sbar.add("item", "workspace." .. display_id .. "." .. workspace_index, {
+			display = display_id,
 			icon = {
 				color = colors.text.tertiary,
 				highlight_color = colors.text.primary,
 				drawing = false,
 				font = { family = settings.font.numbers },
-				string = get_workspace_name(workspace_index),
+				string = get_workspace_name(i),
 				padding_left = 10,
 				padding_right = 5,
 			},
@@ -202,28 +268,13 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 				height = 28,
 				corner_radius = 9,
 			},
-			click_script = "/etc/profiles/per-user/jackdouglas/bin/aerospace workspace " .. tostring(workspace_index),
+			-- Use rift-cli to switch workspace on click
+			click_script = "rift-cli execute workspace switch " .. i,
 		})
 
-		workspaces[workspace_index] = workspace
+		workspaces[display_id][workspace_index] = workspace
 
-		workspace:subscribe("aerospace_workspace_change", function(env)
-			local focused_workspace = env.FOCUSED_WORKSPACE
-			local is_focused = focused_workspace == workspace_index
-
-			sbar.animate("sin", settings.animation.transition_duration, function()
-				workspace:set({
-					icon = {
-						highlight = is_focused,
-					},
-					label = { highlight = is_focused },
-					background = {
-						color = is_focused and colors.with_alpha(colors.accent, 0.2) or colors.transparent,
-					},
-				})
-			end)
-		end)
-
+		-- Mouse hover animations
 		workspace:subscribe("mouse.entered", function()
 			local is_focused = workspace:query().icon.highlight == "on"
 			if not is_focused then
@@ -243,8 +294,9 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 		end)
 	end
 
-	-- Toggle indicator (created after workspace items so it appears at the end)
-	local workspaces_indicator = sbar.add("item", {
+	-- Toggle indicator for this display
+	workspaces_indicators[display_id] = sbar.add("item", "workspace_indicator." .. display_id, {
+		display = display_id,
 		padding_left = settings.group_paddings,
 		padding_right = 0,
 		icon = {
@@ -266,17 +318,19 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 		},
 	})
 
-	workspaces_indicator:subscribe("swap_menus_and_spaces", function(env)
-		local currently_on = workspaces_indicator:query().icon.value == icons.switch.on
-		workspaces_indicator:set({
+	local indicator = workspaces_indicators[display_id]
+
+	indicator:subscribe("swap_menus_and_spaces", function(env)
+		local currently_on = indicator:query().icon.value == icons.switch.on
+		indicator:set({
 			icon = { string = currently_on and icons.switch.off or icons.switch.on },
 			label = { string = currently_on and "Spaces" or "Menu" },
 		})
 	end)
 
-	workspaces_indicator:subscribe("mouse.entered", function(env)
+	indicator:subscribe("mouse.entered", function(env)
 		sbar.animate("tanh", 30, function()
-			workspaces_indicator:set({
+			indicator:set({
 				background = {
 					color = { alpha = 1.0 },
 					border_color = { alpha = 1.0 },
@@ -287,9 +341,9 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 		end)
 	end)
 
-	workspaces_indicator:subscribe("mouse.exited", function(env)
+	indicator:subscribe("mouse.exited", function(env)
 		sbar.animate("tanh", 30, function()
-			workspaces_indicator:set({
+			indicator:set({
 				background = {
 					color = { alpha = 0.0 },
 					border_color = { alpha = 0.0 },
@@ -300,29 +354,61 @@ sbar.exec(query_workspaces, function(workspaces_and_monitors)
 		end)
 	end)
 
-	workspaces_indicator:subscribe("mouse.clicked", function(env)
+	indicator:subscribe("mouse.clicked", function(env)
 		sbar.trigger("swap_menus_and_spaces")
 	end)
+end
 
-	-- initial setup
-	updateWindows()
-	updateWorkspaceMonitor()
+-- Initialize displays and create workspace items
+local function initializeDisplays()
+	refreshDisplayMapping()
 
-	root:subscribe("aerospace_focus_change", function()
-		updateWindows()
-	end)
+	-- Create workspaces for each display
+	for display_id, _ in pairs(display_space_map) do
+		createWorkspacesForDisplay(display_id)
+	end
 
-	root:subscribe("display_change", function()
-		updateWorkspaceMonitor()
-		updateWindows()
-	end)
+	-- Initial update
+	updateAllDisplays()
+end
 
-	sbar.exec("/etc/profiles/per-user/jackdouglas/bin/aerospace list-workspaces --focused", function(focused_workspace)
-		local focused_workspace = focused_workspace:match("^%s*(.-)%s*$")
-		workspaces[focused_workspace]:set({
-			icon = { highlight = true },
-			label = { highlight = true },
-			background = { color = colors.with_alpha(colors.accent, 0.2) },
-		})
-	end)
+-- Add a root item for event subscriptions
+local root = sbar.add("item", {
+	icon = { drawing = false },
+	label = { drawing = false },
+	background = { drawing = false },
+	padding_left = 0,
+	padding_right = 0,
+})
+
+-- Subscribe to rift events via native Mach IPC for real-time updates
+client:subscribe({ "workspace_changed", "windows_changed", "window_title_changed" }, function(env)
+	updateAllDisplays()
 end)
+
+-- Event listeners for CLI-triggered sketchybar custom events
+root:subscribe("rift_workspace_changed", function(env)
+	updateAllDisplays()
+end)
+
+root:subscribe("rift_windows_changed", function()
+	updateAllDisplays()
+end)
+
+root:subscribe("rift_window_title_changed", function()
+	updateAllDisplays()
+end)
+
+root:subscribe("display_change", function()
+	-- Refresh display mapping and reinitialize if needed
+	refreshDisplayMapping()
+	for display_id, _ in pairs(display_space_map) do
+		if not workspaces[display_id] then
+			createWorkspacesForDisplay(display_id)
+		end
+	end
+	updateAllDisplays()
+end)
+
+-- Initialize on load
+initializeDisplays()
