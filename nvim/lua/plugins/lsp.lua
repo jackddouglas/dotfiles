@@ -13,22 +13,46 @@ return {
 	{
 		"mason-org/mason.nvim",
 		opts = {},
+		config = function(_, opts)
+			require("mason").setup(opts)
+
+			-- ensure these packages are installed
+			local ensure_installed = {
+				-- LSP servers
+				"biome",
+				"haskell-language-server",
+				"lua-language-server",
+				"nil",
+				"rust-analyzer",
+				"vtsls",
+				-- formatters
+				"fourmolu",
+				"nixfmt",
+				"prettierd",
+				"stylua",
+				"swiftformat",
+				-- linters
+				"swiftlint",
+			}
+
+			local registry = require("mason-registry")
+			registry.refresh(function()
+				for _, name in ipairs(ensure_installed) do
+					local pkg = registry.get_package(name)
+					if not pkg:is_installed() then
+						pkg:install()
+					end
+				end
+			end)
+		end,
 	},
 	{
 		"mason-org/mason-lspconfig.nvim",
-		opts = {
-			ensure_installed = {
-				"biome",
-				"lua_ls",
-				"nil_ls",
-				"rust_analyzer",
-				"vtsls",
-			},
-		},
 		dependencies = {
 			"mason-org/mason.nvim",
 			"neovim/nvim-lspconfig",
 		},
+		opts = {},
 	},
 	{
 		"mfussenegger/nvim-lint",
@@ -48,10 +72,12 @@ return {
 		"stevearc/conform.nvim",
 		opts = {
 			formatters_by_ft = {
+				haskell = { "fourmolu" },
+				javascript = { "prettierd" },
 				lua = { "stylua" },
 				rust = { "rustfmt" },
-				javascript = { "prettierd" },
 				swift = { "swiftformat" },
+				nix = { "nixfmt" },
 			},
 			format_on_save = {
 				timeout_ms = 500,

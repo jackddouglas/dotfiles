@@ -82,6 +82,7 @@ in
 
       # languages/runtimes/compilers
       gcc
+      libiconv
 
       # node
       nodejs_22
@@ -162,6 +163,7 @@ in
       TAVILY_API_KEY = "op://Personal/Tavily_API_Key/credential";
       EDITOR = "nvim";
       SSH_AUTH_SOCK = "/Users/jackdouglas/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+      LIBRARY_PATH = "${pkgs.libiconv}/lib";
     };
 
     sessionPath = [

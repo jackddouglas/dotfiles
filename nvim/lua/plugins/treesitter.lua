@@ -56,5 +56,31 @@ return {
 			-- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
 			vim.g.no_plugin_maps = true
 		end,
+		config = function()
+			local move = require("nvim-treesitter-textobjects.move")
+			local map = vim.keymap.set
+
+			-- Function navigation
+			map({ "n", "x", "o" }, "]f", function()
+				move.goto_next_start("@function.outer")
+			end, { desc = "Next function" })
+			map({ "n", "x", "o" }, "[f", function()
+				move.goto_previous_start("@function.outer")
+			end, { desc = "Prev function" })
+			map({ "n", "x", "o" }, "]F", function()
+				move.goto_next_end("@function.outer")
+			end, { desc = "Next function end" })
+			map({ "n", "x", "o" }, "[F", function()
+				move.goto_previous_end("@function.outer")
+			end, { desc = "Prev function end" })
+
+			-- Class navigation
+			map({ "n", "x", "o" }, "]c", function()
+				move.goto_next_start("@class.outer")
+			end, { desc = "Next class" })
+			map({ "n", "x", "o" }, "[c", function()
+				move.goto_previous_start("@class.outer")
+			end, { desc = "Prev class" })
+		end,
 	},
 }

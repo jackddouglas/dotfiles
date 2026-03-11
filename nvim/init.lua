@@ -24,17 +24,32 @@ o.updatetime = 250
 o.splitbelow = true
 o.splitright = true
 o.laststatus = 3
+o.scrolloff = 8
+o.sidescrolloff = 8
+o.showmode = false
+o.mouse = "a"
+o.timeoutlen = 300
+o.shortmess:append("sI")
 
 local g = vim.g
 
 g.mapleader = " "
 g.maplocalleader = " "
 
-local opts = { silent = true }
 local map = vim.keymap.set
 
-map("n", "<C-s>", "<cmd>w<cr>", opts)
-map("n", "<Esc>", "<cmd>noh<cr>", opts)
+map("n", "<C-s>", "<cmd>w<cr>", { desc = "Save file" })
+map("n", "<Esc>", "<cmd>noh<cr>", { desc = "Clear search highlight" })
+
+-- stay in visual when indenting
+map("v", "<", "<gv", { desc = "Indent left" })
+map("v", ">", ">gv", { desc = "Indent right" })
+
+-- center cursor after jumps
+map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down" })
+map("n", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
+map("n", "n", "nzzzv", { desc = "Next search result" })
+map("n", "N", "Nzzzv", { desc = "Prev search result" })
 
 -- confirm-close helper: prompts save/discard/cancel for modified buffers
 local function confirm_close(action)
@@ -48,7 +63,7 @@ local function confirm_close(action)
 			elseif choice == 2 then -- No
 				vim.cmd(action .. "!")
 			end
-			-- choice == 0 or 3 = Cancel, do nothing
+		-- choice == 0 or 3 = Cancel, do nothing
 		else
 			vim.cmd(action)
 		end
@@ -56,42 +71,60 @@ local function confirm_close(action)
 end
 
 -- manage buffers
-map("n", "H", "<cmd>BufferLineCyclePrev<cr>", opts)
-map("n", "L", "<cmd>BufferLineCycleNext<cr>", opts)
-map("n", "<leader>bd", confirm_close("bd"), { silent = true, desc = "Close buffer" })
-map("n", "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", opts)
-map("n", "<leader>bl", "<cmd>BufferLineCloseLeft<cr>", opts)
-map("n", "<leader>br", "<cmd>BufferLineCloseRight<cr>", opts)
-map("n", "<leader>bp", "<cmd>BufferLineTogglePin<cr>", opts)
-map("n", "<leader>bP", "<cmd>BufferLineGroupClose ungrouped<cr>", opts)
-map("n", "<leader>bs", "<cmd>BufferLinePick<cr>", opts)
-map("n", "<leader>bx", "<cmd>BufferLinePickClose<cr>", opts)
+map("n", "H", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer" })
+map("n", "L", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+map("n", "<leader>bd", function()
+	if vim.bo.modified then
+		local choice =
+			vim.fn.confirm("Save changes to " .. (vim.fn.expand("%:t") or "[No Name]") .. "?", "&Yes\n&No\n&Cancel")
+		if choice == 1 then
+			vim.cmd("write")
+			require("mini.bufremove").delete(0, false)
+		elseif choice == 2 then
+			require("mini.bufremove").delete(0, true)
+		end
+	else
+		require("mini.bufremove").delete(0, false)
+	end
+end, { desc = "Close buffer" })
+map("n", "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", { desc = "Close other buffers" })
+map("n", "<leader>bl", "<cmd>BufferLineCloseLeft<cr>", { desc = "Close buffers to left" })
+map("n", "<leader>br", "<cmd>BufferLineCloseRight<cr>", { desc = "Close buffers to right" })
+map("n", "<leader>bp", "<cmd>BufferLineTogglePin<cr>", { desc = "Toggle pin" })
+map("n", "<leader>bP", "<cmd>BufferLineGroupClose ungrouped<cr>", { desc = "Close unpinned buffers" })
+map("n", "<leader>bs", "<cmd>BufferLinePick<cr>", { desc = "Pick buffer" })
+map("n", "<leader>bx", "<cmd>BufferLinePickClose<cr>", { desc = "Pick buffer to close" })
 
 -- manage windows
-map("n", "<leader>wd", confirm_close("close"), { silent = true, desc = "Close window" })
-map("n", "<leader>wo", "<cmd>only<cr>", opts)
-map("n", "<leader>-", "<cmd>split<cr>", opts)
-map("n", "<leader>\\", "<cmd>vsplit<cr>", opts)
-map("n", "<leader>w=", "<cmd>wincmd =<cr>", opts)
+map("n", "<leader>wd", confirm_close("close"), { desc = "Close window" })
+map("n", "<leader>wo", "<cmd>only<cr>", { desc = "Close other windows" })
+map("n", "<leader>-", "<cmd>split<cr>", { desc = "Split horizontal" })
+map("n", "<leader>\\", "<cmd>vsplit<cr>", { desc = "Split vertical" })
+map("n", "<leader>w=", "<cmd>wincmd =<cr>", { desc = "Equalize windows" })
+map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
 -- quit
-map("n", "<leader>qq", "<cmd>confirm qall<cr>", { silent = true, desc = "Quit all (confirm unsaved)" })
-map("n", "<leader>qw", confirm_close("quit"), { silent = true, desc = "Quit window (confirm unsaved)" })
+map("n", "<leader>qq", "<cmd>confirm qall<cr>", { desc = "Quit all" })
+map("n", "<leader>qw", confirm_close("quit"), { desc = "Quit window" })
 
 -- find
-map("n", "<leader><leader>", "<cmd>FzfLua files<cr>", opts)
-map("n", "<leader>/", "<cmd>FzfLua live_grep<cr>", opts)
-map("n", "<leader>fb", "<cmd>FzfLua buffers<cr>", opts)
-map("n", "<leader>ss", "<cmd>FzfLua lsp_document_symbols<cr>", { silent = true, desc = "Search symbols (buffer)" })
-map("n", "<leader>sS", "<cmd>FzfLua lsp_workspace_symbols<cr>", { silent = true, desc = "Search symbols (workspace)" })
-map("n", "<leader>sk", "<cmd>FzfLua keymaps<cr>", { silent = true, desc = "Search keymaps" })
-map("n", "<leader>sd", "<cmd>FzfLua diagnostics_document<cr>", { silent = true, desc = "Search diagnostics (buffer)" })
-map(
-	"n",
-	"<leader>sD",
-	"<cmd>FzfLua diagnostics_workspace<cr>",
-	{ silent = true, desc = "Search diagnostics (workspace)" }
-)
+map("n", "<leader><leader>", "<cmd>FzfLua files<cr>", { desc = "Find files" })
+map("n", "<leader>/", "<cmd>FzfLua live_grep<cr>", { desc = "Grep" })
+map("n", "<leader>fb", "<cmd>FzfLua buffers<cr>", { desc = "Buffers" })
+map("n", "<leader>fr", "<cmd>FzfLua oldfiles<cr>", { desc = "Recent files" })
+map("n", "<leader>'", "<cmd>FzfLua resume<cr>", { desc = "Resume last search" })
+map("n", "<leader>sh", "<cmd>FzfLua help_tags<cr>", { desc = "Search help" })
+map("n", "<leader>:", "<cmd>FzfLua command_history<cr>", { desc = "Command history" })
+map("n", "<leader>sm", "<cmd>FzfLua marks<cr>", { desc = "Search marks" })
+map("n", "<leader>sR", "<cmd>FzfLua registers<cr>", { desc = "Search registers" })
+map("n", "<leader>ss", "<cmd>FzfLua lsp_document_symbols<cr>", { desc = "Search symbols (buffer)" })
+map("n", "<leader>sS", "<cmd>FzfLua lsp_workspace_symbols<cr>", { desc = "Search symbols (workspace)" })
+map("n", "<leader>sk", "<cmd>FzfLua keymaps<cr>", { desc = "Search keymaps" })
+map("n", "<leader>sd", "<cmd>FzfLua diagnostics_document<cr>", { desc = "Search diagnostics (buffer)" })
+map("n", "<leader>sD", "<cmd>FzfLua diagnostics_workspace<cr>", { desc = "Search diagnostics (workspace)" })
 map("n", "<leader>sn", function()
 	local history = require("fidget.notification").get_history()
 	if #history == 0 then
@@ -110,27 +143,27 @@ map("n", "<leader>sn", function()
 	require("fzf-lua").fzf_exec(items, {
 		prompt = "Notifications> ",
 	})
-end, { silent = true, desc = "Search notifications" })
-map("n", "<leader>st", "<cmd>TodoFzfLua<cr>", { silent = true, desc = "Search all todos" })
+end, { desc = "Search notifications" })
+map("n", "<leader>st", "<cmd>TodoFzfLua<cr>", { desc = "Search all todos" })
 map("n", "<leader>sT", function()
 	require("todo-comments.fzf").todo({ keywords = { "TODO", "FIX", "FIXME" } })
-end, { silent = true, desc = "Search TODO/FIX/FIXME" })
+end, { desc = "Search TODO/FIX/FIXME" })
 map("n", "<leader>sH", function()
 	require("todo-comments.fzf").todo({ keywords = { "HACK", "WARN", "WARNING" } })
-end, { silent = true, desc = "Search HACK/WARN" })
+end, { desc = "Search HACK/WARN" })
 map("n", "<leader>sN", function()
 	require("todo-comments.fzf").todo({ keywords = { "NOTE", "INFO" } })
-end, { silent = true, desc = "Search NOTE/INFO" })
+end, { desc = "Search NOTE/INFO" })
 
 -- git
-map("n", "<leader>gs", "<cmd>FzfLua git_status<cr>", { silent = true, desc = "Git status" })
-map("n", "<leader>gd", "<cmd>FzfLua git_diff<cr>", { silent = true, desc = "Git diff (changed files)" })
-map("n", "<leader>gh", "<cmd>FzfLua git_hunks<cr>", { silent = true, desc = "Git hunks (search diffs)" })
-map("n", "<leader>gc", "<cmd>FzfLua git_commits<cr>", { silent = true, desc = "Git commits (project)" })
-map("n", "<leader>gC", "<cmd>FzfLua git_bcommits<cr>", { silent = true, desc = "Git commits (buffer)" })
-map("n", "<leader>gb", "<cmd>FzfLua git_blame<cr>", { silent = true, desc = "Git blame (buffer)" })
-map("n", "<leader>gB", "<cmd>FzfLua git_branches<cr>", { silent = true, desc = "Git branches" })
-map("n", "<leader>gS", "<cmd>FzfLua git_stash<cr>", { silent = true, desc = "Git stash" })
+map("n", "<leader>gs", "<cmd>FzfLua git_status<cr>", { desc = "Git status" })
+map("n", "<leader>gd", "<cmd>FzfLua git_diff<cr>", { desc = "Git diff (changed files)" })
+map("n", "<leader>gH", "<cmd>FzfLua git_hunks<cr>", { desc = "Git hunks (search diffs)" })
+map("n", "<leader>gc", "<cmd>FzfLua git_commits<cr>", { desc = "Git commits (project)" })
+map("n", "<leader>gC", "<cmd>FzfLua git_bcommits<cr>", { desc = "Git commits (buffer)" })
+map("n", "<leader>gb", "<cmd>FzfLua git_blame<cr>", { desc = "Git blame (buffer)" })
+map("n", "<leader>gB", "<cmd>FzfLua git_branches<cr>", { desc = "Git branches" })
+map("n", "<leader>gS", "<cmd>FzfLua git_stash<cr>", { desc = "Git stash" })
 
 -- add comment above/below
 map("n", "gco", function()
@@ -158,7 +191,19 @@ end, { silent = true, desc = "Add comment above" })
 -- copy relative filepath
 map("n", "<leader>y", function()
 	vim.fn.setreg("+", vim.fn.expand("%"))
-end)
+end, { desc = "Copy relative path" })
+
+-- quick access
+map("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Lazy" })
+map("n", "<leader>M", "<cmd>Mason<cr>", { desc = "Mason" })
+
+-- toggle options
+map("n", "<leader>th", function()
+	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = "Toggle inlay hints" })
+map("n", "<leader>td", function()
+	vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = "Toggle diagnostics" })
 
 -- diagnostics
 vim.diagnostic.config({
@@ -202,17 +247,17 @@ end, { desc = "Prev error" })
 -- LSP keymaps
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
-		local o = { buffer = args.buf }
-		map("n", "gd", "<cmd>FzfLua lsp_definitions<cr>", o)
-		map("n", "gD", "<cmd>FzfLua lsp_declarations<cr>", o)
-		map("n", "gr", "<cmd>FzfLua lsp_references<cr>", o)
-		map("n", "gi", "<cmd>FzfLua lsp_implementations<cr>", o)
-		map("n", "gy", "<cmd>FzfLua lsp_typedefs<cr>", o)
-		map("n", "K", vim.lsp.buf.hover, o)
-		map("n", "<leader>cr", vim.lsp.buf.rename, o)
-		map("n", "<leader>ca", vim.lsp.buf.code_action, o)
-		map("i", "<C-k>", vim.lsp.buf.signature_help, o)
-		map("n", "<leader>cl", "<cmd>checkhealth vim.lsp<cr>", { buffer = args.buf, desc = "LSP info" })
+		local b = args.buf
+		map("n", "gd", "<cmd>FzfLua lsp_definitions<cr>", { buffer = b, desc = "Go to definition" })
+		map("n", "gD", "<cmd>FzfLua lsp_declarations<cr>", { buffer = b, desc = "Go to declaration" })
+		map("n", "gr", "<cmd>FzfLua lsp_references<cr>", { buffer = b, desc = "Go to references" })
+		map("n", "gi", "<cmd>FzfLua lsp_implementations<cr>", { buffer = b, desc = "Go to implementations" })
+		map("n", "gy", "<cmd>FzfLua lsp_typedefs<cr>", { buffer = b, desc = "Go to type definition" })
+		map("n", "K", vim.lsp.buf.hover, { buffer = b, desc = "Hover" })
+		map("n", "<leader>cr", vim.lsp.buf.rename, { buffer = b, desc = "Rename symbol" })
+		map("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = b, desc = "Code action" })
+		map("i", "<C-k>", vim.lsp.buf.signature_help, { buffer = b, desc = "Signature help" })
+		map("n", "<leader>cl", "<cmd>checkhealth vim.lsp<cr>", { buffer = b, desc = "LSP info" })
 
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 
@@ -299,13 +344,51 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+-- restore cursor position when opening files
+vim.api.nvim_create_autocmd("BufReadPost", {
+	callback = function()
+		local mark = vim.api.nvim_buf_get_mark(0, '"')
+		local lcount = vim.api.nvim_buf_line_count(0)
+		if mark[1] > 0 and mark[1] <= lcount then
+			pcall(vim.api.nvim_win_set_cursor, 0, mark)
+		end
+	end,
+})
+
+-- auto-resize splits when terminal is resized
+vim.api.nvim_create_autocmd("VimResized", {
+	callback = function()
+		vim.cmd("tabdo wincmd =")
+	end,
+})
+
+-- q to close popup-style buffers
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = {
+		"help",
+		"qf",
+		"lspinfo",
+		"man",
+		"notify",
+		"checkhealth",
+		"mason",
+		"lazy",
+		"query",
+	},
+	callback = function(event)
+		vim.bo[event.buf].buflisted = false
+		vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, desc = "Close" })
+	end,
+})
+
 -- lazy
 require("config.lazy")
 
 -- terminal
 local terminal = require("config.terminal")
-map("n", "<C-\\>", terminal.toggle, { silent = true, desc = "Toggle terminal" })
-map("t", "<C-\\>", terminal.toggle, { silent = true, desc = "Toggle terminal" })
+map("n", "<C-\\>", terminal.toggle, { desc = "Toggle terminal" })
+map("t", "<C-\\>", terminal.toggle, { desc = "Toggle terminal" })
+map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 -- LSP server configuration
 vim.lsp.config("rust_analyzer", {

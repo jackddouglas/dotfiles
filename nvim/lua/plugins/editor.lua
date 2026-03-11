@@ -1,5 +1,34 @@
 return {
 	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			spec = {
+				{ "<leader>b", group = "buffer" },
+				{ "<leader>c", group = "code" },
+				{ "<leader>f", group = "file" },
+				{ "<leader>g", group = "git" },
+				{ "<leader>gh", group = "hunks" },
+				{ "<leader>gt", group = "toggle" },
+				{ "<leader>p", group = "persistence" },
+				{ "<leader>q", group = "quit" },
+				{ "<leader>s", group = "search" },
+				{ "<leader>t", group = "toggle" },
+				{ "<leader>u", group = "ui" },
+				{ "<leader>w", group = "window" },
+			},
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer keymaps",
+			},
+		},
+	},
+	{
 		"nvim-mini/mini.pairs",
 		version = false,
 		opts = {},
@@ -7,18 +36,33 @@ return {
 	{
 		"nvim-mini/mini.ai",
 		version = false,
-		opts = {
-			custom_textobjects = {
-				g = function()
-					local from = { line = 1, col = 1 }
-					local to = {
-						line = vim.fn.line("$"),
-						col = math.max(vim.fn.getline("$"):len(), 1),
-					}
-					return { from = from, to = to }
-				end,
-			},
-		},
+		opts = function()
+			local ai = require("mini.ai")
+			return {
+				n_lines = 500,
+				custom_textobjects = {
+					g = function()
+						local from = { line = 1, col = 1 }
+						local to = {
+							line = vim.fn.line("$"),
+							col = math.max(vim.fn.getline("$"):len(), 1),
+						}
+						return { from = from, to = to }
+					end,
+					f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+					c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
+					o = ai.gen_spec.treesitter({
+						a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+						i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+					}),
+				},
+			}
+		end,
+	},
+	{
+		"nvim-mini/mini.bufremove",
+		version = false,
+		opts = {},
 	},
 	{
 		"nvim-mini/mini.surround",
@@ -97,60 +141,60 @@ return {
 					end
 
 					-- Navigation
-					map("n", "]c", function()
+					map("n", "]h", function()
 						if vim.wo.diff then
 							vim.cmd.normal({ "]c", bang = true })
 						else
 							gitsigns.nav_hunk("next")
 						end
-					end)
+					end, { desc = "Next hunk" })
 
-					map("n", "[c", function()
+					map("n", "[h", function()
 						if vim.wo.diff then
 							vim.cmd.normal({ "[c", bang = true })
 						else
 							gitsigns.nav_hunk("prev")
 						end
-					end)
+					end, { desc = "Prev hunk" })
 
 					-- Actions
-					map("n", "<leader>hs", gitsigns.stage_hunk)
-					map("n", "<leader>hr", gitsigns.reset_hunk)
+					map("n", "<leader>ghs", gitsigns.stage_hunk, { desc = "Stage hunk" })
+					map("n", "<leader>ghr", gitsigns.reset_hunk, { desc = "Reset hunk" })
 
-					map("v", "<leader>hs", function()
+					map("v", "<leader>ghs", function()
 						gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-					end)
+					end, { desc = "Stage hunk" })
 
-					map("v", "<leader>hr", function()
+					map("v", "<leader>ghr", function()
 						gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-					end)
+					end, { desc = "Reset hunk" })
 
-					map("n", "<leader>hS", gitsigns.stage_buffer)
-					map("n", "<leader>hR", gitsigns.reset_buffer)
-					map("n", "<leader>hp", gitsigns.preview_hunk)
-					map("n", "<leader>hi", gitsigns.preview_hunk_inline)
+					map("n", "<leader>ghS", gitsigns.stage_buffer, { desc = "Stage buffer" })
+					map("n", "<leader>ghR", gitsigns.reset_buffer, { desc = "Reset buffer" })
+					map("n", "<leader>ghp", gitsigns.preview_hunk, { desc = "Preview hunk" })
+					map("n", "<leader>ghi", gitsigns.preview_hunk_inline, { desc = "Preview hunk inline" })
 
-					map("n", "<leader>hb", function()
+					map("n", "<leader>ghb", function()
 						gitsigns.blame_line({ full = true })
-					end)
+					end, { desc = "Blame line" })
 
-					map("n", "<leader>hd", gitsigns.diffthis)
+					map("n", "<leader>ghd", gitsigns.diffthis, { desc = "Diff this" })
 
-					map("n", "<leader>hD", function()
+					map("n", "<leader>ghD", function()
 						gitsigns.diffthis("~")
-					end)
+					end, { desc = "Diff this ~" })
 
-					map("n", "<leader>hQ", function()
+					map("n", "<leader>ghQ", function()
 						gitsigns.setqflist("all")
-					end)
-					map("n", "<leader>hq", gitsigns.setqflist)
+					end, { desc = "Quickfix all hunks" })
+					map("n", "<leader>ghq", gitsigns.setqflist, { desc = "Quickfix hunks" })
 
 					-- Toggles
-					map("n", "<leader>tb", gitsigns.toggle_current_line_blame)
-					map("n", "<leader>tw", gitsigns.toggle_word_diff)
+					map("n", "<leader>gtb", gitsigns.toggle_current_line_blame, { desc = "Toggle line blame" })
+					map("n", "<leader>gtw", gitsigns.toggle_word_diff, { desc = "Toggle word diff" })
 
 					-- Text object
-					map({ "o", "x" }, "ih", gitsigns.select_hunk)
+					map({ "o", "x" }, "ih", gitsigns.select_hunk, { desc = "inner hunk" })
 				end,
 			})
 		end,

@@ -6,7 +6,28 @@ return {
 		---@diagnostic disable: missing-fields
 		opts = {
 			defaults = { file_icons = "mini" },
+			fzf_colors = true,
+			winopts = {
+				height = 0.85,
+				width = 0.80,
+				preview = {
+					layout = "flex",
+					flip_columns = 120,
+				},
+			},
+			files = {
+				git_icons = true,
+				fd_opts = "--type f --hidden --follow --exclude .git",
+			},
+			grep = {
+				rg_glob = true,
+			},
 		},
+		config = function(_, opts)
+			local fzf = require("fzf-lua")
+			fzf.setup(opts)
+			fzf.register_ui_select()
+		end,
 		---@diagnostic enable: missing-fields
 	},
 	{
@@ -34,7 +55,7 @@ return {
 					config.float.preview_split = vim.o.columns < 120 and "below" or "right"
 					oil.open_float(nil, { preview = {} })
 				end,
-				desc = "Oil (with preview)",
+				desc = "Oil",
 			},
 		},
 		dependencies = { { "nvim-mini/mini.icons", opts = {} } },
