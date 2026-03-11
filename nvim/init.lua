@@ -23,6 +23,7 @@ o.clipboard = "unnamedplus"
 o.updatetime = 250
 o.splitbelow = true
 o.splitright = true
+o.laststatus = 3
 
 local g = vim.g
 
@@ -78,7 +79,6 @@ map("n", "<leader>qq", "<cmd>confirm qall<cr>", { silent = true, desc = "Quit al
 map("n", "<leader>qw", confirm_close("quit"), { silent = true, desc = "Quit window (confirm unsaved)" })
 
 -- find
-map("n", "<leader>o", "<cmd>Oil<cr>", opts)
 map("n", "<leader><leader>", "<cmd>FzfLua files<cr>", opts)
 map("n", "<leader>/", "<cmd>FzfLua live_grep<cr>", opts)
 map("n", "<leader>fb", "<cmd>FzfLua buffers<cr>", opts)
