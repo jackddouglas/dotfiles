@@ -25,6 +25,7 @@ return {
 				"nil",
 				"rust-analyzer",
 				"vtsls",
+				"tombi",
 				-- formatters
 				"fourmolu",
 				"nixfmt",
@@ -75,9 +76,10 @@ return {
 				haskell = { "fourmolu" },
 				javascript = { "prettierd" },
 				lua = { "stylua" },
+				nix = { "nixfmt" },
 				rust = { "rustfmt" },
 				swift = { "swiftformat" },
-				nix = { "nixfmt" },
+				toml = { "tombi" },
 			},
 			format_on_save = {
 				timeout_ms = 500,

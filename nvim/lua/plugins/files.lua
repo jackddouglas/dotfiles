@@ -1,36 +1,36 @@
 return {
 	{
 		"ibhagwan/fzf-lua",
-		---@module "fzf-lua"
-		---@type fzf-lua.Config|{}
-		---@diagnostic disable: missing-fields
-		opts = {
-			defaults = { file_icons = "mini" },
-			fzf_colors = true,
-			winopts = {
-				border = "single",
-				height = 0.85,
-				width = 0.80,
-				preview = {
-					border = "single",
-					layout = "flex",
-					flip_columns = 120,
-				},
-			},
-			files = {
-				git_icons = true,
-				fd_opts = "--type f --hidden --follow --exclude .git",
-			},
-			grep = {
-				rg_glob = true,
-			},
-		},
-		config = function(_, opts)
+		config = function()
 			local fzf = require("fzf-lua")
-			fzf.setup(opts)
+			fzf.setup({
+				defaults = { file_icons = "mini" },
+				fzf_colors = true,
+				winopts = {
+					border = "single",
+					height = 0.85,
+					width = 0.80,
+					preview = {
+						border = "single",
+						layout = "flex",
+						flip_columns = 120,
+					},
+				},
+				files = {
+					git_icons = true,
+					fd_opts = "--type f --hidden --follow --exclude .git",
+				},
+				grep = {
+					rg_glob = true,
+				},
+				actions = {
+					files = {
+						["enter"] = fzf.actions.file_edit,
+					},
+				},
+			})
 			fzf.register_ui_select()
 		end,
-		---@diagnostic enable: missing-fields
 	},
 	{
 		"stevearc/oil.nvim",
