@@ -18,17 +18,15 @@ return {
 				end,
 			})
 
-			vim.cmd.colorscheme("zenwritten")
+			-- vim.cmd.colorscheme("zenwritten")
 		end,
 	},
 	{
 		"oskarnurm/koda.nvim",
 		lazy = false,
 		priority = 1000,
-	},
-	{
-		"vague-theme/vague.nvim",
-		lazy = false,
-		priority = 1000,
+		config = function()
+			vim.cmd.colorscheme("koda")
+		end,
 	},
 }

@@ -30,6 +30,7 @@ o.showmode = false
 o.mouse = "a"
 o.timeoutlen = 300
 o.shortmess:append("sI")
+o.winborder = "single"
 
 local g = vim.g
 
@@ -218,7 +219,7 @@ vim.diagnostic.config({
 	},
 	underline = true,
 	severity_sort = true,
-	float = { border = "rounded", source = true },
+	float = { border = "single", source = true },
 })
 
 map("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line diagnostics" })

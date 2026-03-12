@@ -8,9 +8,11 @@ return {
 			defaults = { file_icons = "mini" },
 			fzf_colors = true,
 			winopts = {
+				border = "single",
 				height = 0.85,
 				width = 0.80,
 				preview = {
+					border = "single",
 					layout = "flex",
 					flip_columns = 120,
 				},
@@ -39,7 +41,7 @@ return {
 				padding = 2,
 				max_width = 0.8,
 				max_height = 0.8,
-				border = "rounded",
+				border = "single",
 			},
 			keymaps = {
 				["gy"] = { "actions.yank_entry", opts = { modify = ":." }, desc = "Yank relative path" },

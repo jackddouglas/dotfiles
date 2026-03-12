@@ -3,7 +3,8 @@ mouse-hide-while-typing = true
 
 # UI
 macos-titlebar-style = hidden
-theme=light:zenwritten,dark:zenwritten
+theme=light:koda-light,dark:koda-dark
+# theme=light:zenwritten,dark:zenwritten
 
 # Fonts
 # font-family = Lilex
