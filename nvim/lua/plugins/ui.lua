@@ -104,8 +104,8 @@ return {
 		},
 	},
 	{
-		"nvim-lualine/lualine.nvim",
-		dependencies = { "ryanoasis/vim-devicons" },
+		"nvim-mini/mini.statusline",
+		version = false,
 		config = function()
 			local jj_cache = { value = "", time = 0 }
 			local function jj_status()
@@ -140,19 +140,30 @@ return {
 				return jj_cache.value
 			end
 
-			require("lualine").setup({
-				options = {
-					section_separators = { left = "", right = "" },
-					component_separators = { left = "", right = "" },
-				},
-				sections = {
-					lualine_b = { jj_status, "diff", "diagnostics" },
-					lualine_c = {
-						{
-							"filename",
-							path = 1,
-						},
-					},
+			require("mini.statusline").setup({
+				content = {
+					active = function()
+						local MiniStatusline = require("mini.statusline")
+						local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
+						local jj = jj_status()
+						local diff = MiniStatusline.section_diff({ trunc_width = 75 })
+						local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
+						local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
+						local filename = MiniStatusline.section_filename({ trunc_width = 140 })
+						local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
+						local location = MiniStatusline.section_location({ trunc_width = 75 })
+						local search = MiniStatusline.section_searchcount({ trunc_width = 75 })
+
+						return MiniStatusline.combine_groups({
+							{ hl = mode_hl, strings = { mode } },
+							{ hl = "MiniStatuslineDevinfo", strings = { jj, diff, diagnostics, lsp } },
+							"%<",
+							{ hl = "MiniStatuslineFilename", strings = { filename } },
+							"%=",
+							{ hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+							{ hl = mode_hl, strings = { search, location } },
+						})
+					end,
 				},
 			})
 		end,
