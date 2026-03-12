@@ -31,6 +31,7 @@ o.mouse = "a"
 o.timeoutlen = 300
 o.shortmess:append("sI")
 o.winborder = "single"
+o.textwidth = 80
 
 local g = vim.g
 
@@ -404,6 +405,9 @@ vim.lsp.config("rust_analyzer", {
 			},
 			diagnostics = {
 				styleLints = { enable = true },
+			},
+			rustfmt = {
+				extraArgs = { "--config", "max_width=80" },
 			},
 		},
 	},
