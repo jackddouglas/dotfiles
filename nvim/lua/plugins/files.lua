@@ -6,6 +6,16 @@ return {
 			fzf.setup({
 				defaults = { file_icons = "mini" },
 				fzf_colors = true,
+				keymap = {
+					builtin = {
+						["<C-f>"] = "preview-page-down",
+						["<C-b>"] = "preview-page-up",
+					},
+					fzf = {
+						["ctrl-f"] = "preview-page-down",
+						["ctrl-b"] = "preview-page-up",
+					},
+				},
 				winopts = {
 					border = "single",
 					height = 0.85,
