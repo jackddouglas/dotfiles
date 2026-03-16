@@ -124,10 +124,8 @@ in
           "alt-z" = "exec-and-forget open -a Zed";
           "alt-o" = "exec-and-forget open -a Obsidian";
           "alt-i" = "exec-and-forget open -a Linear";
-          "alt-t" = "exec-and-forget open -a Messages";
-          "alt-s" = "exec-and-forget open -a Slack";
+          "alt-t" = "exec-and-forget open -a Things3";
           "alt-d" = "exec-and-forget open -a Discord";
-          "alt-b" = "exec-and-forget open -a Finder";
 
           # Layout
           "alt-slash" = "layout tiles vertical horizontal";
@@ -200,6 +198,10 @@ in
           run = "move-node-to-workspace 1";
         }
         {
+          "if".app-id = "com.culturedcode.ThingsMac";
+          run = "move-node-to-workspace 1";
+        }
+        {
           "if".app-id = "com.linear";
           run = "move-node-to-workspace 1";
         }
@@ -208,8 +210,8 @@ in
           run = "move-node-to-workspace 1";
         }
         {
-          "if".app-id = "company.thebrowser.Browser";
-          run = "move-node-to-workspace 2";
+          "if".app-id = "com.ngocluu.goodlinks";
+          run = "move-node-to-workspace 1";
         }
         {
           "if".app-id = "app.zen-browser.zen";
