@@ -19,7 +19,6 @@ o.showmode = false
 o.termguicolors = true
 o.fillchars = "eob: "
 o.laststatus = 3
-o.winborder = "single"
 
 -- scrolling
 o.scrolloff = 8

@@ -25,8 +25,8 @@
       {
         plugin = inputs.minimal-tmux.packages.${pkgs.system}.default;
         extraConfig = ''
-          set -g @minimal-tmux-fg "#101010"
-          set -g @minimal-tmux-bg "#B0B0B0"
+          set -g @minimal-tmux-fg "#191919"
+          set -g @minimal-tmux-bg "#C9C9C9"
         '';
       }
     ];
