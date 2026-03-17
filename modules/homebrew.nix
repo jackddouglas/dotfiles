@@ -76,12 +76,12 @@
       "dot"
       "homerow"
       "linear-linear"
+      "macwhisper"
       "microsoft-excel"
       "proton-drive"
       "proton-mail"
       "proton-mail-bridge"
       "protonvpn"
-      "superwhisper"
 
       # Social
       "betterdiscord-installer"
