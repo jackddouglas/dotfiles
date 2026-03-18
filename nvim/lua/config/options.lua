@@ -10,7 +10,7 @@ o.expandtab = true
 o.number = true
 o.relativenumber = true
 o.signcolumn = "yes"
-o.statuscolumn = "%s%=%{v:relnum?v:relnum:v:lnum}  "
+o.statuscolumn = '%s%=%{v:virtnum>0?"":v:relnum?v:relnum:v:lnum}  '
 
 -- display
 o.wrap = false

@@ -3,6 +3,8 @@ local map = vim.keymap.set
 -- general
 map("n", "<C-s>", "<cmd>w<cr>", { desc = "Save file" })
 map("n", "<Esc>", "<cmd>noh<cr>", { desc = "Clear search highlight" })
+map({ "n", "v" }, "j", "gj", { desc = "Move down (display line)" })
+map({ "n", "v" }, "k", "gk", { desc = "Move up (display line)" })
 
 -- stay in visual when indenting
 map("v", "<", "<gv", { desc = "Indent left" })
@@ -197,7 +199,7 @@ vim.diagnostic.config({
 	},
 	underline = true,
 	severity_sort = true,
-	float = { border = "single", source = true },
+	float = { source = true },
 })
 
 map("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line diagnostics" })
@@ -230,3 +232,5 @@ local terminal = require("config.terminal")
 map("n", "<C-\\>", terminal.toggle, { desc = "Toggle terminal" })
 map("t", "<C-\\>", terminal.toggle, { desc = "Toggle terminal" })
 map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+map("n", "<leader>j", terminal.toggle_jjui, { desc = "JJui" })

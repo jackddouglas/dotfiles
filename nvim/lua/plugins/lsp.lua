@@ -99,6 +99,7 @@ return {
 				["<C-h>"] = {
 					"show",
 				},
+				["<CR>"] = { "select_and_accept", "fallback" },
 			},
 			appearance = {
 				nerd_font_variant = "mono",
@@ -110,15 +111,26 @@ return {
 					},
 				},
 				menu = {
-					-- border = "single",
 					draw = {
 						treesitter = { "lsp" },
+						components = {
+							kind_icon = {
+								ellipsis = false,
+								text = function(ctx)
+									local icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+									return icon .. " "
+								end,
+								highlight = function(ctx)
+									local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+									return hl
+								end,
+							},
+						},
 					},
 				},
 				documentation = {
 					auto_show = true,
 					auto_show_delay_ms = 200,
-					window = { border = "single" },
 				},
 			},
 			sources = {
