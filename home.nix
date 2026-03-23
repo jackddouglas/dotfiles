@@ -54,7 +54,6 @@ in
       docker-compose
       lazydocker
       lazygit
-      claude-code
       codex
       chatgpt
       nvimpager

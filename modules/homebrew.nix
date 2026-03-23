@@ -4,11 +4,11 @@
     enable = true;
 
     taps = [
-      "FelixKratz/formulae"
-      "TheBoredTeam/boring-notch"
       "fastrepl/hyprnote"
+      "FelixKratz/formulae"
       "mikker/tap"
       "sst/tap"
+      "TheBoredTeam/boring-notch"
     ];
 
     brews = [
@@ -41,6 +41,7 @@
 
       # Development
       "claude"
+      "claude-code"
       "ghostty"
       "orbstack"
 

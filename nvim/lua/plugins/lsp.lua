@@ -75,6 +75,7 @@ return {
 			formatters_by_ft = {
 				haskell = { "fourmolu" },
 				javascript = { "prettierd" },
+				json = { "prettierd" },
 				lua = { "stylua" },
 				nix = { "nixfmt" },
 				rust = { "rustfmt" },
