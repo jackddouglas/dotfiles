@@ -1,15 +1,8 @@
 #!/bin/bash
 
-# Required parameters:
-# @raycast.schemaVersion 1
-# @raycast.title Restart Kanata
-# @raycast.mode compact
-
-# Optional parameters:
-# @raycast.icon ⌨️
-
-# Documentation:
-# @raycast.author Jack D. Douglas
+# @tuna.name Restart Kanata
+# @tuna.subtitle Unload and reload kanata daemon
+# @tuna.mode inline
 
 sudo launchctl unload /Library/LaunchDaemons/com.jackdouglas.kanata.plist
 sudo launchctl load /Library/LaunchDaemons/com.jackdouglas.kanata.plist

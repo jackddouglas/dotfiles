@@ -148,11 +148,7 @@ in
       ".config/opencode/commands".source = ./opencode/commands;
       ".config/opencode/providers".source = ./opencode/providers;
       ".config/opencode/opencode.json".source = ./opencode/opencode.json;
-      "scripts".source = pkgs.runCommand "scripts" { } ''
-        mkdir -p $out
-        cp -r ${./scripts}/* $out/
-        chmod -R +x $out/*.sh
-      '';
+      "scripts".source = ./scripts;
     };
 
     sessionVariables = {
