@@ -332,14 +332,20 @@ local function fetch_open_meteo(location)
 end
 
 -------------------------------------------------------------------------------
--- Fetch: wttr.in primary, Open-Meteo fallback
+-- Fetch: wttr.in with retries, then Open-Meteo fallback
 -------------------------------------------------------------------------------
 
-local function update_weather()
-	local location = get_location()
-	local url_location = location:gsub(" ", "+")
+local max_wttr_attempts = 3
 
-	sbar.exec('curl -s --max-time 5 "wttr.in/' .. url_location .. '?format=j1"', function(result)
+local function fetch_wttr(location, attempt)
+	local url_location = location:gsub(" ", "+")
+	local delay = attempt > 1 and (2 ^ (attempt - 2)) or 0
+	local cmd = (delay > 0 and ("sleep " .. delay .. " && ") or "")
+		.. 'curl -s --max-time 5 "wttr.in/'
+		.. url_location
+		.. '?format=j1"'
+
+	sbar.exec(cmd, function(result)
 		if type(result) == "table" and result.current_condition then
 			local cc = result.current_condition[1]
 			if cc then
@@ -360,9 +366,16 @@ local function update_weather()
 			end
 		end
 
-		-- wttr.in failed, fall back to Open-Meteo
-		fetch_open_meteo(location)
+		if attempt < max_wttr_attempts then
+			fetch_wttr(location, attempt + 1)
+		else
+			fetch_open_meteo(location)
+		end
 	end)
+end
+
+local function update_weather()
+	fetch_wttr(get_location(), 1)
 end
 
 -------------------------------------------------------------------------------

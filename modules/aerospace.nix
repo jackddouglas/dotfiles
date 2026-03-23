@@ -214,6 +214,10 @@ in
           run = "move-node-to-workspace 1";
         }
         {
+          "if".app-id = "app.reeder";
+          run = "move-node-to-workspace 1";
+        }
+        {
           "if".app-id = "app.zen-browser.zen";
           run = "move-node-to-workspace 2";
         }
