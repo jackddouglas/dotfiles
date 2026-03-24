@@ -20,7 +20,6 @@ return {
 			local ensure_installed = {
 				-- LSP servers
 				"biome",
-				"haskell-language-server",
 				"lua-language-server",
 				"nil",
 				"rust-analyzer",
@@ -28,7 +27,6 @@ return {
 				"tombi",
 				-- formatters
 				"fourmolu",
-				"nixfmt",
 				"prettierd",
 				"stylua",
 				"swiftformat",
