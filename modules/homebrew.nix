@@ -92,8 +92,9 @@
       "clop"
       "display-pilot"
       "finetune"
-      "osaurus"
+      "mikker/tap/poof"
       "mikker/tap/tuna"
+      "osaurus"
     ];
 
     masApps = {
