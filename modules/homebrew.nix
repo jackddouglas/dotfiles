@@ -108,6 +108,7 @@
       "GoodLinks" = 1474335294;
       "iA Writer" = 775737590;
       "Muse" = 1501563902;
+      "Reeder" = 6475002485;
 
       # Media
       "Final Cut Pro" = 424389933;

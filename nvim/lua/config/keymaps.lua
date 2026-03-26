@@ -168,7 +168,7 @@ end, { silent = true, desc = "Add comment above" })
 -- misc
 -------------------------------------------------------------------------------
 map("n", "<leader>y", function()
-	vim.fn.setreg("+", vim.fn.expand("%"))
+	vim.fn.setreg("+", vim.fn.expand("%:p"))
 end, { desc = "Copy relative path" })
 
 map("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Lazy" })
