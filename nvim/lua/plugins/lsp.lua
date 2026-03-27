@@ -95,9 +95,9 @@ return {
 		opts = {
 			keymap = {
 				preset = "enter",
-				["<C-h>"] = {
-					"show",
-				},
+				["<C-h>"] = { "show" },
+				["<C-n>"] = { "show", "select_next" },
+				["<C-p>"] = { "show", "select_prev" },
 				["<CR>"] = { "select_and_accept", "fallback" },
 			},
 			appearance = {
