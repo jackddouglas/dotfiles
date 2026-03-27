@@ -54,6 +54,7 @@ function M.toggle()
 	wo.signcolumn = "no"
 	wo.foldcolumn = "0"
 	wo.winhighlight = "Normal:Normal"
+	wo.scrolloff = 0
 
 	-- enter insert mode
 	vim.cmd.startinsert()
