@@ -79,8 +79,6 @@
               NSGlobalDomain = {
                 # Dark mode
                 AppleInterfaceStyle = "Dark";
-                # Tinted icons
-                AppleIconAppearanceTheme = "TintedDark";
                 # Show hidden files
                 AppleShowAllFiles = true;
                 # Show all file extensions
@@ -96,6 +94,13 @@
                 # "com.apple.keyboard.fnState" = true;
                 # Hold ctrl + cmd and drag any part of window to move
                 NSWindowShouldDragOnGesture = true;
+              };
+
+              CustomUserPreferences = {
+                NSGlobalDomain = {
+                  # Disable menu bar icons
+                  NSMenuEnableActionImages = false;
+                };
               };
 
               dock = {
