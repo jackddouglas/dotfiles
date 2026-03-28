@@ -170,6 +170,30 @@
                   inherit (prev) system;
                   config.allowUnfree = true;
                 };
+
+                sketchybar-app-font = prev.sketchybar-app-font.overrideAttrs (old: {
+                  version = "2.0.56-custom";
+                  patches = [ ];
+                  src = prev.fetchFromGitHub {
+                    owner = "jackddouglas";
+                    repo = "sketchybar-app-font";
+                    rev = "e7c3b61";
+                    hash = "sha256-BTkgD1bT9Dl8eFEFjXSLNhijVVvZzTsVbCeWUIzoU2E=";
+                  };
+                  pnpmDeps = prev.fetchPnpmDeps {
+                    inherit (old) pname;
+                    version = "2.0.56-custom";
+                    src = prev.fetchFromGitHub {
+                      owner = "jackddouglas";
+                      repo = "sketchybar-app-font";
+                      rev = "e7c3b61";
+                      hash = "sha256-BTkgD1bT9Dl8eFEFjXSLNhijVVvZzTsVbCeWUIzoU2E=";
+                    };
+                    pnpm = prev.pnpm_9;
+                    fetcherVersion = 1;
+                    hash = "sha256-43VIPcLNPCUMxDmWnt3fRuriOKFp7w5rzxVHdjEz3lU=";
+                  };
+                });
               })
             ];
           };

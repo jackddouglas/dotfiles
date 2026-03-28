@@ -109,6 +109,7 @@ return {
 	["HEY"] = ":mail:",
 	["Home Assistant"] = ":home_assistant:",
 	["Hyper"] = ":hyper:",
+	["iA Writer"] = ":ia_writer:",
 	["IINA"] = ":iina:",
 	["Illustrator"] = ":illustrator:",
 	["InDesign"] = ":indesign:",
