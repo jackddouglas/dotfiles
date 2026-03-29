@@ -122,6 +122,7 @@ in
           "alt-m" = "exec-and-forget open -a Music";
           "alt-e" = "exec-and-forget open -a Mail";
           "alt-z" = "exec-and-forget open -a Zed";
+          "alt-b" = "exec-and-forget open -a Bear";
           "alt-o" = "exec-and-forget open -a Obsidian";
           "alt-w" = "exec-and-forget open -a 'iA Writer'";
           "alt-n" = "exec-and-forget open -a Notes";
@@ -201,6 +202,10 @@ in
         }
         {
           "if".app-id = "pro.writer.mac";
+          run = "move-node-to-workspace 1";
+        }
+        {
+          "if".app-id = "net.shinyfrog.bear";
           run = "move-node-to-workspace 1";
         }
         {
