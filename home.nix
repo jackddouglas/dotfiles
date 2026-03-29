@@ -125,7 +125,6 @@ in
       telegram-desktop
 
       # research
-      zotero
       sioyek
 
       # fonts

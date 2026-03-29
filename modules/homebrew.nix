@@ -60,6 +60,7 @@
       "calibre"
       "notion"
       "obsidian"
+      "zotero"
 
       # Media
       "plex"

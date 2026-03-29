@@ -122,7 +122,9 @@ in
           "alt-m" = "exec-and-forget open -a Music";
           "alt-e" = "exec-and-forget open -a Mail";
           "alt-z" = "exec-and-forget open -a Zed";
+          "alt-o" = "exec-and-forget open -a Obsidian";
           "alt-w" = "exec-and-forget open -a 'iA Writer'";
+          "alt-n" = "exec-and-forget open -a Notes";
           "alt-i" = "exec-and-forget open -a Linear";
           "alt-t" = "exec-and-forget open -a Things3";
           "alt-d" = "exec-and-forget open -a Discord";
@@ -194,11 +196,19 @@ in
 
       on-window-detected = [
         {
+          "if".app-id = "com.apple.Notes";
+          run = "move-node-to-workspace 1";
+        }
+        {
           "if".app-id = "pro.writer.mac";
           run = "move-node-to-workspace 1";
         }
         {
           "if".app-id = "md.obsidian";
+          run = "move-node-to-workspace 1";
+        }
+        {
+          "if".app-id = "org.zotero.zotero";
           run = "move-node-to-workspace 1";
         }
         {
