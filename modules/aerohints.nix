@@ -6,7 +6,7 @@
   ...
 }:
 let
-  aerohints = inputs.aerohints.packages.${pkgs.system}.default;
+  aerohints = inputs.aerohints.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
   home.packages = [ aerohints ];

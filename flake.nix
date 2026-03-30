@@ -172,7 +172,7 @@
             overlays = [
               (final: prev: {
                 stable = import inputs.nixpkgs {
-                  inherit (prev) system;
+                  system = prev.stdenv.hostPlatform.system;
                   config.allowUnfree = true;
                 };
 
@@ -182,8 +182,8 @@
                   src = prev.fetchFromGitHub {
                     owner = "jackddouglas";
                     repo = "sketchybar-app-font";
-                    rev = "e7c3b61";
-                    hash = "sha256-BTkgD1bT9Dl8eFEFjXSLNhijVVvZzTsVbCeWUIzoU2E=";
+                    rev = "e3255cd";
+                    hash = "sha256-C+bWHpbNkouOl1KJhkvW8NssMBIndeKn5wlb/0JCfV0=";
                   };
                   pnpmDeps = prev.fetchPnpmDeps {
                     inherit (old) pname;
@@ -191,8 +191,8 @@
                     src = prev.fetchFromGitHub {
                       owner = "jackddouglas";
                       repo = "sketchybar-app-font";
-                      rev = "e7c3b61";
-                      hash = "sha256-BTkgD1bT9Dl8eFEFjXSLNhijVVvZzTsVbCeWUIzoU2E=";
+                      rev = "e3255cd";
+                      hash = "sha256-C+bWHpbNkouOl1KJhkvW8NssMBIndeKn5wlb/0JCfV0=";
                     };
                     pnpm = prev.pnpm_9;
                     fetcherVersion = 1;

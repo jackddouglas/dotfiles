@@ -37,7 +37,7 @@ in
     username = "jackdouglas";
     homeDirectory = "/Users/jackdouglas";
 
-    stateVersion = "25.11";
+    stateVersion = "26.05";
 
     packages = with pkgs; [
       # window management
@@ -248,6 +248,8 @@ in
       enable = true;
       enableGitIntegration = true;
     };
+
+    man.generateCaches = false;
 
     starship = {
       enable = false;

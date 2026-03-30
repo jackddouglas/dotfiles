@@ -1,6 +1,6 @@
 { pkgs, inputs, ... }:
 let
-  aerohints = "${inputs.aerohints.packages.${pkgs.system}.default}/bin/AeroHints";
+  aerohints = "${inputs.aerohints.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/AeroHints";
   sketchybar = "${pkgs.sketchybar}/bin/sketchybar";
 
   # Helper: enter a named mode and notify AeroHints
@@ -118,7 +118,7 @@ in
         main.binding = {
           # Apps
           "alt-enter" = "exec-and-forget open -a Ghostty";
-          "alt-shift-enter" = "exec-and-forget open -a 'Zen'";
+          "alt-shift-enter" = "exec-and-forget open -a Helium";
           "alt-m" = "exec-and-forget open -a Music";
           "alt-e" = "exec-and-forget open -a Mail";
           "alt-z" = "exec-and-forget open -a Zed";
@@ -238,6 +238,14 @@ in
         }
         {
           "if".app-id = "app.zen-browser.zen";
+          run = "move-node-to-workspace 2";
+        }
+        {
+          "if".app-id = "net.imput.helium";
+          run = "move-node-to-workspace 2";
+        }
+        {
+          "if".app-id = "com.apple.Safari";
           run = "move-node-to-workspace 2";
         }
         {
