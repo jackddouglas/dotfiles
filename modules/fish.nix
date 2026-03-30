@@ -34,7 +34,6 @@
       l = "eza -al";
       ls = "eza -a --icons";
 
-      pi = "pnpm install";
       pa = "pnpm add";
       pb = "pnpm build";
       pd = "pnpm dev";

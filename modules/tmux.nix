@@ -42,6 +42,8 @@
       unbind L
       bind -r L next-layout
 
+      set -g extended-keys on
+      set -g extended-keys-format csi-u
       set -g mode-keys vi
       set -g mouse on
       bind-key h select-pane -L

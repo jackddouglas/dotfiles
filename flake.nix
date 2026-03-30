@@ -15,7 +15,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     # nix-homebrew
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew/a5409abd0d5013d79775d3419bcac10eacb9d8c5";
 
     # minimal-tmux
     minimal-tmux.url = "github:niksingh710/minimal-tmux-status";

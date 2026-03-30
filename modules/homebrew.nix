@@ -16,6 +16,7 @@
       "ollama"
 
       # Development
+      "pi-coding-agent"
       "sst/tap/opencode"
       "tree-sitter-cli"
 
@@ -92,7 +93,6 @@
       "boring-notch"
       "clop"
       "display-pilot"
-      "finetune"
       "mikker/tap/poof"
       "mikker/tap/tuna"
       "osaurus"
@@ -110,6 +110,7 @@
       "iA Writer" = 775737590;
       "Muse" = 1501563902;
       "Reeder" = 6475002485;
+      "Bear" = 1091189122;
 
       # Media
       "Final Cut Pro" = 424389933;
