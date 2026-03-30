@@ -101,6 +101,14 @@ vim.lsp.config("rust_analyzer", {
 			diagnostics = {
 				styleLints = { enable = true },
 			},
+			workspace = {
+				symbol = {
+					search = {
+						kind = "all_symbols",
+						limit = 4096,
+					},
+				},
+			},
 			rustfmt = {
 				extraArgs = { "--config", "max_width=80" },
 			},
