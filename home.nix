@@ -124,9 +124,6 @@ in
       discordo
       telegram-desktop
 
-      # research
-      sioyek
-
       # fonts
       ia-writer-quattro
       lilex
@@ -192,6 +189,23 @@ in
       configType = "lua";
       sbarLuaPackage = pkgs.sbarlua;
       service.enable = true;
+    };
+
+    sioyek = {
+      enable = true;
+      bindings = {
+        "next_page" = [ "d" ];
+        "previous_page" = [ "u" ];
+        "screen_down_smooth" = [ "<C-d>" ];
+        "screen_up_smooth" = [ "<C-u>" ];
+      };
+      config = {
+        "background_color" = "0.0 0.0 0.0";
+        startup_commands = [
+          "toggle_two_page_mode"
+          "toggle_fullscreen"
+        ];
+      };
     };
 
     git = {
