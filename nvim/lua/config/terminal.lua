@@ -47,11 +47,7 @@ function M.toggle()
 		vim.bo[state.buf].buflisted = false
 	end
 
-	-- window options: clean appearance, inherit theme colors
 	local wo = vim.wo[state.win]
-	wo.number = false
-	wo.relativenumber = false
-	wo.signcolumn = "no"
 	wo.foldcolumn = "0"
 	wo.winhighlight = "Normal:Normal"
 	wo.scrolloff = 0
@@ -108,11 +104,7 @@ function M.toggle_jjui()
 		jjui_state.buf = vim.api.nvim_get_current_buf()
 	end
 
-	-- window options
 	local wo = vim.wo[jjui_state.win]
-	wo.number = false
-	wo.relativenumber = false
-	wo.signcolumn = "no"
 	wo.foldcolumn = "0"
 	wo.winhighlight = "Normal:Normal,FloatBorder:FloatBorder"
 

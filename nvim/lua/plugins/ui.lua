@@ -28,10 +28,7 @@ return {
 					return " " .. icon .. count
 				end,
 				custom_filter = function(buf_number)
-					if vim.bo[buf_number].buftype == "terminal" then
-						return false
-					end
-					return true
+					return vim.bo[buf_number].buftype ~= "terminal"
 				end,
 			},
 		},

@@ -1,5 +1,12 @@
 local autocmd = vim.api.nvim_create_autocmd
 
+-- auto-reload files changed outside nvim
+autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+	callback = function()
+		vim.cmd("checktime")
+	end,
+})
+
 -- enable wrap for prose filetypes
 autocmd("FileType", {
 	pattern = { "markdown", "text", "gitcommit", "typst" },

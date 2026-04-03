@@ -51,7 +51,24 @@ o.timeoutlen = 300
 
 -- misc
 o.shortmess:append("sI")
+o.confirm = true
 
 -- leader keys
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+
+-- diagnostics
+vim.diagnostic.config({
+	virtual_text = { current_line = true },
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.INFO] = " ",
+			[vim.diagnostic.severity.HINT] = "󰌵 ",
+		},
+	},
+	underline = true,
+	severity_sort = true,
+	float = { source = true },
+})

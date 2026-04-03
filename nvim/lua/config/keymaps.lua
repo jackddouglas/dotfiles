@@ -16,43 +16,13 @@ map("n", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
 map("n", "n", "nzzzv", { desc = "Next search result" })
 map("n", "N", "Nzzzv", { desc = "Prev search result" })
 
--- confirm-close helper: prompts save/discard/cancel for modified buffers
-local function confirm_close(action)
-	return function()
-		if vim.bo.modified then
-			local choice =
-				vim.fn.confirm("Save changes to " .. (vim.fn.expand("%:t") or "[No Name]") .. "?", "&Yes\n&No\n&Cancel")
-			if choice == 1 then -- Yes
-				vim.cmd("write")
-				vim.cmd(action)
-			elseif choice == 2 then -- No
-				vim.cmd(action .. "!")
-			end
-		-- choice == 0 or 3 = Cancel, do nothing
-		else
-			vim.cmd(action)
-		end
-	end
-end
-
 -------------------------------------------------------------------------------
 -- buffers
 -------------------------------------------------------------------------------
 map("n", "H", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer" })
 map("n", "L", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
 map("n", "<leader>bd", function()
-	if vim.bo.modified then
-		local choice =
-			vim.fn.confirm("Save changes to " .. (vim.fn.expand("%:t") or "[No Name]") .. "?", "&Yes\n&No\n&Cancel")
-		if choice == 1 then
-			vim.cmd("write")
-			require("mini.bufremove").delete(0, false)
-		elseif choice == 2 then
-			require("mini.bufremove").delete(0, true)
-		end
-	else
-		require("mini.bufremove").delete(0, false)
-	end
+	require("mini.bufremove").delete(0, false)
 end, { desc = "Close buffer" })
 map("n", "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", { desc = "Close other buffers" })
 map("n", "<leader>bl", "<cmd>BufferLineCloseLeft<cr>", { desc = "Close buffers to left" })
@@ -65,7 +35,7 @@ map("n", "<leader>bx", "<cmd>BufferLinePickClose<cr>", { desc = "Pick buffer to 
 -------------------------------------------------------------------------------
 -- windows
 -------------------------------------------------------------------------------
-map("n", "<leader>wd", confirm_close("close"), { desc = "Close window" })
+map("n", "<leader>wd", "<cmd>close<cr>", { desc = "Close window" })
 map("n", "<leader>wo", "<cmd>only<cr>", { desc = "Close other windows" })
 map("n", "<leader>-", "<cmd>split<cr>", { desc = "Split horizontal" })
 map("n", "<leader>\\", "<cmd>vsplit<cr>", { desc = "Split vertical" })
@@ -78,8 +48,8 @@ map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window w
 -------------------------------------------------------------------------------
 -- quit
 -------------------------------------------------------------------------------
-map("n", "<leader>qq", "<cmd>confirm qall<cr>", { desc = "Quit all" })
-map("n", "<leader>qw", confirm_close("quit"), { desc = "Quit window" })
+map("n", "<leader>qq", "<cmd>qall<cr>", { desc = "Quit all" })
+map("n", "<leader>qw", "<cmd>quit<cr>", { desc = "Quit window" })
 
 -------------------------------------------------------------------------------
 -- find / search (FzfLua)
@@ -169,7 +139,7 @@ end, { silent = true, desc = "Add comment above" })
 -------------------------------------------------------------------------------
 map("n", "<leader>y", function()
 	vim.fn.setreg("+", vim.fn.expand("%:p"))
-end, { desc = "Copy relative path" })
+end, { desc = "Copy absolute path" })
 
 map("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Lazy" })
 map("n", "<leader>M", "<cmd>Mason<cr>", { desc = "Mason" })
@@ -187,21 +157,6 @@ end, { desc = "Toggle diagnostics" })
 -------------------------------------------------------------------------------
 -- diagnostics
 -------------------------------------------------------------------------------
-vim.diagnostic.config({
-	virtual_text = { current_line = true },
-	signs = {
-		text = {
-			[vim.diagnostic.severity.ERROR] = " ",
-			[vim.diagnostic.severity.WARN] = " ",
-			[vim.diagnostic.severity.INFO] = " ",
-			[vim.diagnostic.severity.HINT] = "󰌵 ",
-		},
-	},
-	underline = true,
-	severity_sort = true,
-	float = { source = true },
-})
-
 map("n", "<leader>d", vim.diagnostic.open_float, { desc = "Line diagnostics" })
 
 map("n", "]d", function()
