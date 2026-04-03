@@ -109,7 +109,7 @@ return {
 		config = function()
 			local jj_cache = { value = "", time = 0 }
 			local function jj_status()
-				local now = vim.loop.now()
+				local now = vim.uv.now()
 				if now - jj_cache.time < 3000 then
 					return jj_cache.value
 				end

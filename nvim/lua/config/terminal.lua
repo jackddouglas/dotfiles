@@ -94,7 +94,8 @@ function M.toggle_jjui()
 		-- create a scratch buffer, open the float, then start the terminal
 		local buf = vim.api.nvim_create_buf(false, true)
 		jjui_state.win = open_float(buf)
-		vim.fn.termopen("jjui", {
+		vim.fn.jobstart("jjui", {
+			term = true,
 			on_exit = function()
 				-- auto-close window and clear state when jjui exits
 				if jjui_state.win and vim.api.nvim_win_is_valid(jjui_state.win) then

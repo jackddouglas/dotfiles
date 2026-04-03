@@ -11,7 +11,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("n", "gr", "<cmd>FzfLua lsp_references<cr>", { buffer = b, desc = "Go to references" })
 		map("n", "gi", "<cmd>FzfLua lsp_implementations<cr>", { buffer = b, desc = "Go to implementations" })
 		map("n", "gy", "<cmd>FzfLua lsp_typedefs<cr>", { buffer = b, desc = "Go to type definition" })
-		map("n", "K", vim.lsp.buf.hover, { buffer = b, desc = "Hover" })
 		map("n", "<leader>cr", vim.lsp.buf.rename, { buffer = b, desc = "Rename symbol" })
 		map("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = b, desc = "Code action" })
 		map("i", "<C-k>", vim.lsp.buf.signature_help, { buffer = b, desc = "Signature help" })
@@ -116,5 +115,11 @@ vim.lsp.config("rust_analyzer", {
 	},
 })
 
+vim.lsp.enable("biome")
 vim.lsp.enable("hls")
+vim.lsp.enable("lua_ls")
+vim.lsp.enable("nil_ls")
+vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("sourcekit")
+vim.lsp.enable("tombi")
+vim.lsp.enable("vtsls")

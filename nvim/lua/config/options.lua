@@ -16,7 +16,6 @@ o.statuscolumn = '%s%=%{v:virtnum>0?"":v:relnum?v:relnum:v:lnum}  '
 o.wrap = false
 o.cursorline = true
 o.showmode = false
-o.termguicolors = true
 o.fillchars = "eob: "
 o.laststatus = 3
 

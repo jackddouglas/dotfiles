@@ -6,9 +6,16 @@ set -euo pipefail
 QUERY="$1"
 MAX_RESULTS="${2:-5}"
 
-# Resolve 1Password reference if needed
+# Resolve 1Password reference if needed, caching to avoid repeated prompts
 if [[ "$TAVILY_API_KEY" == op://* ]]; then
-  API_KEY="$(op read "$TAVILY_API_KEY")"
+  CACHE_FILE="${TMPDIR:-/tmp}/tavily-api-key.cache"
+  if [[ -f "$CACHE_FILE" && -s "$CACHE_FILE" ]]; then
+    API_KEY="$(cat "$CACHE_FILE")"
+  else
+    API_KEY="$(op read "$TAVILY_API_KEY")"
+    install -m 600 /dev/null "$CACHE_FILE"
+    printf '%s' "$API_KEY" > "$CACHE_FILE"
+  fi
 else
   API_KEY="$TAVILY_API_KEY"
 fi
