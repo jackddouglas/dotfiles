@@ -60,7 +60,6 @@ in
       ngrok
       awscli2
       uv
-      flyctl
       pm2
       jjui
 
@@ -144,6 +143,11 @@ in
       ".config/opencode/commands".source = ./opencode/commands;
       ".config/opencode/providers".source = ./opencode/providers;
       ".config/opencode/opencode.json".source = ./opencode/opencode.json;
+      ".pi/agent/AGENTS.md".source = ./pi/AGENTS.md;
+      ".pi/agent/settings.json".source = ./pi/settings.json;
+      ".pi/agent/extensions".source = ./pi/extensions;
+      ".pi/agent/prompts".source = ./pi/prompts;
+      ".pi/agent/skills".source = ./pi/skills;
       "scripts".source = ./scripts;
     };
 
