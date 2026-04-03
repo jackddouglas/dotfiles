@@ -9,7 +9,7 @@ export default function (pi: ExtensionAPI) {
     /\bsudo\b/,
     /\bmkfs\b/,
     /\bdd\b.*\bof=/,
-    />\s*\/dev\//,
+    />\s*\/dev\/(?!null)/,
 
     // remote interaction
     /\bgit\s+push\b/,
