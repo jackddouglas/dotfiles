@@ -182,8 +182,8 @@
                   src = prev.fetchFromGitHub {
                     owner = "jackddouglas";
                     repo = "sketchybar-app-font";
-                    rev = "e3255cd";
-                    hash = "sha256-C+bWHpbNkouOl1KJhkvW8NssMBIndeKn5wlb/0JCfV0=";
+                    rev = "7b3e89e";
+                    hash = "sha256-VtLPV5CQ7wA8dkASGWvjtSEZNFtipffOHvnN3XlbeTg=";
                   };
                   pnpmDeps = prev.fetchPnpmDeps {
                     inherit (old) pname;
