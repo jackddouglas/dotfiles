@@ -148,6 +148,10 @@ in
       ".pi/agent/extensions".source = ./pi/extensions;
       ".pi/agent/prompts".source = ./pi/prompts;
       ".pi/agent/skills".source = ./pi/skills;
+      ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
+      ".claude/settings.json".source = ./claude/settings.json;
+      ".claude/commands".source = ./claude/commands;
+      ".claude/hooks".source = ./claude/hooks;
       "scripts".source = ./scripts;
     };
 
