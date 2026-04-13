@@ -9,20 +9,6 @@
       tmuxPlugins.vim-tmux-navigator
       tmuxPlugins.fingers
       {
-        plugin = tmuxPlugins.resurrect;
-        extraConfig = ''
-          set -g @resurrect-processes 'nvim'
-          set -g @resurrect-capture-pane-contents 'on'
-        '';
-      }
-      {
-        plugin = tmuxPlugins.continuum;
-        extraConfig = ''
-          set -g @continuum-restore 'on'
-          set -g @continuum-save-interval '60' # minutes
-        '';
-      }
-      {
         plugin = inputs.minimal-tmux.packages.${pkgs.stdenv.hostPlatform.system}.default;
         extraConfig = ''
           set -g @minimal-tmux-fg "#191919"
