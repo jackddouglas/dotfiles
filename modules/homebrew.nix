@@ -12,9 +12,6 @@
     ];
 
     brews = [
-      # AI
-      "ollama"
-
       # Development
       "pi-coding-agent"
       "sst/tap/opencode"
@@ -88,6 +85,9 @@
 
       # Social
       "betterdiscord-installer"
+
+      # AI
+      "lm-studio"
 
       # Utilities
       "boring-notch"
