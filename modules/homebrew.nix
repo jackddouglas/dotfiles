@@ -91,6 +91,7 @@
 
       # Utilities
       "boring-notch"
+      "camo-studio"
       "clop"
       "display-pilot"
       "mikker/tap/poof"
@@ -124,7 +125,7 @@
     };
 
     onActivation = {
-      autoUpdate = true;
+      autoUpdate = false;
       cleanup = "zap";
       upgrade = true;
     };
