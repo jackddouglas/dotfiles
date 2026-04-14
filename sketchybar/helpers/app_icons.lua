@@ -1,5 +1,6 @@
 return {
 	["1Password"] = ":one_password:",
+	["Activity Monitor"] = ":activity_monitor:",
 	["Adobe Bridge"] = ":adobe_bridge:",
 	["Adobe Illustrator"] = ":illustrator:",
 	["Adobe InDesign"] = ":indesign:",
@@ -66,7 +67,6 @@ return {
 	["DataSpell"] = ":dataspell:",
 	["DaVinci Resolve"] = ":davinciresolve:",
 	["Deezer"] = ":deezer:",
-	["Activity Monitor"] = ":activity_monitor:",
 	["Default"] = ":default:",
 	["DEVONthink 3"] = ":devonthink3:",
 	["DEVONthink"] = ":devonthink3:",
@@ -204,6 +204,7 @@ return {
 	["PDF Expert"] = ":pdf_expert:",
 	["Pearcleaner"] = ":pearcleaner:",
 	["Phoenix Slides"] = ":phoenix_slides:",
+	["Photos"] = ":photos:",
 	["PhpStorm"] = ":php_storm:",
 	["Pi-hole Remote"] = ":pihole:",
 	["Pine"] = ":pine:",

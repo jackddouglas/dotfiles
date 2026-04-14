@@ -77,7 +77,6 @@
       "homerow"
       "linear-linear"
       "macwhisper"
-      "microsoft-excel"
       "proton-drive"
       "proton-mail"
       "proton-mail-bridge"
@@ -88,6 +87,7 @@
 
       # AI
       "lm-studio"
+      "osaurus"
 
       # Utilities
       "boring-notch"
@@ -96,7 +96,6 @@
       "display-pilot"
       "mikker/tap/poof"
       "mikker/tap/tuna"
-      "osaurus"
     ];
 
     masApps = {

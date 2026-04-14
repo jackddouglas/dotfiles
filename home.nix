@@ -151,7 +151,6 @@ in
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;
       ".claude/commands".source = ./claude/commands;
-      ".claude/hooks".source = ./claude/hooks;
       "scripts".source = ./scripts;
     };
 
