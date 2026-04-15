@@ -9,6 +9,7 @@
       "mikker/tap"
       "sst/tap"
       "TheBoredTeam/boring-notch"
+      "typewhisper/tap"
     ];
 
     brews = [
@@ -64,26 +65,18 @@
       "plex"
       "plex-media-server"
       "plexamp"
-      "soulseek"
       "transmission"
-
-      # Notes
-      "antinote"
-      "hyprnote"
 
       # Productivity
       "1password"
+      "antinote"
       "dot"
       "homerow"
       "linear-linear"
-      "macwhisper"
+      "mikker/tap/tuna"
       "proton-drive"
-      "proton-mail"
-      "proton-mail-bridge"
       "protonvpn"
-
-      # Social
-      "betterdiscord-installer"
+      "typewhisper/tap/typewhisper"
 
       # AI
       "lm-studio"
@@ -94,8 +87,7 @@
       "camo-studio"
       "clop"
       "display-pilot"
-      "mikker/tap/poof"
-      "mikker/tap/tuna"
+      "proton-mail-bridge"
     ];
 
     masApps = {
@@ -108,9 +100,7 @@
       # Knowledge
       "GoodLinks" = 1474335294;
       "iA Writer" = 775737590;
-      "Muse" = 1501563902;
       "Reeder" = 6475002485;
-      "Bear" = 1091189122;
 
       # Media
       "Final Cut Pro" = 424389933;
