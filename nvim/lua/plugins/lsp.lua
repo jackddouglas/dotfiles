@@ -63,7 +63,9 @@ return {
 		"stevearc/conform.nvim",
 		opts = {
 			formatters_by_ft = {
+				css = { "prettierd" },
 				haskell = { "fourmolu" },
+				html = { "prettierd" },
 				javascript = { "prettierd" },
 				json = { "prettierd" },
 				lua = { "stylua" },
