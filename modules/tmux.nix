@@ -32,6 +32,7 @@
       set -g extended-keys-format csi-u
       set -g mode-keys vi
       set -g mouse on
+      set -g focus-events on
       bind-key h select-pane -L
       bind-key j select-pane -D
       bind-key k select-pane -U

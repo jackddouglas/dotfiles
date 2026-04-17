@@ -85,7 +85,6 @@
       "boring-notch"
       "camo-studio"
       "clop"
-      "display-pilot"
       "proton-mail-bridge"
     ];
 

@@ -42,27 +42,27 @@ in
 
     packages = with pkgs; [
       # window management
-      jankyborders
       aerospace
-      sketchybar-app-font
       ice-app
+      jankyborders
+      sketchybar-app-font
 
       # dev tools
-      neovim
-      yarn
+      awscli2
+      chatgpt
       cocoapods
+      codex
       docker
       docker-compose
+      jjui
       lazydocker
       lazygit
-      codex
-      chatgpt
-      nvimpager
+      neovim
       ngrok
-      awscli2
-      uv
+      nvimpager
       pm2
-      jjui
+      uv
+      yarn
 
       # nix
       nixfmt
@@ -70,8 +70,8 @@ in
 
       # haskell
       ghc
-      stack
       haskell-language-server
+      stack
 
       # rust
       rustup
@@ -85,29 +85,29 @@ in
 
       # node
       nodejs_22
-      tsx
       pnpm
+      tsx
 
       # system utils
-      raycast
+      _1password-cli
       appcleaner
       btop
-      mprocs
-      eza
-      ripgrep
-      wget
-      glow
-      jq
-      ffmpeg
-      kanata
-      _1password-cli
       dust
-      terminal-notifier
+      eza
       fd
-      betterdisplay
-      imagemagick
-      xz
+      ffmpeg
+      glow
       iina
+      imagemagick
+      jq
+      kanata
+      lunar
+      mprocs
+      raycast
+      ripgrep
+      terminal-notifier
+      wget
+      xz
 
       # music
       cmus
@@ -118,11 +118,11 @@ in
       ticker
 
       # communication
-      zoom-us
-      slack
       discord
       discordo
+      slack
       telegram-desktop
+      zoom-us
 
       # fonts
       ia-writer-quattro
@@ -167,7 +167,7 @@ in
     };
 
     activation.claude-code = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      if [ ! -f "$HOME/.claude/local/bin/claude" ]; then
+      if [ ! -f "$HOME/.local/bin/claude" ]; then
         export PATH="${
           lib.makeBinPath [
             pkgs.curl
@@ -183,6 +183,7 @@ in
     '';
 
     sessionPath = [
+      "$HOME/.local/bin"
       "$HOME/.npm-global/bin"
       "$HOME/.pnpm"
       "$HOME/.cargo/bin"
