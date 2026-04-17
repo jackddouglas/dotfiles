@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   inputs,
   hostname ? "laptop",
   ...
@@ -164,6 +165,22 @@ in
       LIBRARY_PATH = "${pkgs.libiconv}/lib";
       CLAUDE_CODE_NO_FLICKER = "1";
     };
+
+    activation.claude-code = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      if [ ! -f "$HOME/.claude/local/bin/claude" ]; then
+        export PATH="${
+          lib.makeBinPath [
+            pkgs.curl
+            pkgs.cacert
+            pkgs.gnutar
+            pkgs.gzip
+            pkgs.coreutils
+            pkgs.perl
+          ]
+        }:$PATH"
+        ${pkgs.curl}/bin/curl -fsSL https://claude.ai/install.sh | sh
+      fi
+    '';
 
     sessionPath = [
       "$HOME/.npm-global/bin"

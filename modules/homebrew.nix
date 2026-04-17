@@ -40,7 +40,6 @@
 
       # Development
       "claude"
-      "claude-code"
       "ghostty"
       "orbstack"
 
