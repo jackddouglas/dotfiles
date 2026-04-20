@@ -69,6 +69,9 @@ return {
 			vim.api.nvim_create_autocmd({ "VimEnter", "FocusGained", "TabEnter" }, {
 				pattern = { "*" },
 				callback = function()
+					if vim.api.nvim_win_get_config(0).relative ~= "" then
+						return
+					end
 					vim.fn.win_gotoid(vim.g.last_pane)
 				end,
 			})
