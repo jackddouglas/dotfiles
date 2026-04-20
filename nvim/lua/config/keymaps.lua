@@ -1,7 +1,6 @@
 local map = vim.keymap.set
 
 -- general
-map("n", "<C-s>", "<cmd>w<cr>", { desc = "Save file" })
 map("n", "<Esc>", "<cmd>noh<cr>", { desc = "Clear search highlight" })
 map({ "n", "v" }, "j", "gj", { desc = "Move down (display line)" })
 map({ "n", "v" }, "k", "gk", { desc = "Move up (display line)" })
