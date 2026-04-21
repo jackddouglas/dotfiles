@@ -89,9 +89,6 @@
     ];
 
     masApps = {
-      # Design
-      "Gapplin" = 768053424;
-
       # Development
       "Xcode" = 497799835;
 
@@ -108,7 +105,6 @@
 
       # Utilities
       "Flighty" = 1358823008;
-      "Parcel" = 375589283;
     };
 
     onActivation = {

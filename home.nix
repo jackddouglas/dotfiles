@@ -49,7 +49,6 @@ in
 
       # dev tools
       awscli2
-      chatgpt
       cocoapods
       codex
       docker
@@ -90,7 +89,6 @@ in
 
       # system utils
       _1password-cli
-      appcleaner
       btop
       dust
       eza
@@ -105,21 +103,12 @@ in
       mprocs
       raycast
       ripgrep
-      terminal-notifier
       wget
       xz
-
-      # music
-      cmus
       yt-dlp
-
-      # finance
-      bagels
-      ticker
 
       # communication
       discord
-      discordo
       slack
       telegram-desktop
       zoom-us
