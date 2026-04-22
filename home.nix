@@ -102,6 +102,7 @@ in
       lunar
       mprocs
       raycast
+      rclone
       ripgrep
       wget
       xz
