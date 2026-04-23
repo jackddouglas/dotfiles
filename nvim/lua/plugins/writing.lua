@@ -1,38 +1,5 @@
 return {
 	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		build = function(plugin)
-			local app_dir = plugin.dir .. "/app"
-			vim.fn.system("cd " .. vim.fn.shellescape(app_dir) .. " && bun install")
-			vim.fn.system(
-				"cd "
-					.. vim.fn.shellescape(app_dir)
-					.. " && bun add mermaid@latest && cp node_modules/mermaid/dist/mermaid.min.js _static/mermaid.min.js"
-			)
-		end,
-		init = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-			vim.g.mkdp_auto_start = 0
-			vim.g.mkdp_auto_close = 0
-		end,
-		ft = { "markdown" },
-	},
-	{
-		"OXY2DEV/markview.nvim",
-		lazy = false,
-		dependencies = {
-			"saghen/blink.cmp",
-		},
-		opts = {
-			preview = {
-				icon_provider = "mini",
-				modes = { "n", "no", "c", "i" },
-				hybrid_modes = { "n", "i" },
-			},
-		},
-	},
-	{
 		"folke/zen-mode.nvim",
 		opts = {
 			window = {
