@@ -63,7 +63,7 @@ return {
 		},
 		keys = {
 			{
-				"<leader>o",
+				"<leader>e",
 				function()
 					local oil = require("oil")
 					local config = require("oil.config")
