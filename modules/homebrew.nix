@@ -4,9 +4,6 @@
     enable = true;
 
     taps = [
-      "fastrepl/hyprnote"
-      "FelixKratz/formulae"
-      "mikker/tap"
       "sst/tap"
       "TheBoredTeam/boring-notch"
       "typewhisper/tap"
@@ -15,7 +12,7 @@
     brews = [
       # Development
       "pi-coding-agent"
-      "sst/tap/opencode"
+      "opencode"
       "tree-sitter-cli"
 
       # Utilities
@@ -28,10 +25,8 @@
       "firefox"
       "helium-browser"
       "orion"
-      "zen"
 
       # Communication
-      "element"
       "signal"
       "whatsapp"
 
@@ -69,13 +64,11 @@
       # Productivity
       "1password"
       "antinote"
-      "dot"
       "homerow"
       "linear-linear"
-      "mikker/tap/tuna"
       "proton-drive"
       "protonvpn"
-      "typewhisper/tap/typewhisper"
+      "typewhisper"
 
       # AI
       "lm-studio"
@@ -83,7 +76,6 @@
 
       # Utilities
       "boring-notch"
-      "camo-studio"
       "clop"
       "proton-mail-bridge"
     ];
@@ -108,7 +100,7 @@
     };
 
     onActivation = {
-      autoUpdate = false;
+      autoUpdate = true;
       cleanup = "zap";
       upgrade = true;
     };
