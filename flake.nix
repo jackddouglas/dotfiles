@@ -176,6 +176,25 @@
                   config.allowUnfree = true;
                 };
 
+                # yj 5.1.0 (BurntSushi/toml v1.1.0) panics on mixed-type
+                # arrays like aerospace's per-monitor gaps with a fallback
+                # ([{monitor.foo = N}, M]). Swap in remarshal's json2toml.
+                formats = prev.formats // {
+                  toml =
+                    { }:
+                    (prev.formats.toml { })
+                    // {
+                      generate =
+                        name: value:
+                        final.runCommand name {
+                          nativeBuildInputs = [ final.remarshal ];
+                          value = builtins.toJSON value;
+                          passAsFile = [ "value" ];
+                          preferLocalBuild = true;
+                        } ''json2toml "$valuePath" "$out"'';
+                    };
+                };
+
                 sketchybar-app-font = prev.sketchybar-app-font.overrideAttrs (old: {
                   version = "2.0.56-custom";
                   patches = [ ];
