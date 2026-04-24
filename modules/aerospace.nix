@@ -119,16 +119,14 @@ in
           # Apps
           "alt-enter" = "exec-and-forget open -a Ghostty";
           "alt-shift-enter" = "exec-and-forget open -a Helium";
-          "alt-m" = "exec-and-forget open -a Music";
-          "alt-e" = "exec-and-forget open -a Mail";
-          "alt-z" = "exec-and-forget open -a Zed";
-          "alt-b" = "exec-and-forget open -a Bear";
-          "alt-o" = "exec-and-forget open -a Obsidian";
-          "alt-w" = "exec-and-forget open -a 'iA Writer'";
-          "alt-n" = "exec-and-forget open -a Notes";
-          "alt-i" = "exec-and-forget open -a Linear";
-          "alt-t" = "exec-and-forget open -a Things3";
+          "alt-c" = "exec-and-forget open -a Dato";
           "alt-d" = "exec-and-forget open -a Discord";
+          "alt-e" = "exec-and-forget open -a Mail";
+          "alt-i" = "exec-and-forget open -a Linear";
+          "alt-m" = "exec-and-forget open -a Music";
+          "alt-n" = "exec-and-forget open -a Notes";
+          "alt-t" = "exec-and-forget open -a Things3";
+          "alt-w" = "exec-and-forget open -a 'iA Writer'";
 
           # Layout
           "alt-slash" = "layout tiles vertical horizontal";
