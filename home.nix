@@ -42,10 +42,11 @@ in
 
     packages = with pkgs; [
       # window management
-      aerospace
+      # aerospace
       ice-app
-      jankyborders
-      sketchybar-app-font
+      # jankyborders
+      rectangle
+      # sketchybar-app-font
 
       # dev tools
       awscli2
@@ -97,8 +98,9 @@ in
       glow
       iina
       imagemagick
+      istat-menus
       jq
-      kanata
+      # kanata
       lunar
       mprocs
       raycast
@@ -129,7 +131,7 @@ in
       "Library/Application Support/com.mitchellh.ghostty/config".source = ./ghostty/config;
       ".config/ghostty/themes".source = ./ghostty/themes;
       ".stack/config.yaml".source = ./stack/config.yaml;
-      ".config/kanata/kanata.kbd".source = ./kanata/kanata.kbd;
+      # ".config/kanata/kanata.kbd".source = ./kanata/kanata.kbd;
       ".config/opencode/agent".source = ./opencode/agent;
       ".config/opencode/commands".source = ./opencode/commands;
       ".config/opencode/providers".source = ./opencode/providers;
@@ -187,7 +189,7 @@ in
 
   imports = [
     (import ./modules/tmux.nix { inherit pkgs inputs; })
-    ./modules/aerohints.nix
+    # ./modules/aerohints.nix
     ./modules/yazi.nix
     (import ./modules/jujutsu.nix { inherit currentSigningKey; })
     ./modules/fish.nix
@@ -195,7 +197,7 @@ in
 
   programs = {
     sketchybar = {
-      enable = true;
+      enable = false;
       package = pkgs.sketchybar;
       config = {
         source = ./sketchybar;

@@ -84,7 +84,7 @@
                 # Show all file extensions
                 AppleShowAllExtensions = true;
                 # Automatically hide and show the menu bar
-                _HIHideMenuBar = true;
+                _HIHideMenuBar = false;
                 # Immediately repeat key press
                 InitialKeyRepeat = 10;
                 KeyRepeat = 1;
@@ -150,7 +150,7 @@
           security.pam.services.sudo_local.reattach = true;
 
           services.jankyborders = {
-            enable = true;
+            enable = false;
             package = pkgs.jankyborders;
 
             style = "round";
@@ -162,7 +162,7 @@
           };
 
           imports = [
-            ./modules/aerospace.nix
+            # ./modules/aerospace.nix
             ./modules/homebrew.nix
           ];
 
@@ -174,25 +174,6 @@
                 stable = import inputs.nixpkgs {
                   system = prev.stdenv.hostPlatform.system;
                   config.allowUnfree = true;
-                };
-
-                # yj 5.1.0 (BurntSushi/toml v1.1.0) panics on mixed-type
-                # arrays like aerospace's per-monitor gaps with a fallback
-                # ([{monitor.foo = N}, M]). Swap in remarshal's json2toml.
-                formats = prev.formats // {
-                  toml =
-                    { }:
-                    (prev.formats.toml { })
-                    // {
-                      generate =
-                        name: value:
-                        final.runCommand name {
-                          nativeBuildInputs = [ final.remarshal ];
-                          value = builtins.toJSON value;
-                          passAsFile = [ "value" ];
-                          preferLocalBuild = true;
-                        } ''json2toml "$valuePath" "$out"'';
-                    };
                 };
 
                 sketchybar-app-font = prev.sketchybar-app-font.overrideAttrs (old: {
@@ -246,46 +227,46 @@
           # Use fish as default shell
           programs.fish.enable = true;
 
-          launchd.daemons = {
-            "com.jackdouglas.kanata" = {
-              serviceConfig = {
-                Label = "com.jackdouglas.kanata";
-                ProgramArguments = [
-                  "${pkgs.kanata}/bin/kanata"
-                  "--quiet"
-                  "--cfg"
-                  "/Users/jackdouglas/.config/kanata/kanata.kbd"
-                ];
-                RunAtLoad = true;
-                KeepAlive = true;
-                StandardOutPath = "/Library/Logs/Kanata/kanata.out.log";
-                StandardErrorPath = "/Library/Logs/Kanata/kanata.err.log";
-              };
-            };
-
-            "com.jackdouglas.karabiner-vhiddaemon" = {
-              serviceConfig = {
-                Label = "com.jackdouglas.karabiner-vhiddaemon";
-                ProgramArguments = [
-                  "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.
-          app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon"
-                ];
-                RunAtLoad = true;
-                KeepAlive = true;
-              };
-            };
-
-            "com.jackdouglas.karabiner-vhidmanager" = {
-              serviceConfig = {
-                Label = "com.jackdouglas.karabiner-vhidmanager";
-                ProgramArguments = [
-                  "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager"
-                  "activate"
-                ];
-                RunAtLoad = true;
-              };
-            };
-          };
+          # launchd.daemons = {
+          #   "com.jackdouglas.kanata" = {
+          #     serviceConfig = {
+          #       Label = "com.jackdouglas.kanata";
+          #       ProgramArguments = [
+          #         "${pkgs.kanata}/bin/kanata"
+          #         "--quiet"
+          #         "--cfg"
+          #         "/Users/jackdouglas/.config/kanata/kanata.kbd"
+          #       ];
+          #       RunAtLoad = true;
+          #       KeepAlive = true;
+          #       StandardOutPath = "/Library/Logs/Kanata/kanata.out.log";
+          #       StandardErrorPath = "/Library/Logs/Kanata/kanata.err.log";
+          #     };
+          #   };
+          #
+          #   "com.jackdouglas.karabiner-vhiddaemon" = {
+          #     serviceConfig = {
+          #       Label = "com.jackdouglas.karabiner-vhiddaemon";
+          #       ProgramArguments = [
+          #         "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.
+          # app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon"
+          #       ];
+          #       RunAtLoad = true;
+          #       KeepAlive = true;
+          #     };
+          #   };
+          #
+          #   "com.jackdouglas.karabiner-vhidmanager" = {
+          #     serviceConfig = {
+          #       Label = "com.jackdouglas.karabiner-vhidmanager";
+          #       ProgramArguments = [
+          #         "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager"
+          #         "activate"
+          #       ];
+          #       RunAtLoad = true;
+          #     };
+          #   };
+          # };
 
         };
     in

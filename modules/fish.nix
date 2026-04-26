@@ -70,7 +70,7 @@
 
       oc = "opencode";
 
-      mux = "tmuxinator";
+      # mux = "tmuxinator";
 
       "..." = "cd ../..";
       "...." = "cd ../../..";

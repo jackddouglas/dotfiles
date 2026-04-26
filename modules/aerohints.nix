@@ -12,7 +12,7 @@ in
   home.packages = [ aerohints ];
 
   launchd.agents.aerohints = {
-    enable = true;
+    enable = false;
     config = {
       Label = "com.jackdouglas.aerohints";
       ProgramArguments = [

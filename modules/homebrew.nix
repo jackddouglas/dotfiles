@@ -36,7 +36,7 @@
       # Development
       "claude"
       "ghostty"
-      "orbstack"
+      "zed"
 
       # Fonts
       "font-iosevka-ss08"
@@ -71,13 +71,13 @@
       "typewhisper"
 
       # AI
-      "lm-studio"
-      "osaurus"
+      "llamabarn"
 
       # Utilities
       "boring-notch"
       "clop"
       "proton-mail-bridge"
+      "superkey"
     ];
 
     masApps = {

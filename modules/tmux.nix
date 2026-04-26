@@ -20,7 +20,7 @@
     shell = "${pkgs.fish}/bin/fish";
     shortcut = "Space";
     terminal = "tmux-256color";
-    tmuxinator.enable = true;
+    # tmuxinator.enable = true;
     extraConfig = ''
       unbind r
       bind r source-file /Users/jackdouglas/.config/tmux/tmux.conf
