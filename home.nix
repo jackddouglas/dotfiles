@@ -138,6 +138,7 @@ in
       ".config/opencode/opencode.json".source = ./opencode/opencode.json;
       ".pi/agent/AGENTS.md".source = ./pi/AGENTS.md;
       ".pi/agent/settings.json".source = ./pi/settings.json;
+      ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions".source = ./pi/extensions;
       ".pi/agent/prompts".source = ./pi/prompts;
       ".pi/agent/skills".source = ./pi/skills;
@@ -193,6 +194,7 @@ in
     ./modules/yazi.nix
     (import ./modules/jujutsu.nix { inherit currentSigningKey; })
     ./modules/fish.nix
+    ./modules/llama.nix
   ];
 
   programs = {

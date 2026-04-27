@@ -82,8 +82,13 @@ return {
 	},
 	{
 		"saghen/blink.cmp",
-		dependencies = { "rafamadriz/friendly-snippets" },
-		build = "nix run .#build-plugin",
+		dependencies = {
+			"saghen/blink.lib",
+			"rafamadriz/friendly-snippets",
+		},
+		build = function()
+			require("blink.cmp").build():wait(60000)
+		end,
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
 		opts = {
