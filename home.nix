@@ -42,11 +42,8 @@ in
 
     packages = with pkgs; [
       # window management
-      # aerospace
       ice-app
-      # jankyborders
       rectangle
-      # sketchybar-app-font
 
       # dev tools
       awscli2
@@ -99,8 +96,8 @@ in
       iina
       imagemagick
       istat-menus
+      itsycal
       jq
-      # kanata
       lunar
       mprocs
       raycast
@@ -157,6 +154,7 @@ in
       SSH_AUTH_SOCK = "/Users/jackdouglas/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
       LIBRARY_PATH = "${pkgs.libiconv}/lib";
       CLAUDE_CODE_NO_FLICKER = "1";
+      HF_HOME = "$HOME/models";
     };
 
     activation.claude-code = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -194,7 +192,7 @@ in
     ./modules/yazi.nix
     (import ./modules/jujutsu.nix { inherit currentSigningKey; })
     ./modules/fish.nix
-    ./modules/llama.nix
+    ./modules/llm.nix
   ];
 
   programs = {
