@@ -62,6 +62,7 @@ in
       yarn
 
       # nix
+      nixd
       nixfmt
       statix
 
@@ -142,6 +143,8 @@ in
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;
       ".claude/commands".source = ./claude/commands;
+      ".config/zed/settings.json".source = ./zed/settings.json;
+      ".config/zed/keymap.json".source = ./zed/keymap.json;
       "scripts".source = ./scripts;
     };
 
