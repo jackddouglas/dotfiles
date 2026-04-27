@@ -64,7 +64,6 @@
       # Productivity
       "1password"
       "antinote"
-      "homerow"
       "linear-linear"
       "proton-drive"
       "protonvpn"
