@@ -68,7 +68,7 @@ let
 in
 {
   services.aerospace = {
-    enable = false;
+    enable = true;
     package = pkgs.aerospace;
 
     settings = {
@@ -98,35 +98,36 @@ in
 
       key-mapping.preset = "qwerty";
 
-      gaps = {
-        inner = {
-          horizontal = 12;
-          vertical = 12;
-        };
-        outer = {
-          left = 12;
-          bottom = 12;
-          top = [
-            { monitor."built-in" = 12; }
-            52
-          ];
-          right = 12;
-        };
-      };
+      # gaps = {
+      #   inner = {
+      #     horizontal = 12;
+      #     vertical = 12;
+      #   };
+      #   outer = {
+      #     left = 12;
+      #     bottom = 12;
+      #     top = [
+      #       { monitor."built-in" = 12; }
+      #       52
+      #     ];
+      #     right = 12;
+      #   };
+      # };
 
       mode = {
         main.binding = {
           # Apps
           "alt-enter" = "exec-and-forget open -a Ghostty";
           "alt-shift-enter" = "exec-and-forget open -a Helium";
-          "alt-c" = "exec-and-forget open -a Dato";
           "alt-d" = "exec-and-forget open -a Discord";
           "alt-e" = "exec-and-forget open -a Mail";
           "alt-i" = "exec-and-forget open -a Linear";
           "alt-m" = "exec-and-forget open -a Music";
           "alt-n" = "exec-and-forget open -a Notes";
+          "alt-o" = "exec-and-forget open -a Obsidian";
           "alt-t" = "exec-and-forget open -a Things3";
           "alt-w" = "exec-and-forget open -a 'iA Writer'";
+          "alt-z" = "exec-and-forget open -a Zed";
 
           # Layout
           "alt-slash" = "layout tiles vertical horizontal";
@@ -175,13 +176,13 @@ in
           "c" = exitMode "exec-and-forget open /";
           "i" = exitMode "exec-and-forget open ~/Library/Mobile\\ Documents/com~apple~CloudDocs";
           "p" = exitMode "exec-and-forget open ~/Library/CloudStorage/ProtonDrive-cincomc@proton.me-folder";
-          "esc" = exitModeOnly;
           "enter" = exitModeOnly;
+          "esc" = exitModeOnly;
         };
 
         service.binding = {
-          "esc" = exitMode "reload-config";
-          "s" = exitMode "exec-and-forget ${sketchybar} --reload";
+          "s" = exitMode "reload-config";
+          # "s" = exitMode "exec-and-forget ${sketchybar} --reload";
           "r" = exitMode "flatten-workspace-tree";
           "f" = exitMode "layout floating tiling";
           "backspace" = exitMode "close-all-windows-but-current";
@@ -190,87 +191,99 @@ in
           "alt-shift-k" = exitMode "join-with up";
           "alt-shift-l" = exitMode "join-with right";
           "enter" = exitModeOnly;
+          "esc" = exitModeOnly;
         };
       };
 
       on-window-detected = [
         {
           "if".app-id = "com.apple.Notes";
-          run = "move-node-to-workspace 1";
-        }
-        {
-          "if".app-id = "pro.writer.mac";
-          run = "move-node-to-workspace 1";
-        }
-        {
-          "if".app-id = "net.shinyfrog.bear";
-          run = "move-node-to-workspace 1";
-        }
-        {
-          "if".app-id = "md.obsidian";
-          run = "move-node-to-workspace 1";
-        }
-        {
-          "if".app-id = "org.zotero.zotero";
-          run = "move-node-to-workspace 1";
+          run = "layout floating";
         }
         {
           "if".app-id = "com.culturedcode.ThingsMac";
-          run = "move-node-to-workspace 1";
-        }
-        {
-          "if".app-id = "com.linear";
-          run = "move-node-to-workspace 1";
-        }
-        {
-          "if".app-id = "com.apple.iCal";
-          run = "move-node-to-workspace 1";
-        }
-        {
-          "if".app-id = "com.ngocluu.goodlinks";
-          run = "move-node-to-workspace 1";
-        }
-        {
-          "if".app-id = "app.reeder";
-          run = "move-node-to-workspace 1";
-        }
-        {
-          "if".app-id = "app.zen-browser.zen";
-          run = "move-node-to-workspace 2";
-        }
-        {
-          "if".app-id = "net.imput.helium";
-          run = "move-node-to-workspace 2";
-        }
-        {
-          "if".app-id = "com.apple.Safari";
-          run = "move-node-to-workspace 2";
-        }
-        {
-          "if".app-id = "com.mitchellh.ghostty";
-          run = "move-node-to-workspace 3";
-        }
-        {
-          "if".app-id = "com.apple.mail";
-          run = "move-node-to-workspace 4";
-        }
-        {
-          "if".app-id = "com.apple.MobileSMS";
-          run = "move-node-to-workspace 4";
-        }
-        {
-          "if".app-id = "net.whatsapp.WhatsApp";
-          run = "move-node-to-workspace 4";
-        }
-        {
-          "if".app-id = "com.hnc.Discord";
-          run = "move-node-to-workspace 4";
-        }
-        {
-          "if".app-id = "com.apple.Music";
-          run = "move-node-to-workspace 5";
+          run = "layout floating";
         }
       ];
+
+      # on-window-detected-disabled = [
+      #   {
+      #     "if".app-id = "com.apple.Notes";
+      #     run = "move-node-to-workspace 1";
+      #   }
+      #   {
+      #     "if".app-id = "pro.writer.mac";
+      #     run = "move-node-to-workspace 1";
+      #   }
+      #   {
+      #     "if".app-id = "net.shinyfrog.bear";
+      #     run = "move-node-to-workspace 1";
+      #   }
+      #   {
+      #     "if".app-id = "md.obsidian";
+      #     run = "move-node-to-workspace 1";
+      #   }
+      #   {
+      #     "if".app-id = "org.zotero.zotero";
+      #     run = "move-node-to-workspace 1";
+      #   }
+      #   {
+      #     "if".app-id = "com.culturedcode.ThingsMac";
+      #     run = "move-node-to-workspace 1";
+      #   }
+      #   {
+      #     "if".app-id = "com.linear";
+      #     run = "move-node-to-workspace 1";
+      #   }
+      #   {
+      #     "if".app-id = "com.apple.iCal";
+      #     run = "move-node-to-workspace 1";
+      #   }
+      #   {
+      #     "if".app-id = "com.ngocluu.goodlinks";
+      #     run = "move-node-to-workspace 1";
+      #   }
+      #   {
+      #     "if".app-id = "app.reeder";
+      #     run = "move-node-to-workspace 1";
+      #   }
+      #   {
+      #     "if".app-id = "app.zen-browser.zen";
+      #     run = "move-node-to-workspace 2";
+      #   }
+      #   {
+      #     "if".app-id = "net.imput.helium";
+      #     run = "move-node-to-workspace 2";
+      #   }
+      #   {
+      #     "if".app-id = "com.apple.Safari";
+      #     run = "move-node-to-workspace 2";
+      #   }
+      #   {
+      #     "if".app-id = "com.mitchellh.ghostty";
+      #     run = "move-node-to-workspace 3";
+      #   }
+      #   {
+      #     "if".app-id = "com.apple.mail";
+      #     run = "move-node-to-workspace 4";
+      #   }
+      #   {
+      #     "if".app-id = "com.apple.MobileSMS";
+      #     run = "move-node-to-workspace 4";
+      #   }
+      #   {
+      #     "if".app-id = "net.whatsapp.WhatsApp";
+      #     run = "move-node-to-workspace 4";
+      #   }
+      #   {
+      #     "if".app-id = "com.hnc.Discord";
+      #     run = "move-node-to-workspace 4";
+      #   }
+      #   {
+      #     "if".app-id = "com.apple.Music";
+      #     run = "move-node-to-workspace 5";
+      #   }
+      # ];
     };
   };
 }

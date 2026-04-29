@@ -64,7 +64,7 @@
       # Productivity
       "1password"
       "antinote"
-      "linear-linear"
+      "linear"
       "proton-drive"
       "protonvpn"
       "typewhisper"

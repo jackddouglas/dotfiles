@@ -162,7 +162,7 @@
           };
 
           imports = [
-            # ./modules/aerospace.nix
+            ./modules/aerospace.nix
             ./modules/homebrew.nix
           ];
 

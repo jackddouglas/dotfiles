@@ -15,6 +15,7 @@ font-style-italic = Oblique
 font-style-bold-italic = Bold Oblique
 font-feature = +calt, +liga, +dlig
 font-size = 12
+adjust-cell-height = 10%
 
 # Keybinds
 keybind = global:ctrl+grave_accent=toggle_quick_terminal

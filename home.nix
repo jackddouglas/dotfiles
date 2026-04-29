@@ -55,7 +55,6 @@ in
     packages = with pkgs; [
       # window management
       ice-app
-      rectangle
 
       # dev tools
       awscli2
