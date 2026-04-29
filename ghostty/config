@@ -30,8 +30,20 @@ keybind = cmd+digit_7=text:\x1b[55;3u
 keybind = cmd+digit_8=text:\x1b[56;3u
 keybind = cmd+digit_9=text:\x1b[57;3u
 
+# Pane management
+keybind = cmd+opt+backslash=new_split:right
+keybind = cmd+opt+minus=new_split:down
+keybind = cmd+opt+x=close_surface
+keybind = cmd+opt+z=toggle_split_zoom
+
 # Split navigation
 keybind = cmd+opt+h=goto_split:left
 keybind = cmd+opt+j=goto_split:down
 keybind = cmd+opt+k=goto_split:up
 keybind = cmd+opt+l=goto_split:right
+
+# Split resizing
+keybind = cmd+ctrl+h=resize_split:left,15
+keybind = cmd+ctrl+j=resize_split:down,15
+keybind = cmd+ctrl+k=resize_split:up,15
+keybind = cmd+ctrl+l=resize_split:right,15
