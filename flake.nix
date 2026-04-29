@@ -20,10 +20,6 @@
     # minimal-tmux
     minimal-tmux.url = "github:niksingh710/minimal-tmux-status";
     minimal-tmux.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
-    # aerohints
-    aerohints.url = "github:jackddouglas/AeroHints";
-    aerohints.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -35,7 +31,6 @@
       home-manager,
       nix-homebrew,
       minimal-tmux,
-      aerohints,
     }:
     let
       configuration =
