@@ -66,6 +66,7 @@
   },
   "terminal": {
     "font_family": "Berkeley Mono",
+    "font_fallbacks": ["Symbols Nerd Font Mono"],
     "font_features": {
       "calt": true,
       "liga": true,

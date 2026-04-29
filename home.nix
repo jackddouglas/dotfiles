@@ -130,6 +130,7 @@ in
       ia-writer-quattro
       inter
       lilex
+      nerd-fonts.symbols-only
 
       # fun
       cmatrix
