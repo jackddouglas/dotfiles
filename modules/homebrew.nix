@@ -96,6 +96,7 @@
 
       # Utilities
       "Flighty" = 1358823008;
+      "HazeOver" = 430798174;
     };
 
     onActivation = {

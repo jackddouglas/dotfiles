@@ -3,7 +3,7 @@ mouse-hide-while-typing = true
 
 # UI
 macos-titlebar-style = hidden
-theme = Gruvbox Dark Hard
+theme = Flexoki Dark
 # theme=light:zenwritten,dark:zenwritten
 
 # Fonts
@@ -14,7 +14,7 @@ font-style-bold = Bold
 font-style-italic = Oblique
 font-style-bold-italic = Bold Oblique
 font-feature = +calt, +liga, +dlig
-font-size = 14
+font-size = 12
 
 # Keybinds
 keybind = global:ctrl+grave_accent=toggle_quick_terminal
@@ -29,3 +29,9 @@ keybind = cmd+digit_6=text:\x1b[54;3u
 keybind = cmd+digit_7=text:\x1b[55;3u
 keybind = cmd+digit_8=text:\x1b[56;3u
 keybind = cmd+digit_9=text:\x1b[57;3u
+
+# Split navigation
+keybind = cmd+opt+h=goto_split:left
+keybind = cmd+opt+j=goto_split:down
+keybind = cmd+opt+k=goto_split:up
+keybind = cmd+opt+l=goto_split:right
