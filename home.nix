@@ -32,6 +32,18 @@ let
       cp -r Ice.app $out/Applications/
     '';
   };
+
+  flexoki-typora-src = pkgs.fetchFromGitHub {
+    owner = "guidovicino";
+    repo = "flexoki-typora";
+    rev = "5d86c9846f7441e491f0db263f938c302eebcd6e";
+    hash = "sha256-qLmdPmVTE8Dud4rcvn6WPQuTQ5sQp7GfxteyLuWcek4=";
+  };
+
+  flexoki-typora-css = pkgs.runCommandLocal "flexoki-light.css" { } ''
+    sed -e 's/"JetBrainsMono Nerd Font"/"Berkeley Mono"/' \
+      ${flexoki-typora-src}/flexoki-light.css > $out
+  '';
 in
 {
   home = {
@@ -116,6 +128,7 @@ in
 
       # fonts
       ia-writer-quattro
+      inter
       lilex
 
       # fun
@@ -127,9 +140,10 @@ in
       ".config/nvim".source = ./nvim;
       ".config/tmuxinator".source = ./tmuxinator;
       "Library/Application Support/com.mitchellh.ghostty/config".source = ./ghostty/config;
+      "Library/Application Support/abnerworks.Typora/themes/flexoki-light.css".source =
+        flexoki-typora-css;
       ".config/ghostty/themes".source = ./ghostty/themes;
       ".stack/config.yaml".source = ./stack/config.yaml;
-      # ".config/kanata/kanata.kbd".source = ./kanata/kanata.kbd;
       ".config/opencode/agent".source = ./opencode/agent;
       ".config/opencode/commands".source = ./opencode/commands;
       ".config/opencode/providers".source = ./opencode/providers;
