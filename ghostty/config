@@ -4,7 +4,7 @@ macos-option-as-alt = true
 
 # UI
 macos-titlebar-style = hidden
-theme = light:Flexoki Light,dark:Flexoki Dark
+theme = light:Zenwritten Light,dark:Zenwritten Dark
 
 # Fonts
 # font-family = Lilex

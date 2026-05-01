@@ -159,6 +159,7 @@ in
       ".claude/commands".source = ./claude/commands;
       ".config/zed/settings.json".source = ./zed/settings.json;
       ".config/zed/keymap.json".source = ./zed/keymap.json;
+      ".config/zed/themes".source = ./zed/themes;
       "scripts".source = ./scripts;
     };
 
