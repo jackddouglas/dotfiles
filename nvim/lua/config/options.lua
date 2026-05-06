@@ -16,7 +16,7 @@ o.statuscolumn = '%s%=%{v:virtnum>0?"":v:relnum?v:relnum:v:lnum}  '
 o.wrap = false
 o.cursorline = true
 o.showmode = false
-o.fillchars = "eob: "
+o.fillchars = "eob: ,diff:╱"
 o.laststatus = 3
 
 -- scrolling

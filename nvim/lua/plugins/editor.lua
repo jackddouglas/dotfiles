@@ -178,12 +178,6 @@ return {
 						gitsigns.blame_line({ full = true })
 					end, { desc = "Blame line" })
 
-					map("n", "<leader>ghd", gitsigns.diffthis, { desc = "Diff this" })
-
-					map("n", "<leader>ghD", function()
-						gitsigns.diffthis("~")
-					end, { desc = "Diff this ~" })
-
 					map("n", "<leader>ghQ", function()
 						gitsigns.setqflist("all")
 					end, { desc = "Quickfix all hunks" })
