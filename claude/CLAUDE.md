@@ -5,7 +5,7 @@
 - macOS (Apple Silicon), nix-darwin + home-manager
 - Shell: fish
 - Editor: neovim
-- VCS: jujutsu (jj), git (colocated repos preferred)
+- VCS: git
 - Terminal: ghostty
 - Secrets: 1Password CLI (`op`)
 - Package manager: nix (prefer nix-idiomatic solutions)
@@ -13,15 +13,8 @@
 ## Preferences
 
 - No emojis in code, commits, or output
-- Prefer jj over raw git commands when in a jj-managed repo
 - Use `nix fmt` / `nixfmt` for nix files
 - Keep things minimal and explicit
-
-## Describing changes
-
-- Use `jj describe -m "..."` to set the message on the current change; use `jj commit -m "..."` to describe and start a new empty change
-- Do not invoke `git commit` in a jj-managed (colocated) repo
-- Inspect history with `jj log` / `jj diff` rather than `git log` / `git diff`
 
 ## Commit messages
 
