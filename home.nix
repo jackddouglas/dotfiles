@@ -110,7 +110,6 @@ in
       istat-menus
       itsycal
       jq
-      lunar
       mprocs
       raycast
       rclone
@@ -258,6 +257,15 @@ in
         pull.rebase = true;
         push.autoSetupRemote = true;
         rebase.autoStash = true;
+        rebase.updateRefs = true;
+        rerere.enabled = true;
+        fetch.prune = true;
+        merge.conflictStyle = "zdiff3";
+        diff.algorithm = "histogram";
+        diff.colorMoved = "default";
+        commit.verbose = true;
+        branch.sort = "-committerdate";
+        core.pager = "hunk pager";
       };
     };
 

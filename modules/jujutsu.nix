@@ -12,6 +12,11 @@
         default-command = [ "log" ];
         editor = "nvim";
         conflict-marker-style = "git";
+        pager = [
+          "hunk"
+          "pager"
+        ];
+        diff-formatter = ":git";
       };
 
       signing = {

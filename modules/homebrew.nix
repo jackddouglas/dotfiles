@@ -11,8 +11,9 @@
 
     brews = [
       # Development
-      "pi-coding-agent"
+      "modem-dev/tap/hunk"
       "opencode"
+      "pi-coding-agent"
       "tree-sitter-cli"
 
       # Utilities
