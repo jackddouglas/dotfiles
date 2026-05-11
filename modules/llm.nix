@@ -59,13 +59,11 @@ let
     '';
   };
 
-  mlxPython = pkgs.python313.withPackages (ps: [ ps.mlx-vlm ]);
-
   gemmaServer = pkgs.writeShellApplication {
     name = "gemma-server";
-    runtimeInputs = [ mlxPython ];
+    runtimeInputs = [ pkgs.uv ];
     text = ''
-      exec python -m mlx_vlm.server \
+      exec uvx --from "mlx-vlm==0.4.4" python -m mlx_vlm.server \
         --model "${gemmaModel}" \
         --host "${gemmaHost}" \
         --port "${gemmaPort}" \
