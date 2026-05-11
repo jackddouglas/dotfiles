@@ -1,0 +1,85 @@
+{
+  "title": "Home row mods",
+  "rules": [
+    {
+      "description": "Home row mods: asdf / jkl;",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "a", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "left_shift", "lazy": true }],
+          "to_if_alone": [{ "key_code": "a" }],
+          "conditions": [
+            { "type": "variable_unless", "name": "caps_layer", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "s", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "left_control", "lazy": true }],
+          "to_if_alone": [{ "key_code": "s" }],
+          "conditions": [
+            { "type": "variable_unless", "name": "caps_layer", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "d", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "left_option", "lazy": true }],
+          "to_if_alone": [{ "key_code": "d" }],
+          "conditions": [
+            { "type": "variable_unless", "name": "caps_layer", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "f", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "left_command", "lazy": true }],
+          "to_if_alone": [{ "key_code": "f" }],
+          "conditions": [
+            { "type": "variable_unless", "name": "caps_layer", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "j", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "right_command", "lazy": true }],
+          "to_if_alone": [{ "key_code": "j" }],
+          "conditions": [
+            { "type": "variable_unless", "name": "caps_layer", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "k", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "right_option", "lazy": true }],
+          "to_if_alone": [{ "key_code": "k" }],
+          "conditions": [
+            { "type": "variable_unless", "name": "caps_layer", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "l", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "right_control", "lazy": true }],
+          "to_if_alone": [{ "key_code": "l" }],
+          "conditions": [
+            { "type": "variable_unless", "name": "caps_layer", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "semicolon",
+            "modifiers": { "optional": ["any"] }
+          },
+          "to": [{ "key_code": "right_shift", "lazy": true }],
+          "to_if_alone": [{ "key_code": "semicolon" }],
+          "conditions": [
+            { "type": "variable_unless", "name": "caps_layer", "value": 1 }
+          ]
+        }
+      ]
+    }
+  ]
+}
