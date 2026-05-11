@@ -110,6 +110,7 @@ in
       istat-menus
       itsycal
       jq
+      lunar
       mprocs
       raycast
       rclone
@@ -160,6 +161,7 @@ in
       ".config/zed/keymap.json".source = ./zed/keymap.json;
       ".config/zed/themes".source = ./zed/themes;
       "scripts".source = ./scripts;
+      ".config/karabiner/assets/complex_modifications".source = ./karabiner/assets/complex_modifications;
     };
 
     sessionVariables = {

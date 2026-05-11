@@ -77,7 +77,7 @@
       "boring-notch"
       "clop"
       "proton-mail-bridge"
-      "superkey"
+      "homerow"
     ];
 
     masApps = {
