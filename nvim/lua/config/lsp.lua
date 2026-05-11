@@ -18,49 +18,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-		-- rust-analyzer: switch cargo target
-		if client and client.name == "rust_analyzer" then
-			map("n", "<leader>ct", function()
-				local targets = {
-					{ label = "default (host triple)", value = nil },
-					{ label = "wasm32-unknown-unknown", value = "wasm32-unknown-unknown" },
-					{ label = "aarch64-apple-darwin", value = "aarch64-apple-darwin" },
-				}
-				vim.ui.select(targets, {
-					prompt = "rust-analyzer cargo target:",
-					format_item = function(item)
-						return item.label
-					end,
-				}, function(choice)
-					if not choice then
-						return
-					end
-					local target = choice.value
-					local function apply(t)
-						vim.lsp.config("rust_analyzer", {
-							settings = {
-								["rust-analyzer"] = {
-									cargo = { target = t or vim.NIL },
-								},
-							},
-						})
-						-- restart all rust-analyzer clients so the new config takes effect
-						for _, c in ipairs(vim.lsp.get_clients({ name = "rust_analyzer" })) do
-							local bufs = vim.lsp.get_buffers_by_client_id(c.id)
-							c:stop()
-							vim.defer_fn(function()
-								for _, buf in ipairs(bufs) do
-									vim.lsp.start(vim.lsp.config.rust_analyzer, { bufnr = buf })
-								end
-							end, 500)
-						end
-						vim.notify("rust-analyzer target: " .. (t or "default"), vim.log.levels.INFO)
-					end
-					apply(target)
-				end)
-			end, { buffer = args.buf, desc = "Switch rust-analyzer target" })
-		end
-
 		-- enable inlay hints
 		if client and client:supports_method("textDocument/inlayHint") then
 			vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })

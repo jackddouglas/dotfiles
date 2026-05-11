@@ -71,4 +71,8 @@ autocmd("FileType", {
 })
 
 -- link rust operators to the Operator highlight group instead of Statement
-vim.api.nvim_set_hl(0, "@operator.rust", { link = "Operator" })
+local function set_rust_operator_hl()
+	vim.api.nvim_set_hl(0, "@operator.rust", { link = "Operator" })
+end
+autocmd("ColorScheme", { callback = set_rust_operator_hl })
+set_rust_operator_hl()
