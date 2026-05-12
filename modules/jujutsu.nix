@@ -6,6 +6,9 @@
     oplog_command    = ["--config", "ui.diff-formatter=\"difft\"", "op", "show", "--color=always", "$operation_id"]
     file_command     = ["--config", "ui.diff-formatter=\"difft\"", "diff", "--color=always", "-r", "$change_id", "$file"]
 
+    [ui.colors]
+    selected = { fg = "cyan", bg = "bright black" }
+
     [[actions]]
     name = "hunk-review"
     lua = "jj_interactive(\"util\", \"exec\", \"--\", \"bash\", \"-c\", \"jj show -r \" .. context.change_id() .. \" --git | hunk patch -\")"
@@ -64,6 +67,7 @@
       merge-tools.difft = {
         diff-args = [
           "--color=always"
+          "--display=inline"
           "$left"
           "$right"
         ];

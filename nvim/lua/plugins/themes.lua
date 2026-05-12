@@ -12,7 +12,7 @@ return {
 						if vim.o.background == "dark" then
 							vim.g.terminal_color_8 = "#707070"
 						else
-							vim.g.terminal_color_8 = "#888888"
+							vim.g.terminal_color_8 = "#aca9a9"
 						end
 					end
 				end,
