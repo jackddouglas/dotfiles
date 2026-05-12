@@ -44,6 +44,55 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -------------------------------------------------------------------------------
 -- server configurations
 -------------------------------------------------------------------------------
+local dotfiles = vim.env.HOME .. "/.dotfiles"
+local host = vim.fn.hostname():gsub("%.local$", "")
+
+local function flake_root(start)
+	if not start then
+		return nil
+	end
+	local hit = vim.fs.find({ "flake.nix" }, { upward = true, path = start, type = "file" })[1]
+	return hit and vim.fs.dirname(hit) or nil
+end
+
+local function nixd_settings(root)
+	local flake = flake_root(root) or dotfiles
+	local settings = {
+		nixpkgs = {
+			expr = string.format('import (builtins.getFlake "%s").inputs.nixpkgs { }', flake),
+		},
+		formatting = { command = { "nixfmt" } },
+	}
+	if flake == dotfiles then
+		settings.options = {
+			["nix-darwin"] = {
+				expr = string.format('(builtins.getFlake "%s").darwinConfigurations.%s.options', dotfiles, host),
+			},
+			["home-manager"] = {
+				expr = string.format(
+					'(builtins.getFlake "%s").darwinConfigurations.%s.options.home-manager.users.type.getSubOptions []',
+					dotfiles,
+					host
+				),
+			},
+		}
+	end
+	return { nixd = settings }
+end
+
+vim.lsp.config("nixd", {
+	settings = nixd_settings(dotfiles),
+	on_init = function(client)
+		local root
+		if client.workspace_folders and client.workspace_folders[1] then
+			root = vim.uri_to_fname(client.workspace_folders[1].uri)
+		end
+		local s = nixd_settings(root)
+		client.settings = s
+		client.notify("workspace/didChangeConfiguration", { settings = s })
+	end,
+})
+
 vim.lsp.config("rust_analyzer", {
 	settings = {
 		["rust-analyzer"] = {
@@ -75,7 +124,7 @@ vim.lsp.config("rust_analyzer", {
 vim.lsp.enable("biome")
 vim.lsp.enable("hls")
 vim.lsp.enable("lua_ls")
-vim.lsp.enable("nil_ls")
+vim.lsp.enable("nixd")
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("sourcekit")
 vim.lsp.enable("tombi")
