@@ -1,5 +1,32 @@
 { currentSigningKey, ... }:
 {
+  xdg.configFile."jjui/config.toml".text = ''
+    [preview]
+    revision_command = ["--config", "ui.diff-formatter=\"difft\"", "show", "--color=always", "-r", "$change_id"]
+    oplog_command    = ["--config", "ui.diff-formatter=\"difft\"", "op", "show", "--color=always", "$operation_id"]
+    file_command     = ["--config", "ui.diff-formatter=\"difft\"", "diff", "--color=always", "-r", "$change_id", "$file"]
+
+    [[actions]]
+    name = "hunk-review"
+    lua = "jj_interactive(\"util\", \"exec\", \"--\", \"bash\", \"-c\", \"jj show -r \" .. context.change_id() .. \" --git | hunk patch -\")"
+
+    [[actions]]
+    name = "hunk-review-file"
+    lua = "jj_interactive(\"util\", \"exec\", \"--\", \"bash\", \"-c\", \"jj show -r \" .. context.change_id() .. \" --git \" .. context.file() .. \" | hunk patch -\")"
+
+    [[bindings]]
+    key = "d"
+    scope = "revisions"
+    action = "hunk-review"
+    desc = "review with hunk"
+
+    [[bindings]]
+    key = "d"
+    scope = "revisions.details"
+    action = "hunk-review-file"
+    desc = "review file with hunk"
+  '';
+
   programs.jujutsu = {
     enable = true;
     settings = {
@@ -17,6 +44,11 @@
           "pager"
         ];
         diff-formatter = ":git";
+        diff-editor = [
+          "nvim"
+          "-c"
+          "DiffEditor $left $right $output"
+        ];
       };
 
       signing = {
@@ -27,6 +59,14 @@
 
       git = {
         colocate = true;
+      };
+
+      merge-tools.difft = {
+        diff-args = [
+          "--color=always"
+          "$left"
+          "$right"
+        ];
       };
 
       remotes = {
