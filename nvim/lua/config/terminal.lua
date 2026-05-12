@@ -56,22 +56,33 @@ function M.toggle()
 	vim.cmd.startinsert()
 end
 
-local function open_float(buf)
+local function float_geometry()
 	local width = math.floor(vim.o.columns * 0.8)
 	local height = math.floor(vim.o.lines * 0.8)
-	local row = math.floor((vim.o.lines - height) / 2)
-	local col = math.floor((vim.o.columns - width) / 2)
-
-	return vim.api.nvim_open_win(buf, true, {
+	return {
 		relative = "editor",
 		width = width,
 		height = height,
-		row = row,
-		col = col,
-		style = "minimal",
-		border = "single",
-	})
+		row = math.floor((vim.o.lines - height) / 2),
+		col = math.floor((vim.o.columns - width) / 2),
+	}
 end
+
+local function open_float(buf)
+	local opts = float_geometry()
+	opts.style = "minimal"
+	opts.border = "single"
+	return vim.api.nvim_open_win(buf, true, opts)
+end
+
+vim.api.nvim_create_autocmd("VimResized", {
+	group = vim.api.nvim_create_augroup("terminal_float_resize", { clear = true }),
+	callback = function()
+		if jjui_state.win and vim.api.nvim_win_is_valid(jjui_state.win) then
+			vim.api.nvim_win_set_config(jjui_state.win, float_geometry())
+		end
+	end,
+})
 
 function M.toggle_jjui()
 	local valid = is_valid(jjui_state)
