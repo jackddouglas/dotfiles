@@ -144,6 +144,9 @@ in
       "Library/Application Support/abnerworks.Typora/themes/flexoki-light.css".source =
         flexoki-typora-css;
       ".config/ghostty/themes".source = ./ghostty/themes;
+      ".config/hunk/config.toml".text = ''
+        theme = "auto"
+      '';
       ".stack/config.yaml".source = ./stack/config.yaml;
       ".config/opencode/agent".source = ./opencode/agent;
       ".config/opencode/commands".source = ./opencode/commands;
