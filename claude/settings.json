@@ -1,5 +1,92 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "alwaysThinkingEnabled": true,
+  "enabledPlugins": {
+    "pr-review-toolkit@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "command": "'\/Users\/jackdouglas\/Library\/Application Support\/Bartender\/NotchBar\/AgentStatus\/hooks\/claude-event-hook.sh' Waiting # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "'\/Users\/jackdouglas\/Library\/Application Support\/Bartender\/NotchBar\/AgentStatus\/hooks\/claude-event-hook.sh' Auto # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "command": "'\/Users\/jackdouglas\/Library\/Application Support\/Bartender\/NotchBar\/AgentStatus\/hooks\/claude-event-hook.sh' ToolFail # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "'\/Users\/jackdouglas\/Library\/Application Support\/Bartender\/NotchBar\/AgentStatus\/hooks\/claude-event-hook.sh' Working # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "'\/Users\/jackdouglas\/Library\/Application Support\/Bartender\/NotchBar\/AgentStatus\/hooks\/claude-event-hook.sh' Ended # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "'\/Users\/jackdouglas\/Library\/Application Support\/Bartender\/NotchBar\/AgentStatus\/hooks\/claude-event-hook.sh' Idle # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "'\/Users\/jackdouglas\/Library\/Application Support\/Bartender\/NotchBar\/AgentStatus\/hooks\/claude-event-hook.sh' Idle # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "'\/Users\/jackdouglas\/Library\/Application Support\/Bartender\/NotchBar\/AgentStatus\/hooks\/claude-event-hook.sh' Working # notchbar-agents-claude-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Read(*)",
@@ -11,7 +98,6 @@
       "WebSearch(*)",
       "NotebookEdit(*)",
       "Agent(*)",
-
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(git fetch *)",
@@ -29,7 +115,6 @@
       "Bash(git mv *)",
       "Bash(git apply *)",
       "Bash(git am *)",
-
       "Bash(jj new *)",
       "Bash(jj commit *)",
       "Bash(jj describe *)",
@@ -65,10 +150,5 @@
       "Bash(jj workspace root *)"
     ]
   },
-  "enabledPlugins": {
-    "pr-review-toolkit@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
-  },
-  "alwaysThinkingEnabled": true,
   "theme": "auto"
 }
