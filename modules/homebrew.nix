@@ -76,8 +76,9 @@
       # Utilities
       "boring-notch"
       "clop"
-      "proton-mail-bridge"
       "homerow"
+      "launchos"
+      "proton-mail-bridge"
     ];
 
     masApps = {
