@@ -100,6 +100,7 @@ in
 
       # system utils
       _1password-cli
+      appcleaner
       btop
       dust
       eza

@@ -78,7 +78,9 @@
       "clop"
       "homerow"
       "launchos"
+      "maccy"
       "proton-mail-bridge"
+      "tailscale-app"
     ];
 
     masApps = {
