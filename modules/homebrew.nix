@@ -70,9 +70,6 @@
       "protonvpn"
       "typewhisper"
 
-      # AI
-      "llamabarn"
-
       # Utilities
       "boring-notch"
       "clop"
