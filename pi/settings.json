@@ -1,6 +1,6 @@
 {
-  "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-4-6",
+  "defaultProvider": "qwen-server",
+  "defaultModel": "qwen3.6-27b",
   "defaultThinkingLevel": "medium",
-  "enabledModels": ["claude-*"]
+  "enabledModels": ["qwen3.6-27b", "gemma-4-26b"]
 }

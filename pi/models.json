@@ -1,7 +1,7 @@
 {
   "providers": {
-    "llama-server": {
-      "baseUrl": "http://127.0.0.1:8080/v1",
+    "qwen-server": {
+      "baseUrl": "http://127.0.0.1:17171/v1",
       "api": "openai-completions",
       "apiKey": "sk-local",
       "models": [
@@ -9,9 +9,24 @@
           "id": "qwen3.6-27b",
           "name": "Qwen3.6 27B (local)",
           "reasoning": true,
-          "input": ["text"],
+          "input": ["text", "image"],
           "contextWindow": 32768,
           "maxTokens": 8192,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    },
+    "gemma-server": {
+      "baseUrl": "http://127.0.0.1:17172/v1",
+      "api": "openai-completions",
+      "apiKey": "sk-local",
+      "models": [
+        {
+          "id": "gemma-4-26b",
+          "name": "Gemma 4 26B (local)",
+          "input": ["text", "image"],
+          "contextWindow": 16384,
+          "maxTokens": 4096,
           "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
         }
       ]
