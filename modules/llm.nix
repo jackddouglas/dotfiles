@@ -6,7 +6,7 @@ let
     {
       name,
       modelFile,
-      mmprojFile,
+      mmprojFile ? null,
       alias,
       port,
       ctxSize,
@@ -22,14 +22,16 @@ let
           echo "${name}: run '${fetcher}' first" >&2
           exit 1
         fi
-        MMPROJ_PATH="$HOME/models/${mmprojFile}"
         mmproj_args=()
-        if [ -f "$MMPROJ_PATH" ]; then
-          mmproj_args=(--mmproj "$MMPROJ_PATH")
-        else
-          echo "${name}: mmproj not found at $MMPROJ_PATH; serving text-only" >&2
-          echo "${name}: run '${fetcher}' to enable images" >&2
-        fi
+        ${lib.optionalString (mmprojFile != null) ''
+          MMPROJ_PATH="$HOME/models/${mmprojFile}"
+          if [ -f "$MMPROJ_PATH" ]; then
+            mmproj_args=(--mmproj "$MMPROJ_PATH")
+          else
+            echo "${name}: mmproj not found at $MMPROJ_PATH; serving text-only" >&2
+            echo "${name}: run '${fetcher}' to enable images" >&2
+          fi
+        ''}
         exec llama-server \
           --model "$MODEL_PATH" \
           --alias "${alias}" \
@@ -80,19 +82,17 @@ let
       fetcherName = "fetch-qwen-model";
       alias = "qwen3.6-27b";
       port = "17171";
-      ctxSize = "32768";
+      ctxSize = "163840";
       repo = "https://huggingface.co/unsloth/Qwen3.6-27B-GGUF/resolve/main";
       modelFile = "Qwen3.6-27B-UD-Q4_K_XL.gguf";
       modelDesc = "~17.6 GB";
-      mmprojFile = "mmproj-F16.gguf";
-      mmprojDesc = "~0.9 GB, vision projector";
     }
     {
       serverName = "gemma-server";
       fetcherName = "fetch-gemma-model";
       alias = "gemma-4-26b";
       port = "17172";
-      ctxSize = "16384";
+      ctxSize = "262144";
       repo = "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main";
       modelFile = "gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf";
       modelDesc = "~16 GB";
@@ -110,11 +110,11 @@ let
       name = m.serverName;
       inherit (m)
         modelFile
-        mmprojFile
         alias
         port
         ctxSize
         ;
+      mmprojFile = m.mmprojFile or null;
       fetcher = m.fetcherName;
     }
   ) models;
@@ -129,12 +129,12 @@ let
           url = "${m.repo}/${m.modelFile}";
           desc = m.modelDesc;
         }
-        {
-          file = m.mmprojFile;
-          url = "${m.repo}/${m.mmprojRemote or m.mmprojFile}";
-          desc = m.mmprojDesc;
-        }
-      ];
+      ]
+      ++ lib.optional (m ? mmprojFile) {
+        file = m.mmprojFile;
+        url = "${m.repo}/${m.mmprojRemote or m.mmprojFile}";
+        desc = m.mmprojDesc;
+      };
     }
   ) models;
 in
