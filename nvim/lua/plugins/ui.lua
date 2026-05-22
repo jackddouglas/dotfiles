@@ -19,6 +19,7 @@ return {
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",
+		event = "VeryLazy",
 		dependencies = { "ryanoasis/vim-devicons" },
 		opts = {
 			options = {
@@ -108,35 +109,50 @@ return {
 		version = false,
 		config = function()
 			local jj_cache = { value = "", time = 0 }
+			local jj_updating = false
+
+			local function refresh_jj()
+				jj_updating = true
+				vim.system({
+					"jj",
+					"log",
+					"--ignore-working-copy",
+					"-r",
+					"heads(::@ & bookmarks())",
+					"--no-graph",
+					"-T",
+					[[separate("", bookmarks, if(self.contained_in("@"), "", "~"))]],
+				}, { text = true }, function(bookmark_res)
+					local bookmark = bookmark_res.code == 0 and vim.trim(bookmark_res.stdout) or ""
+					vim.system({
+						"jj",
+						"log",
+						"--ignore-working-copy",
+						"-r",
+						"@",
+						"--no-graph",
+						"-T",
+						"change_id.shortest()",
+					}, { text = true }, function(id_res)
+						local value = ""
+						if id_res.code == 0 then
+							local change_id = vim.trim(id_res.stdout)
+							value = bookmark ~= "" and (bookmark .. " " .. change_id) or change_id
+						end
+						jj_cache.value = value
+						jj_cache.time = vim.uv.now()
+						jj_updating = false
+						vim.schedule(function()
+							vim.cmd("redrawstatus")
+						end)
+					end)
+				end)
+			end
+
 			local function jj_status()
-				local now = vim.uv.now()
-				if now - jj_cache.time < 3000 then
-					return jj_cache.value
+				if not jj_updating and vim.uv.now() - jj_cache.time >= 3000 then
+					refresh_jj()
 				end
-				local bookmark = vim.fn.system(
-					[[jj log --ignore-working-copy -r 'heads(::@ & bookmarks())' --no-graph -T 'separate("", bookmarks, if(self.contained_in("@"), "", "~"))' 2>/dev/null]]
-				)
-				if vim.v.shell_error ~= 0 then
-					jj_cache.value = ""
-					jj_cache.time = now
-					return jj_cache.value
-				end
-				local change_id = vim.fn.system(
-					[[jj log --ignore-working-copy -r @ --no-graph -T 'change_id.shortest()' 2>/dev/null]]
-				)
-				if vim.v.shell_error ~= 0 then
-					jj_cache.value = ""
-					jj_cache.time = now
-					return jj_cache.value
-				end
-				bookmark = vim.trim(bookmark)
-				change_id = vim.trim(change_id)
-				if bookmark ~= "" then
-					jj_cache.value = bookmark .. " " .. change_id
-				else
-					jj_cache.value = change_id
-				end
-				jj_cache.time = now
 				return jj_cache.value
 			end
 
@@ -171,6 +187,7 @@ return {
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
+		event = { "BufReadPost", "BufNewFile" },
 		---@module "ibl"
 		---@type ibl.config
 		opts = {},

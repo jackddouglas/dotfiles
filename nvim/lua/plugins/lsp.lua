@@ -4,6 +4,7 @@ return {
 	},
 	{
 		"j-hui/fidget.nvim",
+		event = "VeryLazy",
 		opts = {
 			notification = {
 				override_vim_notify = true,
@@ -12,6 +13,8 @@ return {
 	},
 	{
 		"mason-org/mason.nvim",
+		event = "VeryLazy",
+		cmd = { "Mason", "MasonInstall", "MasonUpdate", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
 		opts = {},
 		config = function(_, opts)
 			require("mason").setup(opts)
@@ -61,6 +64,8 @@ return {
 	},
 	{
 		"stevearc/conform.nvim",
+		event = { "BufWritePre" },
+		cmd = "ConformInfo",
 		opts = {
 			formatters_by_ft = {
 				css = { "prettierd" },
@@ -82,6 +87,7 @@ return {
 	},
 	{
 		"saghen/blink.cmp",
+		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = {
 			"saghen/blink.lib",
 			"rafamadriz/friendly-snippets",
