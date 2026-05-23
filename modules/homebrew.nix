@@ -5,7 +5,6 @@
 
     taps = [
       "sst/tap"
-      "TheBoredTeam/boring-notch"
       "typewhisper/tap"
     ];
 
@@ -25,7 +24,6 @@
       # Browsers
       "firefox"
       "helium-browser"
-      "orion"
 
       # Communication
       "signal"
@@ -71,7 +69,6 @@
       "typewhisper"
 
       # Utilities
-      "boring-notch"
       "clop"
       "homerow"
       "launchos"

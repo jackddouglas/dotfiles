@@ -114,7 +114,6 @@ in
       jq
       lunar
       mprocs
-      raycast
       rclone
       ripgrep
       wget
