@@ -72,8 +72,8 @@
       "clop"
       "homerow"
       "launchos"
-      "maccy"
       "proton-mail-bridge"
+      "raycast"
       "tailscale-app"
     ];
 
