@@ -21,8 +21,8 @@ o.fillchars = "eob: ,diff:╱"
 o.laststatus = 3
 
 -- scrolling
-o.scrolloff = 8
-o.sidescrolloff = 8
+o.scrolloff = 5
+o.sidescrolloff = 5
 
 -- search
 o.ignorecase = true
