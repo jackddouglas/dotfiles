@@ -82,7 +82,7 @@ let
       fetcherName = "fetch-qwen-model";
       alias = "qwen3.6-27b";
       port = "17171";
-      ctxSize = "163840";
+      ctxSize = "65536";
       repo = "https://huggingface.co/unsloth/Qwen3.6-27B-GGUF/resolve/main";
       modelFile = "Qwen3.6-27B-UD-Q4_K_XL.gguf";
       modelDesc = "~17.6 GB";
