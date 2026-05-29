@@ -20,6 +20,10 @@
     # minimal-tmux
     minimal-tmux.url = "github:niksingh710/minimal-tmux-status";
     minimal-tmux.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
+    # hermes-agent
+    hermes-agent.url = "github:NousResearch/hermes-agent";
+    hermes-agent.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -31,6 +35,7 @@
       home-manager,
       nix-homebrew,
       minimal-tmux,
+      hermes-agent,
     }:
     let
       configuration =
