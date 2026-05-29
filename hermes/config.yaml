@@ -1,0 +1,25 @@
+# Managed by home-manager (modules/hermes.nix). Do not edit ~/.hermes/config.yaml
+# directly; edit this source file and run darwin-rebuild switch.
+
+model:
+  default: "deepseek/deepseek-v4-flash"
+  provider: "openrouter"
+
+# Reuse the existing Tavily key (resolved from 1Password by the gateway launcher).
+# Tavily handles both search and single-page extract.
+web:
+  search_backend: "tavily"
+  extract_backend: "tavily"
+
+# Tool commands run on this machine; dangerous ones require manual approval
+# (delivered as Telegram approval buttons).
+terminal:
+  backend: "local"
+
+security:
+  redact_secrets: true
+  approvals:
+    mode: "manual"
+
+agent:
+  reasoning_effort: "medium"
