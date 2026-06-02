@@ -68,5 +68,27 @@
       "Bash(jj workspace root *)"
     ]
   },
-  "theme": "auto"
+  "theme": "auto",
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tmux set-option -w -t \"$TMUX_PANE\" @claude_alert '?' 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tmux set-option -w -t \"$TMUX_PANE\" @claude_alert '✓' 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
 }
