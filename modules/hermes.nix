@@ -36,6 +36,8 @@ in
   home.file = {
     ".hermes/config.yaml".source = ../hermes/config.yaml;
     ".hermes/SOUL.md".source = ../hermes/SOUL.md;
+    # Ensure the launchd log dir exists before the agent's StandardOut/ErrPath FDs open.
+    "Library/Logs/hermes/.keep".text = "";
   };
 
   launchd.agents.hermes-gateway = {
@@ -50,7 +52,6 @@ in
         HOME = config.home.homeDirectory;
         PATH =
           lib.makeBinPath [
-            pkgs._1password-cli
             pkgs.coreutils
             pkgs.bash
           ]
