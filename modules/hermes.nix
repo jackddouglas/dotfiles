@@ -21,13 +21,13 @@ let
     text = ''
       # Declare then export separately (shellcheck SC2155): keeps op's exit
       # status, so a failed read aborts under set -e and launchd retries.
-      OPENROUTER_API_KEY="$(op read 'op://Tonk/OpenRouter/credential')"        # <- OP_OPENROUTER_REF
+      OPENROUTER_API_KEY="$(op read 'op://Personal/OpenRouter Hermes/credential')"
       export OPENROUTER_API_KEY
-      TELEGRAM_BOT_TOKEN="$(op read 'op://Tonk/Hermes Telegram Bot/credential')" # <- OP_TELEGRAM_REF
+      TELEGRAM_BOT_TOKEN="$(op read 'op://Personal/Hermes Telegram Bot/credential')"
       export TELEGRAM_BOT_TOKEN
-      TAVILY_API_KEY="$(op read 'op://Personal/Tavily_API_Key/credential')"     # <- OP_TAVILY_REF
+      TAVILY_API_KEY="$(op read 'op://Personal/Tavily_API_Key/credential')"
       export TAVILY_API_KEY
-      export TELEGRAM_ALLOWED_USERS="REPLACE_WITH_TELEGRAM_USER_ID"             # <- TELEGRAM_USER_ID
+      export TELEGRAM_ALLOWED_USERS="6659591467"
       mkdir -p "${logDir}"
       exec hermes gateway run
     '';
