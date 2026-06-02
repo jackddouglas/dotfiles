@@ -214,6 +214,7 @@ in
     (import ./modules/jujutsu.nix { inherit currentSigningKey; })
     ./modules/fish.nix
     ./modules/llm.nix
+    ./modules/hermes.nix
   ];
 
   programs = {
