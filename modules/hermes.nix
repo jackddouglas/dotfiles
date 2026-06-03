@@ -59,6 +59,7 @@ in
           lib.makeBinPath [
             pkgs.coreutils
             pkgs.bash
+            pkgs.nodejs_22
           ]
           + ":/usr/bin:/bin:/usr/sbin:/sbin";
       };
