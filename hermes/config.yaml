@@ -41,3 +41,27 @@ auxiliary:
   web_extract:
     provider: "openrouter"
     model: "google/gemini-2.5-flash"
+
+# Read-only access to the Obsidian vault via the filesystem MCP server.
+# Only read tools are exposed (tools.include); no write/edit/create/move.
+mcp_servers:
+  vault:
+    command: npx
+    args:
+    - '@modelcontextprotocol/server-filesystem'
+    - /Users/jackdouglas/Library/Mobile Documents/iCloud~md~obsidian/Documents/JDD
+    env:
+      npm_config_yes: 'true'
+    tools:
+      include:
+      - read_file
+      - read_text_file
+      - read_media_file
+      - read_multiple_files
+      - list_directory
+      - list_directory_with_sizes
+      - directory_tree
+      - search_files
+      - get_file_info
+      - list_allowed_directories
+    enabled: true
