@@ -1,11 +1,7 @@
-# Managed by home-manager (modules/hermes.nix). Do not edit ~/.hermes/config.yaml
-# directly; edit this source file and run darwin-rebuild switch.
-
 model:
   default: "deepseek/deepseek-v4-flash"
   provider: "openrouter"
 
-# Reuse the existing Tavily key (resolved from 1Password by the gateway launcher).
 # Tavily handles both search and single-page extract.
 web:
   search_backend: "tavily"
@@ -23,3 +19,25 @@ security:
 
 agent:
   reasoning_effort: "medium"
+
+# Route side-LLM tasks to a cheap model (uses the existing OpenRouter key).
+# Embedding is intentionally omitted until semantic memory/search is enabled.
+auxiliary:
+  vision:
+    provider: "openrouter"
+    model: "google/gemini-2.5-flash"
+  compression:
+    provider: "openrouter"
+    model: "google/gemini-2.5-flash"
+  curator:
+    provider: "openrouter"
+    model: "google/gemini-2.5-flash"
+  title:
+    provider: "openrouter"
+    model: "google/gemini-2.5-flash"
+  session_search:
+    provider: "openrouter"
+    model: "google/gemini-2.5-flash"
+  web_extract:
+    provider: "openrouter"
+    model: "google/gemini-2.5-flash"
