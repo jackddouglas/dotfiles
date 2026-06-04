@@ -23,6 +23,7 @@
     casks = [
       # Browsers
       "firefox"
+      "google-chrome"
       "helium-browser"
 
       # Communication
