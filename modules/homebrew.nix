@@ -70,6 +70,7 @@
       "typewhisper"
 
       # Utilities
+      "cleanshot"
       "clop"
       "homerow"
       "launchos"
