@@ -6,6 +6,7 @@
     "superpowers@claude-plugins-official": true
   },
   "permissions": {
+    "defaultMode": "auto",
     "allow": [
       "Read(*)",
       "Edit(*)",
