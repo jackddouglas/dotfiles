@@ -2,17 +2,11 @@
   pkgs,
   lib,
   inputs,
-  hostname ? "laptop",
   ...
 }:
 
 let
-  signingKeys = {
-    jack-tonk = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFHCWnyPpHbStXGTg9CQrx14UFI5y5HaTXwX++REBGqu";
-    laptop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMcpIY0nUXu1B1zavoKggYDBmG8pHHFKXIv1Ya9fVF3";
-  };
-
-  currentSigningKey = signingKeys.${hostname};
+  signingKeyFile = "/Users/jackdouglas/.ssh/id_ed25519";
 
   ice-app = pkgs.stdenvNoCC.mkDerivation {
     pname = "ice";
@@ -211,7 +205,7 @@ in
   imports = [
     (import ./modules/tmux.nix { inherit pkgs inputs; })
     ./modules/yazi.nix
-    (import ./modules/jujutsu.nix { inherit currentSigningKey; })
+    (import ./modules/jujutsu.nix { inherit signingKeyFile; })
     ./modules/fish.nix
     ./modules/llm.nix
     ./modules/hermes.nix
@@ -257,8 +251,7 @@ in
         };
         commit.gpgsign = true;
         gpg.format = "ssh";
-        gpg.ssh.program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
-        user.signingkey = currentSigningKey;
+        user.signingkey = signingKeyFile;
         init.defaultBranch = "main";
         pull.rebase = true;
         push.autoSetupRemote = true;

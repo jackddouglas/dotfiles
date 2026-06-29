@@ -1,4 +1,4 @@
-{ currentSigningKey, ... }:
+{ signingKeyFile, ... }:
 {
   xdg.configFile."jjui/config.toml".text = ''
     [preview]
@@ -57,7 +57,7 @@
       signing = {
         behavior = "own";
         backend = "ssh";
-        key = currentSigningKey;
+        key = signingKeyFile;
       };
 
       git = {

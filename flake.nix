@@ -286,7 +286,6 @@
               users.jackdouglas = import ./home.nix;
               extraSpecialArgs = {
                 inherit inputs;
-                hostname = "jack-tonk";
               };
             };
           }
@@ -320,7 +319,6 @@
               users.jackdouglas = import ./home.nix;
               extraSpecialArgs = {
                 inherit inputs;
-                hostname = "laptop";
               };
             };
           }
