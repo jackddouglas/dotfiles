@@ -27,6 +27,7 @@
       "helium-browser"
 
       # Communication
+      "discord"
       "signal"
       "whatsapp"
 
@@ -76,6 +77,7 @@
       "launchos"
       "proton-mail-bridge"
       "raycast"
+      "rectangle"
       "tailscale-app"
     ];
 

@@ -4,7 +4,7 @@ let
 in
 {
   services.aerospace = {
-    enable = true;
+    enable = false;
     package = pkgs.aerospace;
 
     settings = {

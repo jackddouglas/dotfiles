@@ -114,7 +114,6 @@ in
       yt-dlp
 
       # communication
-      discord
       slack
       telegram-desktop
       zoom-us
