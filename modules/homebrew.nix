@@ -35,6 +35,7 @@
       "figma"
 
       # Development
+      "chatgpt"
       "claude"
       "ghostty"
       "zed"
