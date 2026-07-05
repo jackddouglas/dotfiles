@@ -267,6 +267,22 @@ in
       };
     };
 
+    ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      includes = [ "~/.orbstack/ssh/config" ];
+      matchBlocks = {
+        "github.com" = {
+          identityAgent = "none";
+          identityFile = signingKeyFile;
+          identitiesOnly = true;
+        };
+        "*" = lib.hm.dag.entryAfter [ "github.com" ] {
+          identityAgent = "/Users/jackdouglas/.1password/agent.sock";
+        };
+      };
+    };
+
     gh = {
       enable = true;
       settings = {
