@@ -37,6 +37,7 @@
       # Development
       "chatgpt"
       "claude"
+      "codex"
       "ghostty"
       "zed"
 

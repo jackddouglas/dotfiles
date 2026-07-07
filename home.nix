@@ -53,7 +53,6 @@ in
       # dev tools
       awscli2
       cocoapods
-      codex
       difftastic
       docker
       docker-compose
