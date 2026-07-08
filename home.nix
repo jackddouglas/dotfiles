@@ -152,6 +152,9 @@ in
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;
       ".claude/commands".source = ./claude/commands;
+      ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
+      ".codex/hooks.json".source = ./codex/hooks.json;
+      ".codex/prompts".source = ./claude/commands;
       ".config/zed/settings.json".source = ./zed/settings.json;
       ".config/zed/keymap.json".source = ./zed/keymap.json;
       ".config/zed/themes".source = ./zed/themes;

@@ -13,7 +13,7 @@
         extraConfig = ''
           set -g @minimal-tmux-fg "#191919"
           set -g @minimal-tmux-bg "#C9C9C9"
-          set -g @minimal-tmux-window-status-format " #I:#{?#{m:ssh*,#{pane_current_command}},#(ps -t #{pane_tty} -o args= | grep \"^ssh \" | sed \"s/.* //\"),#W}#{@claude_alert}#{?window_bell_flag,!,}#{?window_activity_flag,*,} "
+          set -g @minimal-tmux-window-status-format " #I:#{?#{m:ssh*,#{pane_current_command}},#(ps -t #{pane_tty} -o args= | grep \"^ssh \" | sed \"s/.* //\"),#W}#{@agent_alert}#{?window_bell_flag,!,}#{?window_activity_flag,*,} "
         '';
       }
     ];
@@ -43,10 +43,10 @@
       # globally; enable per-window with `setw monitor-activity on` when wanted)
       setw -g monitor-bell on
 
-      # per-window marker set by Claude Code hooks, cleared when the window is focused
-      set -g @claude_alert ""
-      set-hook -g session-window-changed 'set -w @claude_alert ""'
-      set-hook -g pane-focus-in 'set -w @claude_alert ""'
+      # per-window marker set by agent hooks, cleared when the window is focused
+      set -g @agent_alert ""
+      set-hook -g session-window-changed 'set -w @agent_alert ""'
+      set-hook -g pane-focus-in 'set -w @agent_alert ""'
 
       # increase lines of window history
       set-option -g history-limit 5000

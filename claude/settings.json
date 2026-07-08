@@ -76,7 +76,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "tmux set-option -w -t \"$TMUX_PANE\" @claude_alert '?' 2>/dev/null || true"
+            "command": "tmux set-option -w -t \"$TMUX_PANE\" @agent_alert '?' 2>/dev/null || true"
           }
         ]
       }
@@ -86,7 +86,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "tmux set-option -w -t \"$TMUX_PANE\" @claude_alert '✓' 2>/dev/null || true"
+            "command": "tmux set-option -w -t \"$TMUX_PANE\" @agent_alert '✓' 2>/dev/null || true"
           }
         ]
       }
