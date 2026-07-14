@@ -132,6 +132,11 @@ in
       ".config/nvim".source = ./nvim;
       ".config/tmuxinator".source = ./tmuxinator;
       "Library/Application Support/com.mitchellh.ghostty/config".source = ./ghostty/config;
+      "Library/Application Support/lazygit/config.yml".source =
+        (pkgs.formats.yaml { }).generate "lazygit-config.yml"
+          {
+            gui.theme.selectedLineBgColor = [ "reverse" ];
+          };
       "Library/Application Support/abnerworks.Typora/themes/flexoki-light.css".source =
         flexoki-typora-css;
       ".config/ghostty/themes".source = ./ghostty/themes;
