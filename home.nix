@@ -157,6 +157,7 @@ in
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;
       ".claude/commands".source = ./claude/commands;
+      ".claude/skills/journal".source = ./claude/skills/journal;
       ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
       ".codex/hooks.json".source = ./codex/hooks.json;
       ".codex/prompts".source = ./claude/commands;
