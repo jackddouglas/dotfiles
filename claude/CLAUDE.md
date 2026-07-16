@@ -28,6 +28,23 @@ Write clearly and concisely. The goal is prose a sharp human would write.
 - Use `nix fmt` / `nixfmt` for nix files
 - Keep things minimal and explicit
 
+## Journal
+
+I keep a daily note at `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/JDD/40 calendar/YYYY-MM-DD.md`.
+
+When something worth recording happens, say so and offer to capture it:
+
+- an architectural decision, especially where an alternative was rejected
+- a feature landing end to end
+- a design settling
+- an open question worth returning to
+- changing my mind about an earlier call
+- a bug whose reason was instructive
+
+Not routine edits, small fixes, answered questions, or exploration. One offer per moment — don't re-raise something I passed on.
+
+Never write to the vault unless I say yes. When I do: append a folded `> [!robot]-` callout at the end of the note, facts not voice, and leave my prose untouched.
+
 ## VCS
 
 Use git end-to-end. Use `gh` for GitHub operations such as creating PRs.
