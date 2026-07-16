@@ -104,7 +104,6 @@ in
       istat-menus
       itsycal
       jq
-      lunar
       mprocs
       rclone
       ripgrep

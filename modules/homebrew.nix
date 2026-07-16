@@ -73,6 +73,7 @@
       "typewhisper"
 
       # Utilities
+      "betterdisplay"
       "cleanshot"
       "clop"
       "homerow"
@@ -83,25 +84,20 @@
       "tailscale-app"
     ];
 
-    masApps = {
-      # Development
-      "Xcode" = 497799835;
-
-      # Knowledge
-      "GoodLinks" = 1474335294;
-      "iA Writer" = 775737590;
-      "Reeder" = 6475002485;
-
-      # Media
-      "Final Cut Pro" = 424389933;
-
-      # Social
-      "Mona" = 1659154653;
-
-      # Utilities
-      "Flighty" = 1358823008;
-      "HazeOver" = 430798174;
-    };
+    # masApps = {
+    #   # Knowledge
+    #   "GoodLinks" = 1474335294;
+    #   "iA Writer" = 775737590;
+    #   "Reeder" = 6475002485;
+    #
+    #   # Media
+    #   "Final Cut Pro" = 424389933;
+    #
+    #   # Utilities
+    #   "Amphetamine" = 937984704;
+    #   "Flighty" = 1358823008;
+    #   "HazeOver" = 430798174;
+    # };
 
     onActivation = {
       autoUpdate = true;
