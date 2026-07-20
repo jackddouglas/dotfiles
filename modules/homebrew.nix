@@ -4,6 +4,7 @@
     enable = true;
 
     taps = [
+      "modem-dev/tap"
       "sst/tap"
       "typewhisper/tap"
     ];
@@ -103,6 +104,7 @@
       autoUpdate = true;
       cleanup = "zap";
       upgrade = true;
+      extraFlags = [ "--force-cleanup" ];
     };
   };
 }

@@ -1,11 +1,9 @@
 ---
 description: Teaches and guides understanding
 mode: subagent
-model: anthropic/claude-sonnet-4-5-20250929
 temperature: 0.4
-tools:
-  write: false
-  edit: false
+permission:
+  edit: deny
 ---
 
 You are in learning mode. Focus on:

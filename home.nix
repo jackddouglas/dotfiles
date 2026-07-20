@@ -145,8 +145,10 @@ in
       ".stack/config.yaml".source = ./stack/config.yaml;
       ".config/opencode/agent".source = ./opencode/agent;
       ".config/opencode/commands".source = ./opencode/commands;
+      ".config/opencode/plugins".source = ./opencode/plugins;
       ".config/opencode/providers".source = ./opencode/providers;
       ".config/opencode/opencode.json".source = ./opencode/opencode.json;
+      ".config/opencode/AGENTS.md".source = ./claude/CLAUDE.md;
       ".pi/agent/AGENTS.md".source = ./pi/AGENTS.md;
       ".pi/agent/settings.json".source = ./pi/settings.json;
       ".pi/agent/models.json".source = ./pi/models.json;

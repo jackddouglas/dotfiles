@@ -1,11 +1,9 @@
 ---
 description: Debugs code and offers diagnoses
 mode: subagent
-model: anthropic/claude-sonnet-4-5-20250929
 temperature: 0.1
-tools:
-  write: false
-  edit: false
+permission:
+  edit: deny
 ---
 
 You are in debug mode. Focus on:
