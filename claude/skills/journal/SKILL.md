@@ -33,12 +33,13 @@ Link only to notes that already exist. Never invent a `[[link]]` — orphans lit
 
 ```markdown
 > [!robot]- claude · 14:32 · tonk/runtime
-> **Decision:** single-branch FAB on profile `meta`.
-> **Rejected:** branch-addressable bridge — every call becomes an
-> authorization surface; loses `tonk-display`.
-> **Turned on:** Phase 2 is a closed set; a general routing layer
-> doesn't earn its keep against that.
-> **Open:** no automatic re-stamp.
+> The FAB now hangs off profile `meta` as a single branch. The alternative was a
+> branch-addressable bridge, and it lost on authorization surface — every call through it
+> becomes something that has to be checked, and it drops `tonk-display` on the way. What
+> actually decided it was that Phase 2 is a closed set: a general routing layer has nothing
+> to route that a single branch doesn't already reach, so it never earns its cost.
+>
+> Still open: nothing re-stamps automatically.
 ```
 
 Header is `claude · HH:MM · <repo>/<area>`. Local time. Take repo/area from cwd — the vault
@@ -46,25 +47,29 @@ spans projects, so say which one this came from.
 
 The trailing `-` in `[!robot]-` is what makes it fold. Keep it.
 
-Fields — use only the ones that apply, never pad:
+## How to write it
 
-| Field | Holds |
-|---|---|
-| `Decision:` | what was settled |
-| `Rejected:` | the alternative, and why it lost |
-| `Turned on:` | the hinge — what actually decided it |
-| `Built:` | what landed |
-| `Open:` | loose ends |
-| `Discuss:` | needs a conversation |
+Prose. Full sentences, connected by their logic — not labelled fields, not a bullet list, not
+bold lead-ins standing in for headings. One paragraph is usually right; two if there's a
+genuine second thread. Every line of the callout stays prefixed with `> `.
 
-## What to capture
+The point of prose here is that it forces the connective tissue. A field labelled `Rejected:`
+lets you name the alternative without saying what its rejection cost. A sentence doesn't —
+"it lost on X, which means giving up Y" has to state the link. That link is the part worth
+keeping.
 
-The reasoning, not just the conclusion. The conclusion survives on its own; why the
-alternative lost is the part that's gone by evening. If something was rejected, say what
-rejecting it cost.
+Write the reasoning, not just the conclusion. The conclusion survives on its own; why the
+alternative lost is what's gone by evening.
 
 Be specific. Name the file, the branch, the function. "Fixed the render bug" is worthless in
 a month. "The guard was a `data-` attribute and `cloneNode` drops it" is the entry.
+
+Keep it short. Longform means connected, not padded — three or four sentences that carry
+their own weight beat a page of throat-clearing. If there's a loose end, close with it in a
+sentence rather than a field.
+
+Still facts, not voice. Prose is not an invitation to flourish — don't imitate him, and don't
+reach for style to fill out a paragraph.
 
 ## Rules
 
