@@ -34,7 +34,7 @@
     enable = true;
     settings = {
       user = {
-        email = "cincomc@proton.me";
+        email = "jack@jackddouglas.com";
         name = "Jack D. Douglas";
       };
 
