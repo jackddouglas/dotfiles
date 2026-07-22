@@ -44,34 +44,55 @@ return {
 		end,
 	},
 	{
-		"stevearc/oil.nvim",
-		---@module 'oil'
-		---@type oil.SetupOpts
+		"nvim-mini/mini.files",
+		version = false,
 		opts = {
-			lsp_file_methods = {
-				autosave_changes = "unmodified",
-			},
-			float = {
-				padding = 2,
-				max_width = 0.8,
-				max_height = 0.8,
-				border = "single",
-			},
-			keymaps = {
-				["gy"] = { "actions.yank_entry", opts = { modify = ":." }, desc = "Yank relative path" },
-				["gY"] = { "actions.yank_entry", desc = "Yank absolute path" },
+			windows = {
+				preview = true,
+				width_focus = 40,
+				width_nofocus = 20,
+				width_preview = 60,
 			},
 		},
+		config = function(_, opts)
+			require("mini.files").setup(opts)
+
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "MiniFilesWindowOpen",
+				callback = function(args)
+					vim.api.nvim_win_set_config(args.data.win_id, { border = "single" })
+				end,
+			})
+
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "MiniFilesBufferCreate",
+				callback = function(args)
+					local function yank(mods)
+						return function()
+							local entry = MiniFiles.get_fs_entry()
+							if entry == nil then
+								return
+							end
+							vim.fn.setreg(vim.v.register, vim.fn.fnamemodify(entry.path, mods))
+						end
+					end
+					local buf = args.data.buf_id
+					vim.keymap.set("n", "gy", yank(":."), { buffer = buf, desc = "Yank relative path" })
+					vim.keymap.set("n", "gY", yank(":p"), { buffer = buf, desc = "Yank absolute path" })
+				end,
+			})
+		end,
 		keys = {
 			{
 				"<leader>e",
 				function()
-					local oil = require("oil")
-					local config = require("oil.config")
-					config.float.preview_split = vim.o.columns < 120 and "below" or "right"
-					oil.open_float(nil, { preview = {} })
+					local path = vim.api.nvim_buf_get_name(0)
+					if vim.bo.buftype ~= "" or vim.uv.fs_stat(path) == nil then
+						path = nil
+					end
+					MiniFiles.open(path, true, { windows = { preview = vim.o.columns >= 120 } })
 				end,
-				desc = "Oil",
+				desc = "Files",
 			},
 		},
 		dependencies = { { "nvim-mini/mini.icons", opts = {} } },
