@@ -4,14 +4,12 @@
     enable = true;
 
     taps = [
-      "modem-dev/tap"
       "sst/tap"
       "typewhisper/tap"
     ];
 
     brews = [
       # Development
-      "modem-dev/tap/hunk"
       "opencode"
       "pi-coding-agent"
       "tree-sitter-cli"
