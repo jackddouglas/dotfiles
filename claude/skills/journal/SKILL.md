@@ -1,6 +1,6 @@
 ---
 name: journal
-description: Use when appending a captured decision, design, or open question to Jack's Obsidian daily note — after he accepts a journal nudge, or when he runs /journal directly.
+description: Use when appending a captured decision, design, or open question to Jack's Obsidian daily note — after he accepts a journal nudge, or when he invokes the journal directly.
 ---
 
 # Journal
@@ -32,7 +32,7 @@ Link only to notes that already exist. Never invent a `[[link]]` — orphans lit
 ## Format
 
 ```markdown
-> [!robot]- claude · 14:32 · tonk/runtime
+> [!robot]- <agent> · 14:32 · tonk/runtime
 > The FAB now hangs off profile `meta` as a single branch. The alternative was a
 > branch-addressable bridge, and it lost on authorization surface — every call through it
 > becomes something that has to be checked, and it drops `tonk-display` on the way. What
@@ -42,8 +42,9 @@ Link only to notes that already exist. Never invent a `[[link]]` — orphans lit
 > Still open: nothing re-stamps automatically.
 ```
 
-Header is `claude · HH:MM · <repo>/<area>`. Local time. Take repo/area from cwd — the vault
-spans projects, so say which one this came from.
+Header is `<agent> · HH:MM · <repo>/<area>`. Use the lowercase agent name (`claude`, `codex`,
+`opencode`, or `pi`) and local time. Take repo/area from cwd — the vault spans projects, so
+say which one this came from.
 
 The trailing `-` in `[!robot]-` is what makes it fold. Keep it.
 

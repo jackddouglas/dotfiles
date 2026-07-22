@@ -147,18 +147,22 @@ in
       ".config/opencode/commands".source = ./opencode/commands;
       ".config/opencode/plugins".source = ./opencode/plugins;
       ".config/opencode/providers".source = ./opencode/providers;
-      ".config/opencode/opencode.json".source = ./opencode/opencode.json;
       ".config/opencode/AGENTS.md".source = ./claude/CLAUDE.md;
       ".pi/agent/AGENTS.md".source = ./pi/AGENTS.md;
       ".pi/agent/settings.json".source = ./pi/settings.json;
       ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions".source = ./pi/extensions;
       ".pi/agent/prompts".source = ./pi/prompts;
-      ".pi/agent/skills".source = ./pi/skills;
+      ".pi/agent/skills" = {
+        source = ./pi/skills;
+        recursive = true;
+      };
+      ".pi/agent/skills/journal".source = ./claude/skills/journal;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;
       ".claude/commands".source = ./claude/commands;
       ".claude/skills/journal".source = ./claude/skills/journal;
+      ".agents/skills/journal".source = ./claude/skills/journal;
       ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
       ".codex/hooks.json".source = ./codex/hooks.json;
       ".codex/prompts".source = ./claude/commands;

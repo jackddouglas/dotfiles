@@ -8,6 +8,16 @@
     interactiveShellInit = ''
       set fish_greeting # Disable greeting
     '';
+    functions.codex = {
+      wraps = "codex";
+      body = ''
+        command codex \
+          --sandbox workspace-write \
+          --ask-for-approval on-request \
+          --config 'approvals_reviewer="auto_review"' \
+          $argv
+      '';
+    };
     plugins = [
       {
         name = "fzf.fish";
