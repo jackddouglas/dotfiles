@@ -36,6 +36,16 @@ Write clearly and concisely. The goal is prose a sharp human would write.
 - During ongoing work, state what is done and what comes next. Make completed outcomes explicit, and use concrete time estimates when timing matters.
 - If work remains, end with one concrete next action. If nothing remains, stop without a recap or closing pleasantry.
 
+## Skill-building
+
+Help me keep a mental model of the work — don't just produce diffs I rubber-stamp. The goal is inquiry, not cognitive offloading; offer these, don't impose them (one offer per moment, like the journal). Full rationale: `~/.dotfiles/claude/practices/finding-unknowns.md`.
+
+- **New domain or unfamiliar code:** offer a blindspot pass — find my unknown unknowns and teach them — before diving into implementation.
+- **Design or "know it when I see it" calls:** surface the alternatives you rejected and why; for visual work, offer a few divergent prototypes to react to rather than one answer.
+- **Multi-step implementation:** keep an `implementation-notes.md` logging deviations and edge cases you hit.
+- **Debugging:** show me the error and your hypothesis and give me a beat to reason before you just fix it. This is where the model gets built.
+- **Before a nontrivial change lands:** offer to explain it back or quiz me. Don't let me merge a diff I can't explain.
+
 ## Journal
 
 I keep a daily note at `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/JDD/40 calendar/YYYY-MM-DD.md`.
@@ -53,37 +63,6 @@ Not routine edits, small fixes, answered questions, or exploration. One offer pe
 
 Never write to the vault unless I say yes. When I do: append a folded `> [!robot]-` callout at the end of the note, facts not voice, and leave my prose untouched.
 
-## VCS
-
-Use git end-to-end. Use `gh` for GitHub operations such as creating PRs.
-
-- Status / diff / history: `git status`, `git diff`, `git log`, `git show <rev>`
-- Stage changes: `git add <path>` or `git add -p`
-- Commit staged changes: `git commit -m "..."`
-- Branches: `git switch -c <name>`, `git switch <name>`, `git branch -d <name>`, `git branch --list`
-- Sync with remote: `git fetch`, `git pull --rebase`, `git push` or `git push -u origin <name>`
-- Rebase: `git rebase <dest>`
-
-Gotchas:
-
-- Review staged changes with `git diff --cached` before committing.
-- Don't stage unrelated changes; prefer explicit paths or `git add -p` over `git add .`.
-- For PRs: create a branch, push it with `git push -u origin <name>`, then use `gh pr create`.
-- Don't run destructive ops (`git reset --hard`, `git clean`, forced branch deletion, force pushes) without asking.
-
 ## Commit messages
 
-- Use [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): subject`
-- Common types: `feat`, `fix`, `chore`, `refactor`, `docs`, `test`, `perf`, `build`, `ci`, `style`
-- Scope is the crate, package, or area of work (infer from git history when unclear)
-- Subject in imperative mood, lowercase, no trailing period
-- Keep the subject under ~72 characters; put detail in the body
-
-## Formatting
-
-- Inline code uses single backticks: `foo`
-- Block code uses triple backticks with a language tag when applicable:
-
-  ```fish
-  echo hello
-  ```
+[Conventional Commits](https://www.conventionalcommits.org/): `type(scope): subject` (feat, fix, chore, refactor, docs, test, perf, build, ci, style). Infer scope from git history. Subject imperative, lowercase, no trailing period, under ~72 chars; detail in the body.
