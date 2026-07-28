@@ -149,14 +149,10 @@ in
       ".config/opencode/plugins".source = ./opencode/plugins;
       ".config/opencode/providers".source = ./opencode/providers;
       ".config/opencode/AGENTS.md".source = ./claude/CLAUDE.md;
-      ".pi/agent/AGENTS.md".source = ./claude/CLAUDE.md;
+      ".pi/agent/AGENTS.md".source = ./pi/AGENTS.md;
       ".pi/agent/settings.json".source = ./pi/settings.json;
       ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions".source = ./pi/extensions;
-      ".pi/agent/skills" = {
-        source = ./pi/skills;
-        recursive = true;
-      };
       ".pi/agent/skills/journal".source = ./claude/skills/journal;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;

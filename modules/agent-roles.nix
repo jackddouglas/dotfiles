@@ -1,5 +1,5 @@
 { lib, ... }:
-# Agent roles and commands, authored once and emitted per harness.
+# Agent roles and commands, authored once and emitted for Claude, Codex, and OpenCode.
 #
 # Prose lives in ../agents/{roles,commands}/<name>.md and is shared verbatim.
 # Everything that differs between harnesses -- frontmatter dialect, whether
@@ -17,8 +17,8 @@ let
   rolesDir = ../agents/roles;
   commandsDir = ../agents/commands;
 
-  # Tool posture, expressed per harness. Codex and pi have no per-prompt
-  # permission model, so there the posture is carried by the prose alone.
+  # Tool posture, expressed per harness. Codex has no per-prompt permission
+  # model, so there the posture is carried by the prose alone.
   postures = {
     read = {
       claudeTools = "Read, Grep, Glob, Bash";
@@ -216,37 +216,12 @@ let
     else
       withTask e.body;
 
-  piPrompt =
-    name: e:
-    fm [
-      "name: ${name}"
-      "description: ${e.description}"
-      "argument-hint: ${e.argumentHint}"
-    ]
-    + "\n"
-    + (
-      if isDispatch e then
-        ''
-          Delegate this to a subagent with the `subagent` tool, giving it a fresh context and
-          the brief below. Report what it found. Do not do the work yourself.
-
-          If no subagent tool is available, do the work here under the same brief.
-
-          ---
-
-        ''
-        + withTask e.body
-      else
-        withTask e.body
-    );
-
   mkFiles =
     name: e:
     {
       ".claude/commands/${name}.md".text = claudeCommand name e;
       ".config/opencode/commands/${name}.md".text = opencodeCommand name e;
       ".codex/prompts/${name}.md".text = codexPrompt name e;
-      ".pi/agent/prompts/${name}.md".text = piPrompt name e;
     }
     // optionalAttrs (isDispatch e) {
       ".claude/agents/${name}.md".text = claudeAgent name e;
