@@ -143,8 +143,11 @@ in
         theme = "auto"
       '';
       ".stack/config.yaml".source = ./stack/config.yaml;
-      ".config/opencode/agent".source = ./opencode/agent;
-      ".config/opencode/commands".source = ./opencode/commands;
+      # Roles and commands under agent/ and commands/ come from modules/agent-roles.nix.
+      ".config/opencode/agent/debug.md".source = ./opencode/agent/debug.md;
+      ".config/opencode/agent/docs.md".source = ./opencode/agent/docs.md;
+      ".config/opencode/agent/learn.md".source = ./opencode/agent/learn.md;
+      ".config/opencode/agent/review.md".source = ./opencode/agent/review.md;
       ".config/opencode/plugins".source = ./opencode/plugins;
       ".config/opencode/providers".source = ./opencode/providers;
       ".config/opencode/AGENTS.md".source = ./claude/CLAUDE.md;
@@ -152,7 +155,6 @@ in
       ".pi/agent/settings.json".source = ./pi/settings.json;
       ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions".source = ./pi/extensions;
-      ".pi/agent/prompts".source = ./pi/prompts;
       ".pi/agent/skills" = {
         source = ./pi/skills;
         recursive = true;
@@ -160,12 +162,10 @@ in
       ".pi/agent/skills/journal".source = ./claude/skills/journal;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;
-      ".claude/commands".source = ./claude/commands;
       ".claude/skills/journal".source = ./claude/skills/journal;
       ".agents/skills/journal".source = ./claude/skills/journal;
       ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
       ".codex/hooks.json".source = ./codex/hooks.json;
-      ".codex/prompts".source = ./claude/commands;
       ".config/zed/settings.json".source = ./zed/settings.json;
       ".config/zed/keymap.json".source = ./zed/keymap.json;
       ".config/zed/themes".source = ./zed/themes;
@@ -221,6 +221,7 @@ in
     ./modules/fish.nix
     ./modules/llm.nix
     ./modules/hermes.nix
+    ./modules/agent-roles.nix
   ];
 
   programs = {

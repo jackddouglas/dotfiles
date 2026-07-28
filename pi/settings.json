@@ -2,5 +2,12 @@
   "defaultProvider": "qwen-server",
   "defaultModel": "qwen3.6-27b",
   "defaultThinkingLevel": "medium",
-  "enabledModels": ["qwen3.6-27b", "gemma-4-26b"]
+  "enabledModels": ["qwen3.6-27b", "gemma-4-26b"],
+  "packages": [
+    {
+      "source": "npm:pi-subagents",
+      "autoload": false,
+      "extensions": ["*"]
+    }
+  ]
 }
