@@ -5,6 +5,7 @@
 - Inspect repository instructions, existing patterns, and local changes before editing.
 - Keep changes narrow and preserve unrelated work.
 - Keep durable plans and task state in ordinary repository files.
+- Run servers, watchers, and other long-lived commands in named tmux windows or panes. Keep their output visible and report how to inspect or stop them.
 - Show errors and the current hypothesis before fixing non-obvious failures.
 - Report uncertainty, failed checks, and assumptions directly.
 - Avoid destructive Git operations.

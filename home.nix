@@ -153,6 +153,7 @@ in
       ".pi/agent/settings.json".source = ./pi/settings.json;
       ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions".source = ./pi/extensions;
+      ".pi/agent/prompts/explain.md".source = ./agents/commands/explain.md;
       ".pi/agent/skills/journal".source = ./claude/skills/journal;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;
