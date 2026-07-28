@@ -15,6 +15,9 @@
           --sandbox workspace-write \
           --ask-for-approval on-request \
           --config 'approvals_reviewer="auto_review"' \
+          --config 'tui.notifications=["agent-turn-complete"]' \
+          --config 'tui.notification_method="bel"' \
+          --config 'tui.notification_condition="always"' \
           $argv
       '';
     };

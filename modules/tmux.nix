@@ -43,6 +43,10 @@
       # globally; enable per-window with `setw monitor-activity on` when wanted)
       setw -g monitor-bell on
 
+      # Codex emits BEL only after its TUI has finished processing a turn and
+      # confirmed that no queued follow-up or active goal will continue it.
+      set-hook -g alert-bell 'if-shell -F "#{m:codex*,#{pane_current_command}}" "set-option -w @agent_alert ✓" ""'
+
       # per-window marker set by agent hooks, cleared when the window is focused
       set -g @agent_alert ""
       set-hook -g session-window-changed 'set -w @agent_alert ""'
