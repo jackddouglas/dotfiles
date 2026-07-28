@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 function setTmuxAlert(marker: string): void {
   const pane = process.env.TMUX_PANE;
@@ -15,7 +15,11 @@ function setTmuxAlert(marker: string): void {
 }
 
 export default function (pi: ExtensionAPI) {
-  pi.on("agent_end", async () => {
+  pi.on("agent_start", async () => {
+    setTmuxAlert("");
+  });
+
+  pi.on("agent_settled", async () => {
     setTmuxAlert("✓");
   });
 }

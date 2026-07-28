@@ -149,7 +149,8 @@ in
       ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions".source = ./pi/extensions;
       ".pi/agent/prompts/explain.md".source = ./agents/commands/explain.md;
-      ".pi/agent/skills/journal".source = ./claude/skills/journal;
+      ".pi/agent/prompts/review.md".source = ./pi/prompts/review.md;
+      ".pi/agent/references/reviewer.md".source = ./agents/roles/reviewer.md;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;
       ".claude/skills/journal".source = ./claude/skills/journal;
