@@ -89,7 +89,7 @@ vim.lsp.config("nixd", {
 		end
 		local s = nixd_settings(root)
 		client.settings = s
-		client.notify("workspace/didChangeConfiguration", { settings = s })
+		client:notify("workspace/didChangeConfiguration", { settings = s })
 	end,
 })
 
