@@ -146,8 +146,6 @@ in
       # Roles and commands under agent/ and commands/ come from modules/agent-roles.nix.
       ".config/opencode/agent/debug.md".source = ./opencode/agent/debug.md;
       ".config/opencode/agent/docs.md".source = ./opencode/agent/docs.md;
-      ".config/opencode/agent/learn.md".source = ./opencode/agent/learn.md;
-      ".config/opencode/agent/review.md".source = ./opencode/agent/review.md;
       ".config/opencode/plugins".source = ./opencode/plugins;
       ".config/opencode/providers".source = ./opencode/providers;
       ".config/opencode/AGENTS.md".source = ./claude/CLAUDE.md;
