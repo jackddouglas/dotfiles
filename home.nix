@@ -138,7 +138,6 @@ in
         theme = "auto"
       '';
       ".stack/config.yaml".source = ./stack/config.yaml;
-      # Roles and commands under agent/ and commands/ come from modules/agent-roles.nix.
       ".config/opencode/agent/debug.md".source = ./opencode/agent/debug.md;
       ".config/opencode/agent/docs.md".source = ./opencode/agent/docs.md;
       ".config/opencode/plugins".source = ./opencode/plugins;
@@ -148,13 +147,28 @@ in
       ".pi/agent/settings.json".source = ./pi/settings.json;
       ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions".source = ./pi/extensions;
-      ".pi/agent/prompts/explain.md".source = ./agents/commands/explain.md;
-      ".pi/agent/prompts/review.md".source = ./pi/prompts/review.md;
-      ".pi/agent/references/reviewer.md".source = ./agents/roles/reviewer.md;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;
-      ".claude/skills/journal".source = ./claude/skills/journal;
-      ".agents/skills/journal".source = ./claude/skills/journal;
+      ".agents/skills/clean-branch".source = ./agents/skills/clean-branch;
+      ".agents/skills/explain".source = ./agents/skills/explain;
+      ".agents/skills/implementer".source = ./agents/skills/implementer;
+      ".agents/skills/journal".source = ./agents/skills/journal;
+      ".agents/skills/prototyper".source = ./agents/skills/prototyper;
+      ".agents/skills/researcher".source = ./agents/skills/researcher;
+      ".agents/skills/reviewer".source = ./agents/skills/reviewer;
+      ".agents/skills/scout".source = ./agents/skills/scout;
+      ".agents/skills/simplify".source = ./agents/skills/simplify;
+      ".agents/skills/triager".source = ./agents/skills/triager;
+      ".claude/skills/clean-branch".source = ./agents/skills/clean-branch;
+      ".claude/skills/explain".source = ./agents/skills/explain;
+      ".claude/skills/implementer".source = ./agents/skills/implementer;
+      ".claude/skills/journal".source = ./agents/skills/journal;
+      ".claude/skills/prototyper".source = ./agents/skills/prototyper;
+      ".claude/skills/researcher".source = ./agents/skills/researcher;
+      ".claude/skills/reviewer".source = ./agents/skills/reviewer;
+      ".claude/skills/scout".source = ./agents/skills/scout;
+      ".claude/skills/simplify".source = ./agents/skills/simplify;
+      ".claude/skills/triager".source = ./agents/skills/triager;
       ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
       ".codex/hooks.json".source = ./codex/hooks.json;
       ".config/zed/settings.json".source = ./zed/settings.json;
@@ -212,7 +226,6 @@ in
     ./modules/fish.nix
     ./modules/llm.nix
     ./modules/hermes.nix
-    ./modules/agent-roles.nix
   ];
 
   programs = {

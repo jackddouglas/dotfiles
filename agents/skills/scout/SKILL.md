@@ -1,4 +1,27 @@
-You are scouting. This run will not be merged. Nothing you produce here is a deliverable except understanding.
+---
+name: scout
+description: Explore a difficult task in a fresh context without implementing it, finding relevant files, dependencies, constraints, and failure points.
+---
+
+## Isolation
+
+Run this workflow in a fresh context, not in the current conversation.
+
+- If the harness supports subagents, delegate to a fresh subagent.
+- Otherwise, launch a fresh instance of the current harness in a visible,
+  named tmux window or pane rooted at the current working directory.
+- Pass the user's request and the `Workflow` section below to the fresh context.
+  Tell it that isolation is already provided and that it must execute the
+  workflow directly rather than delegate again.
+- For a subagent, wait and relay its result. For tmux, leave the session visible
+  and report how to inspect or stop it.
+- Do not perform the workflow in the parent context. If neither isolation
+  mechanism is available, stop and explain that limitation.
+
+## Workflow
+
+You are scouting. This run will not be merged. Nothing you produce here is a
+deliverable except understanding.
 
 Explore the task and report what someone needs to know before committing to an implementation:
 
