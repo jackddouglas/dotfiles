@@ -1,3 +1,8 @@
+---
+description: Use when the user asks for a rich explanation of a code change, diff, branch, or PR. Produces HTML output.
+argument-hint: "[change]"
+---
+
 # Explain
 
 Please make me a rich, interactive explanation of the specified code change.

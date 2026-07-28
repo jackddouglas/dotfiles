@@ -1,17 +1,20 @@
 { lib, ... }:
 # Agent roles and commands, authored once and emitted for Claude, Codex, and OpenCode.
 #
-# Prose lives in ../agents/{roles,commands}/<name>.md and is shared verbatim.
-# Everything that differs between harnesses -- frontmatter dialect, whether
-# frontmatter is parsed at all, how a subagent is dispatched -- is generated here.
+# Prose lives in ../agents/{roles,commands}/<name>.md and is shared across harnesses.
+# Canonical files may carry Pi-compatible frontmatter, which is stripped before
+# harness-specific frontmatter and dispatch instructions are generated here.
 let
   inherit (lib)
     concatStringsSep
     hasInfix
+    hasPrefix
     mapAttrs
     mapAttrsToList
     optional
     optionalAttrs
+    removePrefix
+    splitString
     ;
 
   rolesDir = ../agents/roles;
@@ -104,9 +107,22 @@ let
     };
   };
 
+  stripFrontmatter =
+    body:
+    let
+      delimiter = "\n---\n";
+      parts = splitString delimiter body;
+    in
+    if hasPrefix "---\n" body && builtins.length parts > 1 then
+      removePrefix "\n" (concatStringsSep delimiter (builtins.tail parts))
+    else
+      body;
+
   entries =
-    mapAttrs (n: v: v // { body = builtins.readFile (rolesDir + "/${n}.md"); }) roles
-    // mapAttrs (n: v: v // { body = builtins.readFile (commandsDir + "/${n}.md"); }) commands;
+    mapAttrs (n: v: v // { body = stripFrontmatter (builtins.readFile (rolesDir + "/${n}.md")); }) roles
+    // mapAttrs (
+      n: v: v // { body = stripFrontmatter (builtins.readFile (commandsDir + "/${n}.md")); }
+    ) commands;
 
   isDispatch = e: e.isolation == "dispatch";
 
