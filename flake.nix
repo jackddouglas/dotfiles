@@ -16,6 +16,7 @@
 
     # nix-homebrew
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    nix-homebrew.inputs.brew-src.url = "github:Homebrew/brew/6.0.13";
 
     # minimal-tmux
     minimal-tmux.url = "github:niksingh710/minimal-tmux-status";

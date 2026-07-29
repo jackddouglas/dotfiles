@@ -7,15 +7,16 @@ description: Inspect a diff from a fresh context for correctness, unnecessary de
 
 Run this workflow in a fresh context, not in the current conversation.
 
-- If the harness supports subagents, delegate to a fresh subagent.
-- Otherwise, launch a fresh instance of the current harness in a visible,
-  named tmux window or pane rooted at the current working directory.
+- If the `subagent` tool is available, use it. It owns safe creation of a visible
+  named pane in the current tmux window, rooted at the current working
+  directory; never create a detached tmux session through `bash`.
+- Otherwise, if the harness supports native subagents, delegate to one.
 - Pass the user's request and the `Workflow` section below to the fresh context.
   Tell it that isolation is already provided and that it must execute the
   workflow directly rather than delegate again.
-- For a subagent, wait and relay its result. For tmux, leave the session visible
-  and report how to inspect or stop it.
-- Do not perform the workflow in the parent context. If neither isolation
+- Wait and relay the result. The tmux-backed pane remains visible while the
+  child runs and closes automatically when it settles.
+- Do not perform the workflow in the parent context. If neither subagent
   mechanism is available, stop and explain that limitation.
 
 ## Workflow

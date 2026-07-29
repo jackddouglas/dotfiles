@@ -38,6 +38,106 @@ let
     sed -e 's/"JetBrainsMono Nerd Font"/"Berkeley Mono"/' \
       ${flexoki-typora-src}/flexoki-light.css > $out
   '';
+
+  chrome-devtools-cli = pkgs.stdenvNoCC.mkDerivation {
+    pname = "chrome-devtools-cli";
+    version = "1.6.0";
+
+    src = pkgs.fetchurl {
+      url = "https://registry.npmjs.org/chrome-devtools-mcp/-/chrome-devtools-mcp-1.6.0.tgz";
+      hash = "sha256-HmMsLZcUtPgrTPq077nOV1CFx1/+XpdyODEprwEsnIQ=";
+    };
+
+    nativeBuildInputs = [
+      pkgs.makeWrapper
+      pkgs.python3
+    ];
+    sourceRoot = "package";
+
+    installPhase = ''
+      runHook preInstall
+
+      python3 - <<'PY'
+      from pathlib import Path
+
+      path = Path("build/src/bin/chrome-devtools.js")
+      source = path.read_text()
+      old = """            if (response.success) {
+                      console.log(await handleResponse(JSON.parse(response.result), argv['output-format']));
+                  }
+      """
+      new = """            if (response.success) {
+                      const toolResponse = JSON.parse(response.result);
+                      const rendered = await handleResponse(toolResponse, argv['output-format']);
+                      if (toolResponse.isError) {
+                          console.error(rendered);
+                          process.exitCode = 1;
+                      }
+                      else {
+                          console.log(rendered);
+                      }
+                  }
+      """
+      if old not in source:
+          raise SystemExit("chrome-devtools MCP error patch no longer applies")
+      path.write_text(source.replace(old, new))
+
+      path = Path("build/src/daemon/utils.js")
+      source = path.read_text()
+      old = """        catch {
+                  // Process is dead, stale PID file. Proceed with startup.
+              }
+      """
+      new = """        catch (error) {
+                  if (error?.code === 'EPERM' && fs.existsSync(getSocketPath(sessionId))) {
+                      return true;
+                  }
+                  // Process is dead, stale PID file. Proceed with startup.
+              }
+      """
+      if old not in source:
+          raise SystemExit("chrome-devtools cross-sandbox daemon patch no longer applies")
+      path.write_text(source.replace(old, new))
+      PY
+
+      mkdir -p $out/bin $out/libexec/chrome-devtools
+      cp -R . $out/libexec/chrome-devtools
+      makeWrapper ${pkgs.nodejs_22}/bin/node $out/bin/chrome-devtools \
+        --add-flags "$out/libexec/chrome-devtools/build/src/bin/chrome-devtools.js" \
+        --set CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS 1 \
+        --set CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS 1
+
+      runHook postInstall
+    '';
+  };
+
+  pi-subagent-extension = pkgs.replaceVars ./pi/extensions/subagent.ts {
+    tmuxBin = "${pkgs.tmux}/bin/tmux";
+  };
+
+  pi-shell-sandbox = pkgs.buildNpmPackage {
+    pname = "pi-shell-sandbox";
+    version = "1.0.0";
+    src = ./pi/extensions/sandbox;
+    npmDepsHash = "sha256-Bj3rndkVOOkIWa4Hx5MSdFgWH2f1QUOU8DeU0GgIuuw=";
+    dontNpmBuild = true;
+
+    installPhase = ''
+      runHook preInstall
+
+      substituteInPlace index.ts \
+        --replace-fail '@chromeDevtoolsBin@' '${chrome-devtools-cli}/bin/chrome-devtools'
+      substituteInPlace node_modules/@anthropic-ai/sandbox-runtime/dist/utils/which.js \
+        --replace-fail "spawnSync('which'," "spawnSync('/usr/bin/which',"
+      substituteInPlace node_modules/@anthropic-ai/sandbox-runtime/dist/sandbox/macos-sandbox-utils.js \
+        --replace-fail "        'env'," "        '/usr/bin/env',"
+
+      mkdir -p $out
+      cp -R index.ts package.json package-lock.json node_modules $out/
+
+      runHook postInstall
+    '';
+  };
 in
 {
   home = {
@@ -128,6 +228,7 @@ in
 
     file = {
       ".hushlogin".source = ./hushlogin/.hushlogin;
+      ".local/bin/chrome-devtools".source = "${chrome-devtools-cli}/bin/chrome-devtools";
       ".config/nvim".source = ./nvim;
       ".config/tmuxinator".source = ./tmuxinator;
       "Library/Application Support/com.mitchellh.ghostty/config".source = ./ghostty/config;
@@ -146,9 +247,17 @@ in
       ".pi/agent/AGENTS.md".source = ./pi/AGENTS.md;
       ".pi/agent/settings.json".source = ./pi/settings.json;
       ".pi/agent/models.json".source = ./pi/models.json;
-      ".pi/agent/extensions".source = ./pi/extensions;
+      ".pi/agent/extensions/goal.LICENSE".source = ./pi/extensions/goal.LICENSE;
+      ".pi/agent/extensions/goal.ts".source = ./pi/extensions/goal.ts;
+      ".pi/agent/extensions/mac-system-theme.ts".source = ./pi/extensions/mac-system-theme.ts;
+      ".pi/agent/extensions/pane-focus-cursor.ts".source = ./pi/extensions/pane-focus-cursor.ts;
+      ".pi/agent/extensions/tmux-notifications.ts".source = ./pi/extensions/tmux-notifications.ts;
+      ".pi/agent/extensions/sandbox".source = pi-shell-sandbox;
+      ".pi/agent/extensions/session-task.ts".source = ./pi/extensions/session-task.ts;
+      ".pi/agent/extensions/subagent.ts".source = pi-subagent-extension;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".claude/settings.json".source = ./claude/settings.json;
+      ".agents/skills/browser-testing".source = ./agents/skills/browser-testing;
       ".agents/skills/clean-branch".source = ./agents/skills/clean-branch;
       ".agents/skills/explain".source = ./agents/skills/explain;
       ".agents/skills/implementer".source = ./agents/skills/implementer;
@@ -159,6 +268,7 @@ in
       ".agents/skills/scout".source = ./agents/skills/scout;
       ".agents/skills/simplify".source = ./agents/skills/simplify;
       ".agents/skills/triager".source = ./agents/skills/triager;
+      ".claude/skills/browser-testing".source = ./agents/skills/browser-testing;
       ".claude/skills/clean-branch".source = ./agents/skills/clean-branch;
       ".claude/skills/explain".source = ./agents/skills/explain;
       ".claude/skills/implementer".source = ./agents/skills/implementer;
