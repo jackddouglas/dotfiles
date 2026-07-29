@@ -263,22 +263,34 @@ in
       ".agents/skills/implementer".source = ./agents/skills/implementer;
       ".agents/skills/journal".source = ./agents/skills/journal;
       ".agents/skills/prototyper".source = ./agents/skills/prototyper;
+      ".agents/skills/receiving-code-review".source = ./agents/skills/receiving-code-review;
       ".agents/skills/researcher".source = ./agents/skills/researcher;
       ".agents/skills/reviewer".source = ./agents/skills/reviewer;
       ".agents/skills/scout".source = ./agents/skills/scout;
       ".agents/skills/simplify".source = ./agents/skills/simplify;
+      ".agents/skills/systematic-debugging".source = ./agents/skills/systematic-debugging;
+      ".agents/skills/test-driven-development".source = ./agents/skills/test-driven-development;
       ".agents/skills/triager".source = ./agents/skills/triager;
+      ".agents/skills/verification-before-completion".source =
+        ./agents/skills/verification-before-completion;
+      ".agents/skills/writing-plans".source = ./agents/skills/writing-plans;
       ".claude/skills/browser-testing".source = ./agents/skills/browser-testing;
       ".claude/skills/clean-branch".source = ./agents/skills/clean-branch;
       ".claude/skills/explain".source = ./agents/skills/explain;
       ".claude/skills/implementer".source = ./agents/skills/implementer;
       ".claude/skills/journal".source = ./agents/skills/journal;
       ".claude/skills/prototyper".source = ./agents/skills/prototyper;
+      ".claude/skills/receiving-code-review".source = ./agents/skills/receiving-code-review;
       ".claude/skills/researcher".source = ./agents/skills/researcher;
       ".claude/skills/reviewer".source = ./agents/skills/reviewer;
       ".claude/skills/scout".source = ./agents/skills/scout;
       ".claude/skills/simplify".source = ./agents/skills/simplify;
+      ".claude/skills/systematic-debugging".source = ./agents/skills/systematic-debugging;
+      ".claude/skills/test-driven-development".source = ./agents/skills/test-driven-development;
       ".claude/skills/triager".source = ./agents/skills/triager;
+      ".claude/skills/verification-before-completion".source =
+        ./agents/skills/verification-before-completion;
+      ".claude/skills/writing-plans".source = ./agents/skills/writing-plans;
       ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
       ".codex/hooks.json".source = ./codex/hooks.json;
       ".config/zed/settings.json".source = ./zed/settings.json;
