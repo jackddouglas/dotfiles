@@ -256,7 +256,6 @@ in
       ".pi/agent/extensions/session-task.ts".source = ./pi/extensions/session-task.ts;
       ".pi/agent/extensions/subagent.ts".source = pi-subagent-extension;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
-      ".claude/settings.json".source = ./claude/settings.json;
       ".agents/skills/browser-testing".source = ./agents/skills/browser-testing;
       ".agents/skills/clean-branch".source = ./agents/skills/clean-branch;
       ".agents/skills/explain".source = ./agents/skills/explain;
@@ -311,6 +310,10 @@ in
       CLAUDE_CODE_NO_FLICKER = "1";
       HF_HOME = "$HOME/models";
     };
+
+    activation.claude-settings = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+      ${pkgs.coreutils}/bin/ln -sfn "$HOME/.dotfiles/claude/settings.json" "$HOME/.claude/settings.json"
+    '';
 
     activation.claude-code = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       if [ ! -f "$HOME/.local/bin/claude" ]; then
