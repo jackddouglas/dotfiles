@@ -67,6 +67,14 @@
       setw -g pane-base-index 1
       set -g renumber-windows on
 
+      # auto-equalize panes on create/close. `-E` evens out only the cell
+      # holding the pane, so nested splits keep their outer proportions.
+      # kill-pane needs an inline equalize: `after-kill-pane` never fires and
+      # `pane-exited` only covers the program exiting on its own.
+      set-hook -g after-split-window 'select-layout -E'
+      set-hook -g pane-exited 'select-layout -E'
+      bind-key x confirm-before -p "kill-pane #P? (y/n)" "kill-pane ; select-layout -E"
+
       # more intuitive split commands
       bind-key "|" split-window -h -c "#{pane_current_path}"
       bind-key "\\" split-window -fh -c "#{pane_current_path}"
