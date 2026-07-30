@@ -203,6 +203,7 @@ in
       imagemagick
       itsycal
       jq
+      mosh
       mprocs
       rclone
       ripgrep

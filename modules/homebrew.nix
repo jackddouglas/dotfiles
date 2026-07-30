@@ -4,6 +4,7 @@
     enable = true;
 
     taps = [
+      "rjyo/moshi"
       "sst/tap"
       "typewhisper/tap"
     ];
@@ -17,6 +18,7 @@
       # Utilities
       "mas"
       "mole"
+      "rjyo/moshi/moshi-hook"
     ];
 
     casks = [
