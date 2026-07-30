@@ -1,21 +1,19 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "alwaysThinkingEnabled": true,
+  "effortLevel": "xhigh",
   "enabledPlugins": {
     "pr-review-toolkit@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
   },
-  "permissions": {
-    "defaultMode": "auto"
-  },
-  "theme": "auto",
   "hooks": {
     "Notification": [
       {
+        "matcher": "permission_prompt|elicitation_dialog|agent_needs_input",
         "hooks": [
           {
             "type": "command",
-            "command": "tmux set-option -w -t \"$TMUX_PANE\" @agent_alert '?' 2>/dev/null || true"
+            "command": "tmux set-option -w -t \"$TMUX_PANE\" @agent_alert '?' 2>/dev/null; printf '\\a' >\"$(tmux display-message -p -t \"$TMUX_PANE\" '#{pane_tty}')\" 2>/dev/null; true"
           }
         ]
       }
@@ -25,10 +23,34 @@
         "hooks": [
           {
             "type": "command",
-            "command": "tmux set-option -w -t \"$TMUX_PANE\" @agent_alert '✓' 2>/dev/null || true"
+            "command": "tmux set-option -w -t \"$TMUX_PANE\" @agent_alert '✓' 2>/dev/null; printf '\\a' >\"$(tmux display-message -p -t \"$TMUX_PANE\" '#{pane_tty}')\" 2>/dev/null; true"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tmux set-option -w -t \"$TMUX_PANE\" @agent_alert '!' 2>/dev/null; printf '\\a' >\"$(tmux display-message -p -t \"$TMUX_PANE\" '#{pane_tty}')\" 2>/dev/null; true"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tmux set-option -w -t \"$TMUX_PANE\" @agent_alert '' 2>/dev/null || true"
           }
         ]
       }
     ]
-  }
+  },
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "theme": "auto"
 }
