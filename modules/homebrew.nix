@@ -11,7 +11,7 @@
 
     brews = [
       # Development
-      "opencode"
+      "sst/tap/opencode"
       "pi-coding-agent"
       "tree-sitter-cli"
 
@@ -71,7 +71,7 @@
       "linear"
       "proton-drive"
       "protonvpn"
-      "typewhisper"
+      "typewhisper/tap/typewhisper"
 
       # Utilities
       "betterdisplay"
