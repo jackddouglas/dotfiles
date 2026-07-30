@@ -5,8 +5,6 @@ description: Implement executable behavior changes with a red-green-refactor cyc
 
 # Test-driven development
 
-<!-- Adapted from obra/superpowers at commit 44c9b2d6e889982ac18c27d05a19fefe335194e1. See LICENSE. -->
-
 For features and bug fixes, write one behavioral test first, observe the
 expected failure, then write the minimum production code to make it pass. For a
 pure behavior-preserving refactor, establish passing coverage of the behavior

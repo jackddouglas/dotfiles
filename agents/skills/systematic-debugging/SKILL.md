@@ -5,8 +5,6 @@ description: Investigate bugs, test failures, build failures, performance proble
 
 # Systematic debugging
 
-<!-- Adapted from obra/superpowers at commit 44c9b2d6e889982ac18c27d05a19fefe335194e1. See LICENSE. -->
-
 Do not propose a fix until the evidence supports a root cause. A plausible
 symptom-level explanation is not enough.
 

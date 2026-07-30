@@ -5,8 +5,6 @@ description: Turn an approved specification or sufficiently clear requirements i
 
 # Writing implementation plans
 
-<!-- Adapted from obra/superpowers at commit 44c9b2d6e889982ac18c27d05a19fefe335194e1. See LICENSE. -->
-
 Use this for multi-step work whose requirements are already decided. If two
 reasonable implementations imply different product behavior or architecture,
 stop and obtain that decision before planning.

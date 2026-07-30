@@ -5,8 +5,6 @@ description: Require fresh, relevant evidence before claiming that work is compl
 
 # Verification before completion
 
-<!-- Adapted from obra/superpowers at commit 44c9b2d6e889982ac18c27d05a19fefe335194e1. See LICENSE. -->
-
 Evidence must precede the claim. Confidence, inspection, and an earlier test run
 are not substitutes for verification after the last relevant change.
 

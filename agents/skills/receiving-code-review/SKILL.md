@@ -5,8 +5,6 @@ description: Evaluate code-review feedback against the repository before impleme
 
 # Receiving code review
 
-<!-- Adapted from obra/superpowers at commit 44c9b2d6e889982ac18c27d05a19fefe335194e1. See LICENSE. -->
-
 Treat review as technical input, not an instruction to agree performatively.
 
 ## Workflow
