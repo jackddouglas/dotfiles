@@ -76,6 +76,7 @@
       "cleanshot"
       "clop"
       "homerow"
+      "istat-menus"
       "launchos"
       "proton-mail-bridge"
       "raycast"

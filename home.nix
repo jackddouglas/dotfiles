@@ -201,7 +201,6 @@ in
       glow
       iina
       imagemagick
-      istat-menus
       itsycal
       jq
       mprocs
@@ -414,14 +413,14 @@ in
       enable = true;
       enableDefaultConfig = false;
       includes = [ "~/.orbstack/ssh/config" ];
-      matchBlocks = {
+      settings = {
         "github.com" = {
-          identityAgent = "none";
-          identityFile = signingKeyFile;
-          identitiesOnly = true;
+          IdentitiesOnly = true;
+          IdentityAgent = "none";
+          IdentityFile = signingKeyFile;
         };
         "*" = lib.hm.dag.entryAfter [ "github.com" ] {
-          identityAgent = "/Users/jackdouglas/.1password/agent.sock";
+          IdentityAgent = "/Users/jackdouglas/.1password/agent.sock";
         };
       };
     };
