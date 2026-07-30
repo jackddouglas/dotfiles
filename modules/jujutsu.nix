@@ -8,26 +8,6 @@
 
     [ui.colors]
     selected = { fg = "cyan", bg = "bright black" }
-
-    [[actions]]
-    name = "hunk-review"
-    lua = "jj_interactive(\"util\", \"exec\", \"--\", \"bash\", \"-c\", \"jj show -r \" .. context.change_id() .. \" --git | hunk patch -\")"
-
-    [[actions]]
-    name = "hunk-review-file"
-    lua = "jj_interactive(\"util\", \"exec\", \"--\", \"bash\", \"-c\", \"jj show -r \" .. context.change_id() .. \" --git \" .. context.file() .. \" | hunk patch -\")"
-
-    [[bindings]]
-    key = "d"
-    scope = "revisions"
-    action = "hunk-review"
-    desc = "review with hunk"
-
-    [[bindings]]
-    key = "d"
-    scope = "revisions.details"
-    action = "hunk-review-file"
-    desc = "review file with hunk"
   '';
 
   programs.jujutsu = {
@@ -42,10 +22,7 @@
         default-command = [ "log" ];
         editor = "nvim";
         conflict-marker-style = "git";
-        pager = [
-          "hunk"
-          "pager"
-        ];
+        pager = [ "pager" ];
         diff-formatter = ":git";
         diff-editor = [
           "nvim"
