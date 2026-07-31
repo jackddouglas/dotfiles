@@ -4,6 +4,14 @@ import sessionTask from "./session-task.ts";
 
 type Handler = (event: any, ctx: any) => Promise<void> | void;
 
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((resolvePromise) => {
+    resolve = resolvePromise;
+  });
+  return { promise, resolve };
+}
+
 function conversation() {
   return [
     {
@@ -33,7 +41,7 @@ function loadExtension(
   options: {
     initialName?: string;
     sessionRole?: string;
-    result?: string;
+    result?: string | Promise<string>;
     error?: Error;
   } = {},
 ) {
@@ -41,6 +49,8 @@ function loadExtension(
   const requests: Array<{ model: any; context: any; options: any }> = [];
   const statuses: Array<{ key: string; text: string | undefined }> = [];
   const titles: string[] = [];
+  const namingStarted = deferred<void>();
+  const nameChanged = deferred<void>();
   let name = options.initialName;
   const previousSessionRole = process.env.PI_SESSION_ROLE;
   if (options.sessionRole === undefined) delete process.env.PI_SESSION_ROLE;
@@ -56,6 +66,7 @@ function loadExtension(
       },
       setSessionName(next: string) {
         name = next;
+        nameChanged.resolve();
       },
     } as any);
   } finally {
@@ -67,15 +78,18 @@ function loadExtension(
   const provider = {
     streamSimple(requestModel: any, context: any, requestOptions: any) {
       requests.push({ model: requestModel, context, options: requestOptions });
+      namingStarted.resolve();
       return {
         async result() {
           if (options.error) throw options.error;
+          const title = await (options.result ??
+            '"Summarize Session Naming Intent"');
           return {
             role: "assistant",
             content: [
               {
                 type: "text",
-                text: options.result ?? '"Summarize Session Naming Intent"',
+                text: title,
               },
             ],
             stopReason: "stop",
@@ -135,6 +149,8 @@ function loadExtension(
     requests,
     statuses,
     titles,
+    namingStarted: namingStarted.promise,
+    nameChanged: nameChanged.promise,
   };
 }
 
@@ -155,17 +171,31 @@ test("marks a named subagent session in the footer", async () => {
   assert.equal(extension.requests.length, 0);
 });
 
-test("names an unnamed session when the first prompt starts", async () => {
-  const extension = loadExtension();
+test("generates an unnamed session title without blocking agent startup", async () => {
+  const title = deferred<string>();
+  const extension = loadExtension({ result: title.promise });
 
   await extension.emit("session_start");
   assert.equal(extension.getName(), undefined);
   assert.equal(extension.requests.length, 0);
 
-  await extension.emit("before_agent_start", {
-    prompt: conversation()[0].message.content,
-  });
+  let promptStarted = false;
+  const promptStart = extension
+    .emit("before_agent_start", {
+      prompt: conversation()[0].message.content,
+    })
+    .then(() => {
+      promptStarted = true;
+    });
 
+  await extension.namingStarted;
+  await Promise.resolve();
+  const startedBeforeTitle = promptStarted;
+
+  title.resolve('"Summarize Session Naming Intent"');
+  await Promise.all([promptStart, extension.nameChanged]);
+
+  assert.equal(startedBeforeTitle, true);
   assert.equal(extension.getName(), "Summarize Session Naming Intent");
   assert.equal(extension.requests.length, 1);
   assert.deepEqual(extension.requests[0].model, {
@@ -206,6 +236,7 @@ test("falls back to a deterministic label when OAuth naming fails", async () => 
   await extension.emit("before_agent_start", {
     prompt: conversation()[0].message.content,
   });
+  await extension.nameChanged;
 
   assert.equal(
     extension.getName(),

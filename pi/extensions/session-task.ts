@@ -1,4 +1,7 @@
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type {
+  ExtensionAPI,
+  ExtensionContext,
+} from "@earendil-works/pi-coding-agent";
 
 function messageText(message: Record<string, unknown>): string {
   const content = message.content;
@@ -59,6 +62,52 @@ function responseTitle(message: Record<string, unknown>): string | undefined {
   return cleaned.length > 52 ? `${cleaned.slice(0, 49).trimEnd()}…` : cleaned;
 }
 
+async function generateTaskLabel(
+  prompt: string,
+  ctx: ExtensionContext,
+): Promise<string | undefined> {
+  let label: string | undefined;
+  try {
+    const model = ctx.modelRegistry.find("openai-codex", "gpt-5.6-luna");
+    const provider = ctx.modelRegistry.getProvider("openai-codex");
+    const auth = await ctx.modelRegistry.getProviderAuth("openai-codex");
+    if (!model || !provider || !auth)
+      throw new Error("OpenAI Codex OAuth is unavailable");
+
+    const result = await provider
+      .streamSimple(
+        model,
+        {
+          systemPrompt:
+            "Write a concise title that captures the intent of this coding session. Return only a 3-6 word title with no quotes, Markdown, or trailing punctuation.",
+          messages: [
+            {
+              role: "user",
+              content: `Initial request:\n${excerpt(prompt)}`,
+              timestamp: Date.now(),
+            },
+          ],
+        },
+        {
+          apiKey: auth.auth.apiKey,
+          headers: auth.auth.headers,
+          env: auth.env,
+          reasoning: "minimal",
+          maxTokens: 64,
+          timeoutMs: 5_000,
+          maxRetries: 0,
+          sessionId: ctx.sessionManager.getSessionId(),
+        },
+      )
+      .result();
+    label = responseTitle(result as unknown as Record<string, unknown>);
+  } catch {
+    // A naming failure should not fail the user's session.
+  }
+
+  return label ?? shortTaskLabel(prompt);
+}
+
 export default function (pi: ExtensionAPI) {
   const isSubagent = process.env.PI_SESSION_ROLE === "subagent";
   let attempted = false;
@@ -75,50 +124,16 @@ export default function (pi: ExtensionAPI) {
     ctx.ui.setTitle(`↳ ${pi.getSessionName() ?? "subagent"}`);
   });
 
-  pi.on("before_agent_start", async (event, ctx) => {
+  pi.on("before_agent_start", (event, ctx) => {
     if (attempted || pi.getSessionName() || !event.prompt.trim()) return;
     attempted = true;
 
-    let label: string | undefined;
-    try {
-      const model = ctx.modelRegistry.find("openai-codex", "gpt-5.6-luna");
-      const provider = ctx.modelRegistry.getProvider("openai-codex");
-      const auth = await ctx.modelRegistry.getProviderAuth("openai-codex");
-      if (!model || !provider || !auth)
-        throw new Error("OpenAI Codex OAuth is unavailable");
-
-      const result = await provider
-        .streamSimple(
-          model,
-          {
-            systemPrompt:
-              "Write a concise title that captures the intent of this coding session. Return only a 3-6 word title with no quotes, Markdown, or trailing punctuation.",
-            messages: [
-              {
-                role: "user",
-                content: `Initial request:\n${excerpt(event.prompt)}`,
-                timestamp: Date.now(),
-              },
-            ],
-          },
-          {
-            apiKey: auth.auth.apiKey,
-            headers: auth.auth.headers,
-            env: auth.env,
-            reasoning: "minimal",
-            maxTokens: 64,
-            timeoutMs: 5_000,
-            maxRetries: 0,
-            sessionId: ctx.sessionManager.getSessionId(),
-          },
-        )
-        .result();
-      label = responseTitle(result as unknown as Record<string, unknown>);
-    } catch {
-      // A naming failure should not fail the user's session.
-    }
-
-    label ??= shortTaskLabel(event.prompt);
-    if (label && !pi.getSessionName()) pi.setSessionName(label);
+    void generateTaskLabel(event.prompt, ctx)
+      .then((label) => {
+        if (label && !pi.getSessionName()) pi.setSessionName(label);
+      })
+      .catch(() => {
+        // The session may have been replaced while naming was in flight.
+      });
   });
 }
