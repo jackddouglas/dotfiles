@@ -29,6 +29,7 @@ import { Type } from "typebox";
 const TMUX_BIN = "@tmuxBin@";
 const CHILD_ENV = "PI_CURRENT_TMUX_SUBAGENT_CHILD";
 const RESULT_ENV = "PI_CURRENT_TMUX_SUBAGENT_RESULT";
+const SESSION_ROLE_ENV = "PI_SESSION_ROLE";
 const POLL_INTERVAL_MS = 500;
 const MANAGER_REFRESH_MS = 1000;
 
@@ -577,12 +578,28 @@ export default function (pi: ExtensionAPI) {
     promptSnippet: "Delegate a task to a fresh Pi context in the current tmux window",
     promptGuidelines: [
       "Use subagent for workflows that require a fresh context; do not create detached tmux sessions through bash.",
+      "Give each subagent a concise, task-specific name that describes its delegated work rather than a persona.",
     ],
     executionMode: "parallel",
     parameters: Type.Object({
+      name: Type.String({
+        description: "Concise task-specific name for the subagent session",
+        minLength: 1,
+        maxLength: 52,
+      }),
       task: Type.String({ description: "Complete instructions for the fresh context" }),
     }),
+    prepareArguments(args) {
+      type SubagentInput = { name: string; task: string };
+      if (!args || typeof args !== "object") return args as SubagentInput;
+      const input = args as { name?: unknown; task?: unknown };
+      if (input.name !== undefined || typeof input.task !== "string")
+        return args as SubagentInput;
+      return { ...input, name: shortTaskLabel(input.task) } as SubagentInput;
+    },
     async execute(_toolCallId, params, signal, _onUpdate, ctx) {
+      const name = params.name.trim();
+      if (!name) throw new Error("Subagent name must not be empty");
       const task = params.task.trim();
       if (!task) throw new Error("Subagent task must not be empty");
 
@@ -590,7 +607,7 @@ export default function (pi: ExtensionAPI) {
       if (!parentPane) throw new Error("Subagents require Pi to be running inside tmux");
 
       const childId = randomUUID();
-      const paneName = shortTaskLabel(task);
+      const paneName = name;
       const runDir = join(
         getAgentDir(),
         "current-tmux-subagents",
@@ -627,6 +644,7 @@ export default function (pi: ExtensionAPI) {
         "#!/bin/sh",
         `export ${CHILD_ENV}=1`,
         `export ${RESULT_ENV}=${shellQuote(childResultPath)}`,
+        `export ${SESSION_ROLE_ENV}=${shellQuote("subagent")}`,
         childArgs.map(shellQuote).join(" "),
         "child_status=$?",
         `if [ ! -f ${shellQuote(childResultPath)} ]; then`,
@@ -671,7 +689,7 @@ export default function (pi: ExtensionAPI) {
         }
         const titled = await pi.exec(
           TMUX_BIN,
-          ["select-pane", "-t", paneId, "-T", paneName],
+          ["select-pane", "-t", paneId, "-T", `↳ ${paneName}`],
         );
         if (titled.code !== 0) {
           throw new Error(`Could not name subagent pane: ${titled.stderr.trim()}`);

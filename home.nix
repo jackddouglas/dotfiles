@@ -133,7 +133,7 @@ let
         --replace-fail "        'env'," "        '/usr/bin/env',"
 
       mkdir -p $out
-      cp -R index.ts package.json package-lock.json node_modules $out/
+      cp -R index.ts browser-command.ts package.json package-lock.json node_modules $out/
 
       runHook postInstall
     '';

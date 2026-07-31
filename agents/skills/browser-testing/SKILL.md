@@ -6,14 +6,8 @@ compatibility: Requires the chrome-devtools CLI and Google Chrome.
 
 # Browser testing
 
-Drive the `chrome-devtools` CLI from the shell. The daemon must run headless and
-isolated; who starts it depends on the harness.
-
-- **When `PI_BROWSER_RUNTIME_DIR` is set**, a sandbox extension owns the daemon.
-  It has already applied the safe settings and verifies them before every
-  command. Do not run `start` yourself.
-- **Otherwise**, you own the daemon. Start it with exactly the flags below and
-  stop it when you are done.
+Drive the `chrome-devtools` CLI from the shell. Keep the daemon headless and
+isolated, use a dedicated stable session, and stop it when you are done.
 
 ## Safety
 
@@ -33,38 +27,18 @@ isolated; who starts it depends on the harness.
 ## Per-command setup
 
 Every shell call is a fresh process, so define the helper at the start of each
-browser-related call. The runtime directory must be a stable path, not a fresh
-temporary one, or the next call will not find the running daemon.
+browser-related call:
 
 ```bash
-if [ -n "${PI_BROWSER_RUNTIME_DIR:-}" ]; then
-  CDP_RUNTIME_DIR="$PI_BROWSER_RUNTIME_DIR"
-  CDP_SESSION_ID="$PI_BROWSER_SESSION_ID"
-else
-  CDP_RUNTIME_DIR="${TMPDIR:-/tmp}/agent-chrome-devtools"
-  CDP_SESSION_ID="agent-browser"
-  mkdir -p "$CDP_RUNTIME_DIR"
-fi
+CDP_SESSION_ID="agent-browser"
 cdp() {
-  XDG_RUNTIME_DIR="$CDP_RUNTIME_DIR" \
-  TMPDIR="$CDP_RUNTIME_DIR" \
   chrome-devtools "$@" --sessionId "$CDP_SESSION_ID"
 }
 ```
 
-Under the sandbox extension the runtime directory is unique to the parent
-process, so repeated calls reconnect to the same dedicated daemon. The extension
-checks before each command that the daemon was launched outside Seatbelt with
-its fixed safe settings, which is necessary because Chrome cannot initialize
-inside the shell's nested macOS sandbox. It stops the session and removes the
-runtime on shutdown or reload.
-
 ## Start
 
-Under the sandbox extension, skip this: the first command starts the managed
-daemon automatically.
-
-Otherwise start it yourself, once, with exactly these flags:
+Start or reuse the daemon with exactly these flags:
 
 ```bash
 cdp status | grep -q 'is running' || cdp start \

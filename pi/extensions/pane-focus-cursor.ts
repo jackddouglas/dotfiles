@@ -33,33 +33,36 @@ function getInitialFocus(): boolean {
   return result.status === 0 ? result.stdout.trim() === "1" : true;
 }
 
-function applyFocusEvent(data: string, state: PaneFocusState): boolean {
+function filterFocusEvents(data: string, state: PaneFocusState): string {
   const focusInIndex = data.lastIndexOf(FOCUS_IN);
   const focusOutIndex = data.lastIndexOf(FOCUS_OUT);
-  if (focusInIndex === -1 && focusOutIndex === -1) return false;
+  if (focusInIndex === -1 && focusOutIndex === -1) return data;
 
   const focused = focusInIndex > focusOutIndex;
   if (state.focused !== focused) {
     state.focused = focused;
     state.requestRender?.();
   }
-  return true;
+  return data.replaceAll(FOCUS_IN, "").replaceAll(FOCUS_OUT, "");
 }
 
 class PaneFocusEditor extends CustomEditor {
+  private readonly paneFocus: PaneFocusState;
+
   constructor(
     tui: ConstructorParameters<typeof CustomEditor>[0],
     theme: ConstructorParameters<typeof CustomEditor>[1],
     keybindings: ConstructorParameters<typeof CustomEditor>[2],
-    private readonly paneFocus: PaneFocusState,
+    paneFocus: PaneFocusState,
   ) {
     super(tui, theme, keybindings);
+    this.paneFocus = paneFocus;
     this.paneFocus.requestRender = () => tui.requestRender();
   }
 
   handleInput(data: string): void {
-    if (applyFocusEvent(data, this.paneFocus)) return;
-    super.handleInput(data);
+    const filtered = filterFocusEvents(data, this.paneFocus);
+    if (filtered) super.handleInput(filtered);
   }
 
   render(width: number): string[] {
@@ -82,13 +85,7 @@ class PaneFocusEditor extends CustomEditor {
 export default function (pi: ExtensionAPI) {
   const paneFocus: PaneFocusState = { focused: true };
   let focusReportingEnabled = false;
-  let inputRemainder = "";
-
-  const handleRawInput = (chunk: string | Buffer): void => {
-    const data = inputRemainder + chunk.toString();
-    applyFocusEvent(data, paneFocus);
-    inputRemainder = data.slice(-(FOCUS_IN.length - 1));
-  };
+  let stopListening: (() => void) | undefined;
 
   pi.on("session_start", (_event, ctx) => {
     if (ctx.mode !== "tui" || focusReportingEnabled) return;
@@ -99,18 +96,21 @@ export default function (pi: ExtensionAPI) {
         new PaneFocusEditor(tui, theme, keybindings, paneFocus),
     );
 
+    stopListening = ctx.ui.onTerminalInput((data) => {
+      const filtered = filterFocusEvents(data, paneFocus);
+      return filtered === data ? undefined : { data: filtered };
+    });
     focusReportingEnabled = true;
-    process.stdin.on("data", handleRawInput);
     process.stdout.write(ENABLE_FOCUS_REPORTING);
   });
 
   pi.on("session_shutdown", () => {
     if (!focusReportingEnabled) return;
 
-    process.stdin.removeListener("data", handleRawInput);
+    stopListening?.();
+    stopListening = undefined;
     process.stdout.write(DISABLE_FOCUS_REPORTING);
     paneFocus.requestRender = undefined;
-    inputRemainder = "";
     focusReportingEnabled = false;
   });
 }

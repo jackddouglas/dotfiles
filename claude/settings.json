@@ -52,5 +52,6 @@
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
   "theme": "auto",
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "model": "claude-fable-5[1m]"
 }

@@ -10,6 +10,11 @@ import { isAbsolute, relative, sep } from "node:path";
 import { SandboxManager } from "@anthropic-ai/sandbox-runtime";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import {
+  BROWSER_SESSION_ID,
+  createSandboxedCommandEnvironment,
+  isBrowserCommand,
+} from "./browser-command.ts";
+import {
   type BashOperations,
   createBashTool,
 } from "@earendil-works/pi-coding-agent";
@@ -29,7 +34,6 @@ const MAX_POST_EXIT_DRAIN_MS = 1000;
 const MAX_TIMEOUT_SECONDS = 2_147_483_647 / 1000;
 const BROWSER_CLEANUP_HORIZON_MS = 11_000;
 const BROWSER_CLEANUP_RETRY_MS = 250;
-const BROWSER_SESSION_ID = "pi-browser";
 const CHROME_DEVTOOLS_BIN = "@chromeDevtoolsBin@";
 const SAFE_BROWSER_START_ARGS = [
   "start",
@@ -142,7 +146,7 @@ function createSandboxedBashOperations(
         );
       }
 
-      if (command.includes("chrome-devtools")) {
+      if (isBrowserCommand(command)) {
         markBrowserUse();
         await prepareBrowser();
         if (signal?.aborted) throw new Error("aborted");
@@ -156,12 +160,12 @@ function createSandboxedBashOperations(
       const child = spawn(shell, ["-c", wrappedCommand], {
         cwd,
         detached: true,
-        env: {
-          ...process.env,
-          ...env,
-          PI_BROWSER_RUNTIME_DIR: browserRuntime,
-          PI_BROWSER_SESSION_ID: BROWSER_SESSION_ID,
-        },
+        env: createSandboxedCommandEnvironment(
+          command,
+          browserRuntime,
+          process.env,
+          env,
+        ),
         stdio: ["ignore", "pipe", "pipe"],
       });
       let timedOut = false;
