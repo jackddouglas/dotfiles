@@ -3,7 +3,8 @@
   "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "high",
   "packages": [
-    "npm:pi-web-access@0.15.0"
+    "npm:pi-web-access@0.15.0",
+    "npm:@quintinshaw/pi-dynamic-workflows@3.5.0"
   ],
   "enabledModels": [
     "openai-codex/gpt-5.6-sol",
