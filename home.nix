@@ -115,30 +115,6 @@ let
     tmuxBin = "${pkgs.tmux}/bin/tmux";
   };
 
-  pi-shell-sandbox = pkgs.buildNpmPackage {
-    pname = "pi-shell-sandbox";
-    version = "1.0.0";
-    src = ./pi/extensions/sandbox;
-    npmDepsHash = "sha256-Bj3rndkVOOkIWa4Hx5MSdFgWH2f1QUOU8DeU0GgIuuw=";
-    dontNpmBuild = true;
-
-    installPhase = ''
-      runHook preInstall
-
-      substituteInPlace index.ts \
-        --replace-fail '@chromeDevtoolsBin@' '${chrome-devtools-cli}/bin/chrome-devtools'
-      substituteInPlace node_modules/@anthropic-ai/sandbox-runtime/dist/utils/which.js \
-        --replace-fail "spawnSync('which'," "spawnSync('/usr/bin/which',"
-      substituteInPlace node_modules/@anthropic-ai/sandbox-runtime/dist/sandbox/macos-sandbox-utils.js \
-        --replace-fail "        'env'," "        '/usr/bin/env',"
-
-      mkdir -p $out
-      cp -R index.ts browser-command.ts package.json package-lock.json node_modules $out/
-
-      runHook postInstall
-    '';
-  };
-
   agentSkills = [
     "brainstorming"
     "browser-testing"
@@ -282,10 +258,8 @@ in
       ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions/goal.LICENSE".source = ./pi/extensions/goal.LICENSE;
       ".pi/agent/extensions/goal.ts".source = ./pi/extensions/goal.ts;
-      ".pi/agent/extensions/mac-system-theme.ts".source = ./pi/extensions/mac-system-theme.ts;
       ".pi/agent/extensions/pane-focus-cursor.ts".source = ./pi/extensions/pane-focus-cursor.ts;
       ".pi/agent/extensions/tmux-notifications.ts".source = ./pi/extensions/tmux-notifications.ts;
-      ".pi/agent/extensions/sandbox".source = pi-shell-sandbox;
       ".pi/agent/extensions/session-task.ts".source = ./pi/extensions/session-task.ts;
       ".pi/agent/extensions/subagent.ts".source = pi-subagent-extension;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
