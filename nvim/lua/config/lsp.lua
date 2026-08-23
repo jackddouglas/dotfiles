@@ -121,6 +121,23 @@ vim.lsp.config("rust_analyzer", {
 	},
 })
 
+-- vtsls reads these per-language: `.js`/`.jsx` use the javascript section
+local inlay_hints = {
+	parameterNames = { enabled = "literals" },
+	parameterTypes = { enabled = true },
+	variableTypes = { enabled = true },
+	propertyDeclarationTypes = { enabled = true },
+	functionLikeReturnTypes = { enabled = true },
+	enumMemberValues = { enabled = true },
+}
+
+vim.lsp.config("vtsls", {
+	settings = {
+		typescript = { inlayHints = inlay_hints },
+		javascript = { inlayHints = inlay_hints },
+	},
+})
+
 vim.lsp.enable("biome")
 vim.lsp.enable("hls")
 vim.lsp.enable("lua_ls")

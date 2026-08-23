@@ -147,7 +147,7 @@ map("n", "<leader>M", "<cmd>Mason<cr>", { desc = "Mason" })
 -- toggle options
 -------------------------------------------------------------------------------
 map("n", "<leader>th", function()
-	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
 end, { desc = "Toggle inlay hints" })
 map("n", "<leader>td", function()
 	vim.diagnostic.enable(not vim.diagnostic.is_enabled())
