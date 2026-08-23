@@ -2,6 +2,9 @@ return {
 	{
 		"sindrets/diffview.nvim",
 		cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
+		opts = {
+			enhanced_diff_hl = true,
+		},
 		keys = {
 			{ "<leader>ghd", "<cmd>DiffviewOpen -- %<cr>", desc = "Diff this" },
 			{ "<leader>ghD", "<cmd>DiffviewOpen HEAD~ -- %<cr>", desc = "Diff this ~" },
@@ -23,12 +26,5 @@ return {
 		keys = {
 			{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Show Neogit UI" },
 		},
-	},
-	{
-		"julienvincent/hunk.nvim",
-		cmd = { "DiffEditor" },
-		config = function()
-			require("hunk").setup()
-		end,
 	},
 }

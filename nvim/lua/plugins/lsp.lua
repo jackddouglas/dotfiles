@@ -13,7 +13,8 @@ return {
 	},
 	{
 		"mason-org/mason.nvim",
-		event = "VeryLazy",
+		lazy = false,
+		priority = 100,
 		cmd = { "Mason", "MasonInstall", "MasonUpdate", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
 		opts = {},
 		config = function(_, opts)
@@ -98,6 +99,9 @@ return {
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
 		opts = {
+			enabled = function()
+				return not vim.tbl_contains({ "markdown", "text", "gitcommit" }, vim.bo.filetype)
+			end,
 			keymap = {
 				preset = "enter",
 				["<C-h>"] = { "show" },
