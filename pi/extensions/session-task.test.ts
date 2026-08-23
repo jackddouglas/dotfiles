@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import sessionTask from "./session-task.ts";
 
+// Keep tests off the real Apple Intelligence helper binary.
+process.env.PI_APPLE_INTELLIGENCE = "off";
+
 type Handler = (event: any, ctx: any) => Promise<void> | void;
 
 function deferred<T>() {
