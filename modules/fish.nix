@@ -64,6 +64,13 @@
       gaa = "git add --all";
       gcam = "git commit -am";
       gcl = "git clone";
+      gswc = "git switch --create";
+      gf = "git fetch";
+      gfa = "git fetch --all --prune";
+      gb = "git branch";
+      gp = "git push";
+      gpl = "git pull";
+      gamend = "git commit --amend --no-edit";
 
       jst = "jj status";
       jsh = "jj show";
