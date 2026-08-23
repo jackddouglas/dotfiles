@@ -111,6 +111,33 @@ let
     '';
   };
 
+  ori = pkgs.stdenvNoCC.mkDerivation {
+    pname = "ori";
+    version = "0.7.1+6fb9ea6";
+
+    src = pkgs.fetchurl {
+      url = "https://github.com/OpenRouterLabs/ori-releases/releases/download/cli-0.7.1-6fb9ea6/ori-darwin-arm64";
+      hash = "sha256-E+aY9hVDBfHfSUw+aQK74wDwojOE0N44kAHSXt0H8Gg=";
+    };
+
+    dontUnpack = true;
+    # Stripping would rewrite the Mach-O and invalidate both the ad-hoc
+    # signature and the JS payload Bun appends to the executable.
+    dontStrip = true;
+
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+
+    installPhase = ''
+      runHook preInstall
+
+      install -Dm755 $src $out/libexec/ori
+      makeWrapper $out/libexec/ori $out/bin/ori \
+        --set ORI_NO_UPDATE_CHECK 1
+
+      runHook postInstall
+    '';
+  };
+
   pi-subagent-extension = pkgs.replaceVars ./pi/extensions/subagent.ts {
     tmuxBin = "${pkgs.tmux}/bin/tmux";
   };
@@ -174,6 +201,7 @@ in
       neovim
       ngrok
       nvimpager
+      ori
       pm2
       uv
       yarn
