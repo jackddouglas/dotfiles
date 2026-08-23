@@ -20,7 +20,6 @@ return {
 		"akinsho/bufferline.nvim",
 		version = "*",
 		event = "VeryLazy",
-		dependencies = { "ryanoasis/vim-devicons" },
 		opts = {
 			options = {
 				diagnostics = "nvim_lsp",
