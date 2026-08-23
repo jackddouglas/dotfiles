@@ -7,6 +7,16 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "diff_view_style": "unified",
+  "agent_servers": {
+    "codex-acp": {
+      "type": "registry",
+    },
+    "claude-acp": {
+      "type": "registry",
+    },
+  },
+  "format_on_save": "on",
   "inlay_hints": {
     "enabled": true,
   },
@@ -39,18 +49,18 @@
     "dock": "left",
   },
   "outline_panel": {
-    "dock": "left",
+    "dock": "right",
   },
   "collaboration_panel": {
-    "dock": "left",
+    "dock": "right",
   },
   "agent": {
-    "dock": "right",
+    "dock": "left",
     "favorite_models": [],
     "model_parameters": [],
   },
   "git_panel": {
-    "dock": "left",
+    "dock": "right",
   },
   "vim_mode": true,
   "telemetry": {
