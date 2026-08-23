@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   inputs,
@@ -282,7 +283,8 @@ in
       ".config/opencode/providers".source = ./opencode/providers;
       ".config/opencode/AGENTS.md".source = ./claude/CLAUDE.md;
       ".pi/agent/AGENTS.md".source = ./pi/AGENTS.md;
-      ".pi/agent/settings.json".source = ./pi/settings.json;
+      ".pi/agent/settings.json".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/pi/settings.json";
       ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions/goal.LICENSE".source = ./pi/extensions/goal.LICENSE;
       ".pi/agent/extensions/goal.ts".source = ./pi/extensions/goal.ts;
@@ -293,7 +295,8 @@ in
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
       ".codex/hooks.json".source = ./codex/hooks.json;
-      ".config/zed/settings.json".source = ./zed/settings.json;
+      ".config/zed/settings.json".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/zed/settings.json";
       ".config/zed/keymap.json".source = ./zed/keymap.json;
       ".config/zed/themes".source = ./zed/themes;
       "scripts".source = ./scripts;
