@@ -151,6 +151,7 @@ let
     "explain"
     "journal"
     "prototyper"
+    "product-description"
     "receiving-code-review"
     "researcher"
     "reviewer"
