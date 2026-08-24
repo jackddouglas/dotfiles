@@ -136,9 +136,13 @@ end, { silent = true, desc = "Add comment above" })
 -------------------------------------------------------------------------------
 -- misc
 -------------------------------------------------------------------------------
-map("n", "<leader>y", function()
+map("n", "gy", function()
+	vim.fn.setreg("+", vim.fn.expand("%:."))
+end, { desc = "Yank relative path" })
+
+map("n", "gY", function()
 	vim.fn.setreg("+", vim.fn.expand("%:p"))
-end, { desc = "Copy absolute path" })
+end, { desc = "Yank absolute path" })
 
 map("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Lazy" })
 map("n", "<leader>M", "<cmd>Mason<cr>", { desc = "Mason" })

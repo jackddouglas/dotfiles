@@ -10,7 +10,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("n", "gD", "<cmd>FzfLua lsp_declarations<cr>", { buffer = b, desc = "Go to declaration" })
 		map("n", "gr", "<cmd>FzfLua lsp_references<cr>", { buffer = b, desc = "Go to references" })
 		map("n", "gi", "<cmd>FzfLua lsp_implementations<cr>", { buffer = b, desc = "Go to implementations" })
-		map("n", "gy", "<cmd>FzfLua lsp_typedefs<cr>", { buffer = b, desc = "Go to type definition" })
 		map("n", "<leader>cr", vim.lsp.buf.rename, { buffer = b, desc = "Rename symbol" })
 		map("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = b, desc = "Code action" })
 		map("i", "<C-k>", vim.lsp.buf.signature_help, { buffer = b, desc = "Signature help" })
