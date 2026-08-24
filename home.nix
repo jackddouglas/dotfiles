@@ -149,7 +149,6 @@ let
     "clean-branch"
     "dispatching-parallel-agents"
     "explain"
-    "implementer"
     "journal"
     "prototyper"
     "receiving-code-review"
@@ -160,7 +159,6 @@ let
     "systematic-debugging"
     "test-driven-development"
     "triager"
-    "verification-before-completion"
     "writing-plans"
   ];
 

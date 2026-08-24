@@ -8,6 +8,7 @@
 - Run servers, watchers, and other long-lived commands in named tmux windows or panes. Keep their output visible and report how to inspect or stop them.
 - Spawn fresh agent contexts in named panes in the current tmux window. Target the parent `$TMUX_PANE`; never create a detached tmux session or a separate tmux window.
 - Show errors and the current hypothesis before fixing non-obvious failures.
+- Verify completion claims with fresh, relevant evidence after the last change; report failures and anything left unverified.
 - Report uncertainty, failed checks, and assumptions directly.
 - Avoid destructive Git operations.
 - Keep working updates brief. Do not use emojis in code, commits, or output.

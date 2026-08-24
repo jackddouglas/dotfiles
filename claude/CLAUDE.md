@@ -6,6 +6,7 @@
 - Keep changes narrow and preserve unrelated work.
 - Keep durable plans and task state in ordinary repository files.
 - Show errors and the current hypothesis before fixing non-obvious failures.
+- Verify completion claims with fresh, relevant evidence after the last change; report failures and anything left unverified.
 - Report uncertainty, failed checks, and assumptions directly.
 - Avoid destructive Git operations.
 - Keep working updates brief. Do not use emojis in code, commits, or output.
