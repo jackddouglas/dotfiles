@@ -91,6 +91,11 @@ Before handoff:
 5. Ensure each task preserves a working state and has fresh verification.
 6. Remove speculative features and unrelated cleanup.
 
+After saving and reviewing the plan, walk the user through it in roughly
+400-word chunks. Keep each chunk aligned with coherent tasks or sections rather
+than enforcing an exact word count. Pause after each chunk so the user can ask
+questions or request corrections before continuing.
+
 Hand the completed plan to `implementer` for straightforward execution. For
 large plans, a fresh worker may execute each independent task, but the parent
 must inspect the resulting diff and verify it rather than trusting the report.

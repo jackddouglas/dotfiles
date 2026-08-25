@@ -10,7 +10,7 @@ concrete to react to.
 Work in a disposable worktree so the throwaway never contaminates the real branch:
 
 ```sh
-git worktree add ../$(basename "$PWD")-proto-<slug> --detach
+git worktree add .wt/$(basename "$PWD")-proto-<slug> --detach
 ```
 
 Build there. Report the path. When the prototype has done its job, remove it
