@@ -68,6 +68,7 @@
       gf = "git fetch";
       gfa = "git fetch --all --prune";
       gb = "git branch";
+      gl = "git log --graph --oneline --decorate --all";
       gp = "git push";
       gpl = "git pull";
       gamend = "git commit --amend --no-edit";
