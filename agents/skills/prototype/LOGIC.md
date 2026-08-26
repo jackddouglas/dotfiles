@@ -55,7 +55,12 @@ Send them the file, or open it for them. They'll click through the walkthroughs 
 
 ### 5. Capture the answer and the prototype
 
-Once the prototype has answered its question, capture the answer, then handle the prototype as [SKILL.md](SKILL.md) describes. The logic-specific mapping is that the validated state transitions become requirements for a tested production implementation. Preserve the self-contained HTML on a throwaway branch only when the user asks for it or the tracked implementation needs that primary source.
+Once the prototype has answered its question, capture the answer, then handle
+the prototype as [SKILL.md](SKILL.md) describes. The logic-specific mapping is
+that the validated state transitions become requirements for a tested
+production implementation. Keep the HTML in temporary storage while it is being
+evaluated; copy it to an agreed durable location only when the user asks to
+preserve it.
 
 ## Anti-patterns
 

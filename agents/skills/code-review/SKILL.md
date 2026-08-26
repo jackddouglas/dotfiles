@@ -26,11 +26,11 @@ Fresh context is the requirement; spawning a subagent is not.
 - If the current conversation did not author or previously analyze the diff,
   review it directly. The request and routine inspection do not make the
   context stale.
-- If this conversation participated in the change, use the repository's
-  preferred subagent mechanism when available and pass it the resolved scope
+- If this conversation participated in the change, use the subagent mechanism
+  provided by the current harness when available and pass it the resolved scope
   plus the workflow below.
-- Otherwise use a native subagent when the context is not fresh and one is
-  available.
+- Otherwise, if the context is not fresh and the current harness provides a
+  subagent mechanism, delegate to a fresh context.
 - Tell the fresh context that isolation is already provided and it must execute
   the review rather than delegate again.
 - Inspect and validate the returned findings before reporting them.

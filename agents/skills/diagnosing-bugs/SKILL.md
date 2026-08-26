@@ -1,6 +1,6 @@
 ---
 name: diagnosing-bugs
-description: Diagnose bugs, test or build failures, performance regressions, and unexpected behavior by reproducing the exact symptom and tracing it to its source before changing production code.
+description: Diagnose bugs and regressions by reproducing the exact symptom and tracing it to its source. Continue through a tested fix only when the user asks to fix or resolve it.
 ---
 
 # Diagnosing bugs
@@ -8,6 +8,14 @@ description: Diagnose bugs, test or build failures, performance regressions, and
 Do not propose a fix until the evidence supports a root cause. A plausible
 symptom-level explanation is not enough. Skip a phase only when you can state
 why it does not apply.
+
+The requested outcome determines where this workflow stops:
+
+- **Diagnosis only.** For requests to diagnose, investigate, explain, or find the
+  cause, stop after confirming the root cause. Report the evidence and likely
+  correction without implementing it.
+- **Diagnose and fix.** For requests to fix, resolve, or implement the correction,
+  continue through Phase 4.
 
 ## Protect the evidence
 
@@ -71,7 +79,14 @@ Prefer debugger or REPL inspection to targeted logs, and targeted logs to broad
 logging. For performance regressions, establish a measured baseline and use a
 profiler, query plan, or bisection rather than adding timing guesses.
 
-## Phase 4: Fix and verify
+## Clean up the investigation
+
+Before stopping in diagnosis-only mode or entering Phase 4, remove all tagged
+instrumentation and throwaway harnesses created during diagnosis. Confirm their
+removal by searching for the unique debug prefix. Preserve a minimized
+reproducer only when it will become durable regression coverage in Phase 4.
+
+## Phase 4: Fix and verify when requested
 
 1. At the correct public seam, turn the minimized repro into a regression test
    and observe it fail for the expected reason. Follow `tdd` unless an explicit
@@ -80,9 +95,7 @@ profiler, query plan, or bisection rather than adding timing guesses.
 2. Make one narrow change at the source of the problem.
 3. Run the regression test, the original unminimized feedback loop, and the
    relevant broader checks after the final change.
-4. Remove all tagged instrumentation and throwaway harnesses. Confirm removal
-   by searching for the unique debug prefix.
-5. Consider proportionate validation at trust or safety boundaries; read
+4. Consider proportionate validation at trust or safety boundaries; read
    [defense-in-depth.md](defense-in-depth.md).
 
 If a fix does not work, isolate or revert only the speculative part and return
@@ -109,6 +122,8 @@ Return to Phase 1 when you catch yourself:
 
 ## Report
 
-Report the reproduction, evidence, confirmed root cause, regression coverage,
-change made, and fresh verification. Distinguish unresolved hypotheses from
-verified facts and name anything that remains unverified.
+Report the reproduction, evidence, and confirmed root cause in both modes. In
+diagnosis-only mode, name the likely correction and stop. In diagnose-and-fix
+mode, also report the regression coverage, change made, and fresh verification.
+Distinguish unresolved hypotheses from verified facts and name anything that
+remains unverified.

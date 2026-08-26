@@ -1,6 +1,6 @@
 ---
 name: scout
-description: Explore a difficult task in a fresh context without implementing it, finding relevant files, dependencies, constraints, and failure points.
+description: Map where a proposed change lands in the current repository—files, dependencies, constraints, and failure points—without implementing it.
 ---
 
 ## Isolation
@@ -12,17 +12,14 @@ Fresh context is the requirement; spawning a subagent is not.
   user's request and routine repository inspection do not make it stale. Do not
   spawn a subagent merely to satisfy this section.
 - If this conversation participated in designing, implementing, or previously
-  analyzing the task, use the `subagent` tool when available. It owns safe
-  creation of a visible named pane in the current tmux window, rooted at the
-  current working directory; never create a detached tmux session through
-  `bash`.
-- Otherwise, if the current context is not fresh and the harness supports native
-  subagents, delegate to one.
+  analyzing the task, use the subagent mechanism provided by the current
+  harness when available.
+- Otherwise, if the current context is not fresh and the current harness
+  provides a subagent mechanism, delegate to a fresh context.
 - Pass the user's request and the `Workflow` section below to the fresh context.
   Tell it that isolation is already provided and that it must execute the
   workflow directly rather than delegate again.
-- Wait and relay the result. The tmux-backed pane remains visible while the
-  child runs and closes automatically when it settles.
+- Wait for the result and inspect its cited evidence before reporting it.
 - If the current context is not fresh and no subagent mechanism is available,
   stop and explain that limitation.
 

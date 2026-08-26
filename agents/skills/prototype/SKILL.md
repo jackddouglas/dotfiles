@@ -1,6 +1,6 @@
 ---
 name: prototype
-description: Produce a disposable implementation in a throwaway worktree to answer an uncertain logic, interaction, or visual-design question before production work begins.
+description: Produce a disposable logic or UI implementation in isolated temporary state to answer an uncertain design question before production work begins.
 ---
 
 # Prototype
@@ -26,17 +26,24 @@ is low-risk; otherwise ask before building the wrong artifact.
 
 ## Isolate it
 
-Work in a disposable worktree so the prototype never contaminates the real
-branch:
+Use the lightest isolation that fits the artifact:
 
-```sh
-git worktree add .wt/$(basename "$PWD")-proto-<slug> --detach
-```
+- **Standalone logic prototype.** Put the self-contained HTML file in a unique
+  OS temporary directory outside the repository. Report the exact path. A logic
+  demo does not need a Git worktree unless its question genuinely depends on the
+  repository's build or runtime.
+- **Repository-backed UI or other executable slice.** Inspect the working tree
+  first and record the exact base revision. State whether the prototype uses
+  committed `HEAD` or also needs selected uncommitted changes. Create a unique
+  disposable worktree outside the primary checkout. If relevant state is
+  uncommitted, materialize only that state in the worktree without stashing,
+  resetting, or otherwise changing the primary checkout. If that cannot be done
+  safely, stop and ask which source state to prototype.
 
-Build there and report the path. Keep the prototype near the module or route it
-is exploring *inside that worktree*, following the repository's existing
-layout. Name routes and files so a casual reader cannot mistake them for
-production code.
+For a repository-backed prototype, keep files near the module or route they
+explore inside the worktree and follow the repository's existing layout. Name
+routes and files so a casual reader cannot mistake them for production code.
+Always report the artifact or worktree path and whether this task created it.
 
 ## Rules
 
@@ -54,9 +61,13 @@ production code.
   different. Color-only variations do not expose a design decision.
 
 End by naming the question, what the prototype revealed, the shortcuts it took,
-and what should now be specified. Keep the worktree available while the user is
-still evaluating it. After they confirm it has served its purpose and any
-durable decision has been recorded, remove it with `git worktree remove`.
+and what should now be specified. Keep the temporary artifact or worktree
+available while the user is still evaluating it. After they confirm it has
+served its purpose and any durable decision has been recorded, remove only the
+temporary state created by this task; verify a worktree is clean before using
+`git worktree remove`.
 
-Only preserve the prototype on a throwaway branch when the user asks for that
-artifact or it is needed as a primary source for a tracked implementation.
+Copy a standalone logic artifact to a durable location only when the user asks
+to preserve it. Preserve a repository-backed prototype on a throwaway branch
+only when the user asks for that artifact or it is needed as a primary source
+for a tracked implementation.

@@ -155,7 +155,6 @@ let
     "explain"
     "grill-me"
     "grill-with-docs"
-    "grilling"
     "improve-codebase-architecture"
     "journal"
     "product-description"

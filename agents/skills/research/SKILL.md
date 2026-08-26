@@ -1,6 +1,6 @@
 ---
 name: research
-description: Survey libraries, APIs, protocols, or unfamiliar subsystems in a fresh context and produce a source-backed technical brief.
+description: Evaluate an external library, API, or protocol and produce a source-backed technical brief with alternatives and codebase fit.
 ---
 
 # Research
@@ -14,10 +14,10 @@ Fresh context is the requirement; spawning a subagent is not.
   and routine repository inspection do not make it stale. Do not spawn a
   subagent merely to satisfy this section.
 - If this conversation participated in designing, implementing, or previously
-  analyzing the subject, use the repository's preferred subagent mechanism when
-  available.
-- Otherwise, if the context is not fresh and native subagents are available,
-  delegate to one.
+  analyzing the subject, use the subagent mechanism provided by the current
+  harness when available.
+- Otherwise, if the context is not fresh and the current harness provides a
+  subagent mechanism, delegate to a fresh context.
 - Pass the user's request and the workflow below to the fresh context. Tell it
   that isolation is already provided and it must research directly rather than
   delegate again.
@@ -27,8 +27,7 @@ Fresh context is the requirement; spawning a subagent is not.
 
 ## Workflow
 
-Produce a technical brief on unfamiliar territory: a library, API, protocol, or
-subsystem. Cover:
+Produce a technical brief on an external library, API, or protocol. Cover:
 
 - **What it is** and the problem it solves. One paragraph.
 - **How it is actually used.** Real call signatures, configuration, and the

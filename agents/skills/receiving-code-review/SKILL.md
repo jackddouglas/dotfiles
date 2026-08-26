@@ -1,11 +1,18 @@
 ---
 name: receiving-code-review
-description: Evaluate code-review feedback against the repository before implementing it, clarifying ambiguity and pushing back with evidence when a suggestion is incorrect or out of scope.
+description: Evaluate code-review feedback against the repository, then implement accepted items only when the user asks to address or apply the feedback.
 ---
 
 # Receiving code review
 
 Treat review as technical input, not an instruction to agree performatively.
+
+The requested outcome determines whether this skill edits:
+
+- **Evaluate only.** If the user asks whether feedback is correct, classify each
+  item, explain the evidence, and stop before editing.
+- **Address feedback.** If the user asks to address, apply, or resolve the
+  feedback, evaluate first and then implement accepted items.
 
 ## Workflow
 
@@ -18,9 +25,11 @@ Treat review as technical input, not an instruction to agree performatively.
    or requiring a product or architecture decision.
 5. Push back on incorrect or unnecessary suggestions with code, tests, or
    documented constraints. Escalate conflicts with prior user decisions.
-6. Implement accepted items one at a time, ordered by correctness/security
-   blockers, simple isolated changes, then broader refactors.
-7. Test each change and run regression checks for the complete set.
+6. In address-feedback mode, implement accepted items one at a time, ordered by
+   correctness/security blockers, simple isolated changes, then broader
+   refactors.
+7. In address-feedback mode, test each change and run regression checks for the
+   complete set.
 
 Before accepting a request to “do it properly,” search for actual callers and
 requirements. Do not add unused machinery merely to satisfy an abstract notion

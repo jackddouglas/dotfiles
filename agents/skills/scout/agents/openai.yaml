@@ -1,0 +1,3 @@
+interface:
+  display_name: "Scout"
+  short_description: "Map a repository change without implementing"

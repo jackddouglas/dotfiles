@@ -1,12 +1,13 @@
 ---
 name: brainstorming
-description: Turn an idea into a design before any code exists, by interviewing for intent, proposing alternatives, and naming what was rejected.
+description: Turn an unresolved idea into a design before coding by interviewing for intent and comparing alternatives. Not for stress-testing an existing plan; use grill-me.
 ---
 
 # Brainstorming
 
 You are turning an idea into something specific enough to build. The design is
-the deliverable. No code, no scaffolding, no files created yet.
+the deliverable. During discovery, do not write code, scaffold an implementation,
+or create durable files. Save the design only after the user agrees with it.
 
 Put the design in front of the user before the code: two or three approaches
 with their trade-offs, your recommendation, and what you rejected and why. This
@@ -32,9 +33,10 @@ default you took instead. Prefer multiple choice when the options are known.
 Match the ritual to the kind of ignorance in the room:
 
 - The user knows what they have not resolved: interview them.
-- The user will know it when they see it: build two or three divergent versions
-  with `prototype` and let them react. Describing alternatives does not
-  surface taste; reacting to them does.
+- The user will know it when they see it: offer to switch to `prototype` for two
+  or three divergent versions. If they accept, leave brainstorming while the
+  prototype runs, then resume the design conversation with what they learned.
+  Do not build prototypes inside the brainstorming workflow itself.
 - The user does not know what they do not know: offer a blindspot pass. Survey
   the area, find the unknown unknowns, and teach them before designing. Use
   `research` when the territory is unfamiliar to you as well.

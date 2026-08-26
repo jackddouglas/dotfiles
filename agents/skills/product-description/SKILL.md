@@ -1,6 +1,6 @@
 ---
 name: product-description
-description: Build a "product description" repo for a software product — a set of prose documents describing, from the outside in, what the user sees, what they can do, and exactly what happens when they do it, written from the code and tests, then verified against the running product and triaged into a bug list. Works for any product with a user (canvas editors, web apps, CLIs, chat products, mobile apps). Use when the user asks to "write a product description for X", "describe the user experience of X", "document how X behaves for the user", "make a behavior-spec repo", or wants a feature-by-feature, event-by-event account of an app's behavior rather than API docs. Also use to resume or extend an existing product description repo.
+description: Build or extend an outside-in behavior-spec repository from code and tests, verify it against the running product, and triage mismatches. Use for product descriptions or feature-by-feature user-behavior documentation, not API docs.
 ---
 
 # Product description repo
