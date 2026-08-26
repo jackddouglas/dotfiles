@@ -80,11 +80,11 @@ let
     {
       serverName = "qwen-server";
       fetcherName = "fetch-qwen-model";
-      alias = "qwen3.6-27b";
+      alias = "qwen3.8-27b";
       port = "17171";
       ctxSize = "65536";
-      repo = "https://huggingface.co/unsloth/Qwen3.6-27B-GGUF/resolve/main";
-      modelFile = "Qwen3.6-27B-UD-Q4_K_XL.gguf";
+      repo = "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/main";
+      modelFile = "Qwen3.8-27B-UD-Q4_K_XL.gguf";
       modelDesc = "~17.6 GB";
     }
     {
