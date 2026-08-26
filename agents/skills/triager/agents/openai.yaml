@@ -1,0 +1,3 @@
+interface:
+  display_name: "Triager"
+  short_description: "Classify issues and pull requests safely"

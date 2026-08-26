@@ -1,0 +1,3 @@
+interface:
+  display_name: "Clean Branch"
+  short_description: "Rebuild a branch with narrative commits"
