@@ -33,11 +33,11 @@ Match the ritual to the kind of ignorance in the room:
 
 - The user knows what they have not resolved: interview them.
 - The user will know it when they see it: build two or three divergent versions
-  with `prototyper` and let them react. Describing alternatives does not
+  with `prototype` and let them react. Describing alternatives does not
   surface taste; reacting to them does.
 - The user does not know what they do not know: offer a blindspot pass. Survey
   the area, find the unknown unknowns, and teach them before designing. Use
-  `researcher` when the territory is unfamiliar to you as well.
+  `research` when the territory is unfamiliar to you as well.
 
 ## Present
 

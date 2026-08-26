@@ -26,8 +26,8 @@ boundaries, and first learn which side effects the real dependency provides.
 Mock below any side effect the test relies upon.
 
 Do not assert that a mock exists. Assert the behavior of the component under
-test. When arguments, ordering, or call count are part of the boundary
-contract, use a specific spy or fake and assert that contract.
+test. When arguments, ordering, or call count are part of the boundary contract,
+use a specific spy or fake and assert that contract.
 
 Mock responses should mirror the complete relevant production shape, not an
 optimistic partial object. If mock setup becomes larger than the behavior under

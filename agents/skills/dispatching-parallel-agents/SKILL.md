@@ -42,7 +42,7 @@ finds different things.
 A worker's report is a claim, not a result.
 
 - Read the actual diff or output, not the summary of it.
-- Run the checks yourself. See `verification-before-completion`.
+- Run fresh, relevant checks yourself after the last change.
 - Where two workers disagree, resolve it in the code rather than by averaging.
 - Deduplicate before reporting. Three workers finding one bug is one bug.
 - Name the tasks that failed or returned nothing. Silent omission reads as
