@@ -9,6 +9,9 @@ disable-model-invocation: true
 Make a rich, interactive explanation of the change named by the user, or the
 current branch's diff against its base when no change is named.
 
+Do not invoke or use the `browser-testing` skill to create, inspect, or verify
+the explanation.
+
 It should have these sections:
 
 - Background: Explain the existing system relevant to this change. Broadly explore surrounding code. Include deep background for beginners that experienced readers can skip, followed by narrower background directly relevant to the change.
