@@ -1,6 +1,7 @@
 ---
 name: explain
 description: Produce a rich HTML explanation of a code change, diff, branch, or pull request.
+disable-model-invocation: true
 ---
 
 # Explain

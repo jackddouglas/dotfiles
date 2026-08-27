@@ -1,3 +1,5 @@
 interface:
   display_name: "Explain"
   short_description: "Explain code changes in rich HTML"
+policy:
+  allow_implicit_invocation: false
