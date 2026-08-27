@@ -288,7 +288,6 @@ in
       ".pi/agent/AGENTS.md".source = ./pi/AGENTS.md;
       ".pi/agent/settings.json".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/pi/settings.json";
-      ".pi/agent/keybindings.json".source = ./pi/keybindings.json;
       ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions/goal.LICENSE".source = ./pi/extensions/goal.LICENSE;
       ".pi/agent/extensions/goal.ts".source = ./pi/extensions/goal.ts;
