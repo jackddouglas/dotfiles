@@ -1,6 +1,24 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   host = "127.0.0.1";
+
+  llamaCpp = pkgs.llama-cpp.overrideAttrs (old: {
+    version = "0.3.0";
+    src = inputs.llama-cpp-src;
+    npmDepsHash = "sha256-2Q7XhaLAArmviOLdQsNbYTfdyDE5pW9lR26cRHEVl9k=";
+    postPatch = (old.postPatch or "") + ''
+      echo ${inputs.llama-cpp-src.shortRev} > COMMIT
+    '';
+    cmakeFlags = old.cmakeFlags ++ [
+      (lib.cmakeFeature "LLAMA_BUILD_NUMBER" "0")
+      (lib.cmakeBool "LLAMA_BUILD_IS_DEV" false)
+    ];
+  });
 
   mkServer =
     {
@@ -11,10 +29,11 @@ let
       port,
       ctxSize,
       fetcher,
+      serverArgs ? [ ],
     }:
     pkgs.writeShellApplication {
       inherit name;
-      runtimeInputs = [ pkgs.llama-cpp ];
+      runtimeInputs = [ llamaCpp ];
       text = ''
         MODEL_PATH="$HOME/models/${modelFile}"
         if [ ! -f "$MODEL_PATH" ]; then
@@ -39,6 +58,7 @@ let
           --port "${port}" \
           --ctx-size "${ctxSize}" \
           --jinja \
+          ${lib.escapeShellArgs serverArgs} \
           "''${mmproj_args[@]}" \
           "$@"
       '';
@@ -82,7 +102,19 @@ let
       fetcherName = "fetch-qwen-model";
       alias = "qwen3.8-27b";
       port = "17171";
-      ctxSize = "65536";
+      ctxSize = "131072";
+      serverArgs = [
+        "--parallel"
+        "1"
+        "--cache-type-k"
+        "f16"
+        "--cache-type-v"
+        "f16"
+        "--flash-attn"
+        "on"
+        "--load-mode"
+        "mmap"
+      ];
       repo = "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/main";
       modelFile = "Qwen3.8-27B-UD-Q4_K_XL.gguf";
       modelDesc = "~17.6 GB";
@@ -114,6 +146,7 @@ let
         port
         ctxSize
         ;
+      serverArgs = m.serverArgs or [ ];
       mmprojFile = m.mmprojFile or null;
       fetcher = m.fetcherName;
     }
@@ -139,5 +172,5 @@ let
   ) models;
 in
 {
-  home.packages = [ pkgs.llama-cpp ] ++ serverPkgs ++ fetcherPkgs;
+  home.packages = [ llamaCpp ] ++ serverPkgs ++ fetcherPkgs;
 }

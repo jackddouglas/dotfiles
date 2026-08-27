@@ -6,6 +6,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    llama-cpp-src = {
+      url = "github:ggml-org/llama.cpp/v0.3.0";
+      flake = false;
+    };
+
     # nix-darwin
     nix-darwin.url = "github:nix-darwin/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -33,6 +38,7 @@
       nix-darwin,
       nixpkgs,
       nixpkgs-unstable,
+      llama-cpp-src,
       home-manager,
       nix-homebrew,
       minimal-tmux,
