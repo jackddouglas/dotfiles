@@ -139,10 +139,6 @@ let
     '';
   };
 
-  pi-subagent-extension = pkgs.replaceVars ./pi/extensions/subagent.ts {
-    tmuxBin = "${pkgs.tmux}/bin/tmux";
-  };
-
   agentSkills = [
     "brainstorming"
     "browser-testing"
@@ -292,13 +288,18 @@ in
       ".pi/agent/AGENTS.md".source = ./pi/AGENTS.md;
       ".pi/agent/settings.json".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/pi/settings.json";
+      ".pi/agent/keybindings.json".source = ./pi/keybindings.json;
       ".pi/agent/models.json".source = ./pi/models.json;
       ".pi/agent/extensions/goal.LICENSE".source = ./pi/extensions/goal.LICENSE;
       ".pi/agent/extensions/goal.ts".source = ./pi/extensions/goal.ts;
       ".pi/agent/extensions/pane-focus-cursor.ts".source = ./pi/extensions/pane-focus-cursor.ts;
       ".pi/agent/extensions/tmux-notifications.ts".source = ./pi/extensions/tmux-notifications.ts;
       ".pi/agent/extensions/session-task.ts".source = ./pi/extensions/session-task.ts;
-      ".pi/agent/extensions/subagent.ts".source = pi-subagent-extension;
+      ".pi/agent/extensions/subagent/index.ts".source = ./pi/extensions/subagent/index.ts;
+      ".pi/agent/extensions/subagent/agents.ts".source = ./pi/extensions/subagent/agents.ts;
+      ".pi/agent/extensions/subagent/process.ts".source = ./pi/extensions/subagent/process.ts;
+      ".pi/agent/extensions/subagent/runtime.ts".source = ./pi/extensions/subagent/runtime.ts;
+      ".pi/agent/agents/worker.md".source = ./pi/agents/worker.md;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
       ".codex/hooks.json".source = ./codex/hooks.json;

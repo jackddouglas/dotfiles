@@ -43,39 +43,28 @@ function conversation() {
 function loadExtension(
   options: {
     initialName?: string;
-    sessionRole?: string;
     result?: string | Promise<string>;
     error?: Error;
   } = {},
 ) {
   const handlers = new Map<string, Handler[]>();
   const requests: Array<{ model: any; context: any; options: any }> = [];
-  const statuses: Array<{ key: string; text: string | undefined }> = [];
-  const titles: string[] = [];
   const namingStarted = deferred<void>();
   const nameChanged = deferred<void>();
   let name = options.initialName;
-  const previousSessionRole = process.env.PI_SESSION_ROLE;
-  if (options.sessionRole === undefined) delete process.env.PI_SESSION_ROLE;
-  else process.env.PI_SESSION_ROLE = options.sessionRole;
 
-  try {
-    sessionTask({
-      on(event: string, handler: Handler) {
-        handlers.set(event, [...(handlers.get(event) ?? []), handler]);
-      },
-      getSessionName() {
-        return name;
-      },
-      setSessionName(next: string) {
-        name = next;
-        nameChanged.resolve();
-      },
-    } as any);
-  } finally {
-    if (previousSessionRole === undefined) delete process.env.PI_SESSION_ROLE;
-    else process.env.PI_SESSION_ROLE = previousSessionRole;
-  }
+  sessionTask({
+    on(event: string, handler: Handler) {
+      handlers.set(event, [...(handlers.get(event) ?? []), handler]);
+    },
+    getSessionName() {
+      return name;
+    },
+    setSessionName(next: string) {
+      name = next;
+      nameChanged.resolve();
+    },
+  } as any);
 
   const model = { provider: "openai-codex", id: "gpt-5.6-luna" };
   const provider = {
@@ -102,19 +91,6 @@ function loadExtension(
     },
   };
   const ctx = {
-    ui: {
-      theme: {
-        fg(_color: string, text: string) {
-          return text;
-        },
-      },
-      setStatus(key: string, text: string | undefined) {
-        statuses.push({ key, text });
-      },
-      setTitle(title: string) {
-        titles.push(title);
-      },
-    },
     sessionManager: {
       getBranch: conversation,
       getSessionId: () => "session-id",
@@ -150,29 +126,10 @@ function loadExtension(
     },
     getName: () => name,
     requests,
-    statuses,
-    titles,
     namingStarted: namingStarted.promise,
     nameChanged: nameChanged.promise,
   };
 }
-
-test("marks a named subagent session in the footer", async () => {
-  const extension = loadExtension({
-    initialName: "Audit sandbox escapes",
-    sessionRole: "subagent",
-  });
-
-  await extension.emit("session_start");
-  await extension.emit("agent_start");
-
-  assert.equal(extension.getName(), "Audit sandbox escapes");
-  assert.deepEqual(extension.statuses, [
-    { key: "session-role", text: "↳ subagent" },
-  ]);
-  assert.deepEqual(extension.titles, ["↳ Audit sandbox escapes"]);
-  assert.equal(extension.requests.length, 0);
-});
 
 test("generates an unnamed session title without blocking agent startup", async () => {
   const title = deferred<string>();
@@ -227,8 +184,6 @@ test("preserves an existing session name without making a model request", async 
   });
 
   assert.equal(extension.getName(), "Manual session name");
-  assert.deepEqual(extension.statuses, []);
-  assert.deepEqual(extension.titles, []);
   assert.equal(extension.requests.length, 0);
 });
 

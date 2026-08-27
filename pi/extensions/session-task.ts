@@ -196,19 +196,10 @@ async function generateTaskLabel(
 }
 
 export default function (pi: ExtensionAPI) {
-  const isSubagent = process.env.PI_SESSION_ROLE === "subagent";
   let attempted = false;
 
-  pi.on("session_start", (_event, ctx) => {
+  pi.on("session_start", () => {
     attempted = Boolean(pi.getSessionName());
-    if (isSubagent) {
-      ctx.ui.setStatus("session-role", ctx.ui.theme.fg("muted", "↳ subagent"));
-    }
-  });
-
-  pi.on("agent_start", (_event, ctx) => {
-    if (!isSubagent) return;
-    ctx.ui.setTitle(`↳ ${pi.getSessionName() ?? "subagent"}`);
   });
 
   pi.on("before_agent_start", (event, ctx) => {
