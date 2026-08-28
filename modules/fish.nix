@@ -11,8 +11,7 @@
       complete -c gwa -f
       complete -c gwa \
         -n 'test (count (commandline -opc)) -eq 1' \
-        -a '(git for-each-ref --format="%(refname:short)" refs/heads 2>/dev/null)' \
-        -d 'existing local branch'
+        -a '(begin; git for-each-ref --format="%(refname:short)%09Local Branch" refs/heads; git for-each-ref --format="%(refname:lstrip=3)%09Remote Branch" refs/remotes; end 2>/dev/null | string match -rv "^HEAD\\t" | sort -u)'
       complete -c gwa \
         -n 'test (count (commandline -opc)) -eq 2; and not git show-ref --verify --quiet "refs/heads/"(commandline -opc)[2]' \
         -a '(git for-each-ref --format="%(refname:short)" refs/heads refs/remotes 2>/dev/null | string match -v "*/HEAD")' \
@@ -67,11 +66,16 @@
           end
           git worktree add "$target" "$branch"
         else
-          set -l base HEAD
-          if test (count $argv) -eq 2
-            set base $argv[2]
+          set -l remote_branches (git for-each-ref --format='%(refname)' "refs/remotes/*/$branch")
+          if test (count $argv) -eq 1; and test (count $remote_branches) -gt 0
+            git worktree add "$target" "$branch"
+          else
+            set -l base HEAD
+            if test (count $argv) -eq 2
+              set base $argv[2]
+            end
+            git worktree add -b "$branch" "$target" "$base"
           end
-          git worktree add -b "$branch" "$target" "$base"
         end
         and cd "$target"
       '';
