@@ -1,6 +1,7 @@
 ---
 name: simplify
 description: Simplify recently changed code while preserving its exact behavior.
+disable-model-invocation: true
 ---
 
 Run a cleanup-only pass over the scope named by the user, or the current diff
