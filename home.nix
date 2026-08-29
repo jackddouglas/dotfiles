@@ -142,17 +142,14 @@ let
   agentSkills = [
     "brainstorming"
     "browser-testing"
-    "clean-branch"
     "code-review"
     "codebase-design"
     "diagnosing-bugs"
-    "dispatching-parallel-agents"
     "domain-modeling"
     "explain"
     "grill-me"
     "grill-with-docs"
     "improve-codebase-architecture"
-    "journal"
     "product-description"
     "prototype"
     "receiving-code-review"
@@ -160,10 +157,6 @@ let
     "scout"
     "simplify"
     "tdd"
-    "teach"
-    "to-spec"
-    "triager"
-    "wait-what"
     "writing-plans"
   ];
 
