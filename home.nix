@@ -288,10 +288,9 @@ in
       ".pi/agent/extensions/tmux-notifications.ts".source = ./pi/extensions/tmux-notifications.ts;
       ".pi/agent/extensions/session-task.ts".source = ./pi/extensions/session-task.ts;
       ".pi/agent/extensions/subagent/index.ts".source = ./pi/extensions/subagent/index.ts;
-      ".pi/agent/extensions/subagent/agents.ts".source = ./pi/extensions/subagent/agents.ts;
-      ".pi/agent/extensions/subagent/process.ts".source = ./pi/extensions/subagent/process.ts;
-      ".pi/agent/extensions/subagent/runtime.ts".source = ./pi/extensions/subagent/runtime.ts;
-      ".pi/agent/agents/worker.md".source = ./pi/agents/worker.md;
+      ".pi/agent/extensions/subagent/preview.ts".source = ./pi/extensions/subagent/preview.ts;
+      ".pi/agent/extensions/subagent/terminal.ts".source = ./pi/extensions/subagent/terminal.ts;
+      ".pi/agent/extensions/subagent/LICENSE".source = ./pi/extensions/subagent/LICENSE;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
       ".codex/hooks.json".source = ./codex/hooks.json;
