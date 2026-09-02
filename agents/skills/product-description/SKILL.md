@@ -1,6 +1,7 @@
 ---
 name: product-description
 description: Build or extend an outside-in behavior-spec repository from code and tests, verify it against the running product, and triage mismatches. Use for product descriptions or feature-by-feature user-behavior documentation, not API docs.
+disable-model-invocation: true
 ---
 
 # Product description repo

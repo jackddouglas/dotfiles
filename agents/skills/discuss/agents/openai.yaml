@@ -1,3 +1,5 @@
 interface:
   display_name: "Discuss"
   short_description: "Clarify a plan through focused interview rounds"
+policy:
+  allow_implicit_invocation: false

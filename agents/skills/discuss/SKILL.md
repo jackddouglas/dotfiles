@@ -1,6 +1,7 @@
 ---
 name: discuss
 description: Interview the user in short rounds to clarify a rough idea or plan, then summarize without implementing. Use when the user asks to discuss or refine a plan interactively.
+disable-model-invocation: true
 ---
 
 # Discuss

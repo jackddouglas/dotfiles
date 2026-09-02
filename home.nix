@@ -140,11 +140,14 @@ let
   };
 
   agentSkills = [
-    "brainstorming"
-    "browser-testing"
-    "code-review"
+    # Disabled while evaluating baseline agent behavior for ordinary tasks.
+    # "brainstorming"
+    # "browser-testing"
+    # "code-review"
+
+    # Supporting vocabulary and workflows loaded by the bespoke skills below.
     "codebase-design"
-    "diagnosing-bugs"
+    # "diagnosing-bugs"
     "discuss"
     "domain-modeling"
     "explain"
@@ -153,12 +156,13 @@ let
     "improve-codebase-architecture"
     "product-description"
     "prototype"
-    "receiving-code-review"
-    "research"
-    "scout"
-    "simplify"
-    "tdd"
-    "writing-plans"
+
+    # "receiving-code-review"
+    # "research"
+    # "scout"
+    # "simplify"
+    # "tdd"
+    # "writing-plans"
   ];
 
   agentSkillFiles = lib.listToAttrs (

@@ -1,3 +1,5 @@
 interface:
   display_name: "Product Description"
   short_description: "Build and verify product behavior specs"
+policy:
+  allow_implicit_invocation: false

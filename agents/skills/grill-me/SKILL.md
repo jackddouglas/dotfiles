@@ -1,6 +1,7 @@
 ---
 name: grill-me
 description: Stress-test an existing plan, decision, or idea in rounds of dependent questions. Use for explicit grill requests; not for initial design discovery.
+disable-model-invocation: true
 ---
 
 Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.

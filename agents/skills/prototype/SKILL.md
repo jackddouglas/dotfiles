@@ -1,6 +1,7 @@
 ---
 name: prototype
 description: Produce a disposable logic or UI implementation in isolated temporary state to answer an uncertain design question before production work begins.
+disable-model-invocation: true
 ---
 
 # Prototype
