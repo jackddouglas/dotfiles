@@ -145,6 +145,7 @@ let
     "code-review"
     "codebase-design"
     "diagnosing-bugs"
+    "discuss"
     "domain-modeling"
     "explain"
     "grill-me"
@@ -291,6 +292,7 @@ in
       ".pi/agent/extensions/subagent/preview.ts".source = ./pi/extensions/subagent/preview.ts;
       ".pi/agent/extensions/subagent/terminal.ts".source = ./pi/extensions/subagent/terminal.ts;
       ".pi/agent/extensions/subagent/LICENSE".source = ./pi/extensions/subagent/LICENSE;
+      ".pi/agent/prompts/discuss.md".source = ./agents/skills/discuss/SKILL.md;
       ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
       ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
       ".codex/hooks.json".source = ./codex/hooks.json;

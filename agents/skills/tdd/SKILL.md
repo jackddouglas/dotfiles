@@ -1,6 +1,7 @@
 ---
 name: tdd
 description: Implement executable behavior changes with a red-green-refactor cycle that proves each test can detect the missing or broken behavior.
+disable-model-invocation: true
 ---
 
 # Test-driven development
