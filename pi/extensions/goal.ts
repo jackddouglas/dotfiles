@@ -328,10 +328,8 @@ ${escapeXmlText(goal.objective)}
 </untrusted_objective>
 
 Goal status: ${goal.status}
-Time spent pursuing goal: ${goal.timeUsedSeconds} seconds
-Tokens used: ${goal.tokensUsed}
 Token budget: ${goal.tokenBudget === undefined ? "none" : goal.tokenBudget}
-Tokens remaining: ${goal.tokenBudget === undefined ? "unbounded" : Math.max(0, goal.tokenBudget - goal.tokensUsed)}
+Call get_goal for elapsed time and token usage.
 
 If the goal is achieved and no required work remains, call update_goal with status "complete". Do not mark it complete merely because you are stopping or the budget is nearly exhausted. If the goal is genuinely blocked, use update_goal with status "blocked" only after the same blocking condition has repeated for at least three consecutive goal turns and you cannot make meaningful progress without user input or an external-state change.`;
 }
