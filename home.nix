@@ -272,8 +272,8 @@ in
       ".config/opencode/agent/docs.md".source = ./opencode/agent/docs.md;
       ".config/opencode/plugins".source = ./opencode/plugins;
       ".config/opencode/providers".source = ./opencode/providers;
-      ".config/opencode/AGENTS.md".source = ./claude/CLAUDE.md;
-      ".pi/agent/AGENTS.md".source = ./pi/AGENTS.md;
+      ".config/opencode/AGENTS.md".source = ./agents/AGENTS.md;
+      ".pi/agent/AGENTS.md".source = ./agents/AGENTS.md;
       ".pi/agent/settings.json".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/pi/settings.json";
       ".pi/agent/models.json".source = ./pi/models.json;
@@ -292,8 +292,8 @@ in
       ".pi/agent/extensions/subagent/terminal.ts".source = ./pi/extensions/subagent/terminal.ts;
       ".pi/agent/extensions/subagent/LICENSE".source = ./pi/extensions/subagent/LICENSE;
       ".pi/agent/prompts/discuss.md".source = ./agents/skills/discuss/SKILL.md;
-      ".claude/CLAUDE.md".source = ./claude/CLAUDE.md;
-      ".codex/AGENTS.md".source = ./claude/CLAUDE.md;
+      ".claude/CLAUDE.md".source = ./agents/AGENTS.md;
+      ".codex/AGENTS.md".source = ./agents/AGENTS.md;
       ".codex/hooks.json".source = ./codex/hooks.json;
       ".config/zed/settings.json".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/zed/settings.json";

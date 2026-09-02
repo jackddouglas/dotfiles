@@ -12,7 +12,8 @@
 - Verify completion claims with fresh, relevant evidence after the last change; report failures and anything left unverified.
 - Report uncertainty, failed checks, and assumptions directly.
 - Avoid destructive Git operations.
-- Keep working updates brief. Do not use emojis in code, commits, or output.
+- Say in a line what you are about to do, and give short updates while working so the user can follow along.
+- Do not use emojis in code, commits, or output.
 
 ## Rust and Nix
 
