@@ -1,5 +1,3 @@
 interface:
   display_name: "Codebase Design"
   short_description: "Design deep module interfaces and seams"
-policy:
-  allow_implicit_invocation: false

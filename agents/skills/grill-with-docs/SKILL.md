@@ -4,5 +4,5 @@ description: A relentless interview to sharpen a plan or design, which also crea
 disable-model-invocation: true
 ---
 
-Load and follow both `grill-me` and `domain-modeling`. Use `grill-me` to drive
+Load and follow both `discuss` and `domain-modeling`. Use `discuss` to drive
 the interview and apply `domain-modeling` inline as terms and decisions settle.

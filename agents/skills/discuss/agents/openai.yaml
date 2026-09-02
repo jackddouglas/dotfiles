@@ -1,5 +1,3 @@
 interface:
   display_name: "Discuss"
-  short_description: "Clarify a plan through focused interview rounds"
-policy:
-  allow_implicit_invocation: false
+  short_description: "Clarify or stress-test a plan in interview rounds"
