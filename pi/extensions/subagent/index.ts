@@ -24,17 +24,26 @@ import { restoreSessionTaskTitle } from "../session-task.ts";
 
 import {
   findCmuxWorkspace,
-  findTmuxWorkspaceName,
+  findTmuxWindow,
+  interactiveChildCommand,
   isSameOrDescendant,
   parseCmuxIdentity,
   parseCmuxSurfaceTarget,
   parseFirstCmuxSurface,
   parseCmuxWorkspaceTarget,
+  parseTmuxIdentity,
+  parseTmuxWindowCreation,
   selectTerminalBackend,
   setTmuxPaneTitle,
   shellQuote,
-  terminalWorkspaceName,
   terminalWorkspaceNameForSession,
+  tmuxClosePaneOnExitArgs,
+  TMUX_WINDOW_LIST_FORMAT,
+  tmuxNewWindowArgs,
+  tmuxPaneHasExited,
+  tmuxSplitWindowArgs,
+  tmuxWindowIdentityArgs,
+  tmuxWindowNameForSession,
   type TerminalBackend,
   type TerminalChoice,
 } from "./terminal.ts";
@@ -107,9 +116,11 @@ interface RunSpec {
   task: string;
   cwd: string;
   terminal: TerminalBackend;
+  parentSessionId: string;
   sessionName: string;
   runName: string;
   target: string;
+  tmuxSocket?: string;
   workspaceTarget?: string;
   parentWindow?: string;
   captureCommand: string;
@@ -120,6 +131,14 @@ interface RunSpec {
   trusted: boolean;
 }
 
+interface TmuxWorkspaceState {
+  socketPath: string;
+  sessionTarget: string;
+  windowTarget: string;
+  initialPane?: string;
+  initialPaneClaimed: boolean;
+}
+
 interface CmuxWorkspaceState {
   target: string;
   parentWindow: string;
@@ -127,13 +146,12 @@ interface CmuxWorkspaceState {
   initialSurfaceClaimed: boolean;
 }
 
-function tmuxSocketPath(): string {
-  return path.join(getAgentDir(), "tmux-subagents.sock");
-}
-
 function currentTmuxSocket(): string | undefined {
-  const socket = process.env.TMUX?.split(",", 1)[0]?.trim();
-  return socket || undefined;
+  try {
+    return parseTmuxIdentity().socketPath;
+  } catch {
+    return undefined;
+  }
 }
 
 function attachFlagValue(argv: string[]): string | undefined {
@@ -150,18 +168,18 @@ function attachFlagValue(argv: string[]): string | undefined {
   return undefined;
 }
 
-function tmuxCommandPrefix(): string {
-  return `tmux -S ${shellQuote(tmuxSocketPath())}`;
+function tmuxCommandPrefix(socketPath: string): string {
+  return `tmux -S ${shellQuote(socketPath)}`;
 }
 
-function tmuxArgs(...args: string[]): string[] {
-  return ["-S", tmuxSocketPath(), ...args];
+function tmuxArgs(socketPath: string, ...args: string[]): string[] {
+  return ["-S", socketPath, ...args];
 }
 
 function updateTerminalCommands(spec: RunSpec): void {
   if (!spec.target) return;
   if (spec.terminal === "tmux") {
-    const tmux = tmuxCommandPrefix();
+    const tmux = tmuxCommandPrefix(spec.tmuxSocket!);
     spec.captureCommand = `${tmux} capture-pane -p -J -t ${shellQuote(spec.target)}`;
     spec.killCommand = `${tmux} kill-pane -t ${shellQuote(spec.target)}`;
     return;
@@ -183,10 +201,11 @@ function attachToSubagentAndExit(rawTarget: string): never {
     process.exit(2);
   }
 
-  let socket = tmuxSocketPath();
-  let session: string;
   if (target.startsWith("v1.")) {
-    // Keep attachment working for sessions started before session-id targets.
+    // Keep attachment working for sessions started on the former dedicated
+    // tmux server.
+    let socket: string;
+    let session: string;
     try {
       const legacy = JSON.parse(
         Buffer.from(target.slice(3), "base64url").toString("utf8"),
@@ -210,42 +229,92 @@ function attachToSubagentAndExit(rawTarget: string): never {
       );
       process.exit(2);
     }
-  } else {
-    if (
-      !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
-        target,
-      )
-    ) {
-      console.error(`Error: invalid parent Pi session id: ${target}`);
-      process.exit(2);
+
+    const sameServer = currentTmuxSocket() === socket;
+    const env = { ...process.env };
+    if (!sameServer) {
+      delete env.TMUX;
+      delete env.TMUX_PANE;
     }
-    const fallback = terminalWorkspaceName(target);
-    session = fallback;
-    const listed = spawnSync(
+    const result = spawnSync(
       "tmux",
-      ["-S", socket, "list-sessions", "-F", "#{session_name}"],
-      { encoding: "utf8" },
+      [
+        "-S",
+        socket,
+        sameServer ? "switch-client" : "attach-session",
+        "-t",
+        session,
+      ],
+      { stdio: "inherit", env },
     );
-    if (!listed.error && listed.status === 0) {
-      const matching = findTmuxWorkspaceName(listed.stdout, target);
-      if (matching) session = matching;
-    }
+    if (result.error)
+      console.error(`Failed to run tmux: ${result.error.message}`);
+    process.exit(result.status ?? 1);
   }
 
-  const sameServer = currentTmuxSocket() === socket;
-  const args = [
-    "-S",
-    socket,
-    sameServer ? "switch-client" : "attach-session",
-    "-t",
-    session,
-  ];
-  const env = { ...process.env };
-  if (!sameServer) {
-    delete env.TMUX;
-    delete env.TMUX_PANE;
+  if (
+    !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+      target,
+    )
+  ) {
+    console.error(`Error: invalid parent Pi session id: ${target}`);
+    process.exit(2);
   }
-  const result = spawnSync("tmux", args, { stdio: "inherit", env });
+
+  let identity: ReturnType<typeof parseTmuxIdentity>;
+  try {
+    identity = parseTmuxIdentity();
+  } catch (error) {
+    console.error(
+      `Error: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    process.exit(2);
+  }
+  const session = spawnSync(
+    "tmux",
+    [
+      "-S",
+      identity.socketPath,
+      "display-message",
+      "-p",
+      "-t",
+      identity.paneId,
+      "#{session_id}",
+    ],
+    { encoding: "utf8" },
+  );
+  if (session.error || session.status !== 0) {
+    console.error(
+      `Error: failed to identify the current tmux session: ${session.error?.message || session.stderr.trim()}`,
+    );
+    process.exit(1);
+  }
+  const listed = spawnSync(
+    "tmux",
+    [
+      "-S",
+      identity.socketPath,
+      "list-windows",
+      "-t",
+      session.stdout.trim(),
+      "-F",
+      TMUX_WINDOW_LIST_FORMAT,
+    ],
+    { encoding: "utf8" },
+  );
+  const window =
+    !listed.error && listed.status === 0
+      ? findTmuxWindow(listed.stdout, target)
+      : undefined;
+  if (!window) {
+    console.error("Error: no subagent window exists in this tmux session.");
+    process.exit(1);
+  }
+  const result = spawnSync(
+    "tmux",
+    ["-S", identity.socketPath, "select-window", "-t", window.target],
+    { stdio: "inherit" },
+  );
   if (result.error)
     console.error(`Failed to run tmux: ${result.error.message}`);
   process.exit(result.status ?? 1);
@@ -254,7 +323,8 @@ function attachToSubagentAndExit(rawTarget: string): never {
 async function startTerminal(
   pi: ExtensionAPI,
   spec: RunSpec,
-  command: string,
+  launcherPath: string,
+  tmuxWorkspaces: Map<string, Promise<TmuxWorkspaceState>>,
   cmuxWorkspaces: Map<string, Promise<CmuxWorkspaceState>>,
 ): Promise<void> {
   if (spec.terminal === "tmux") {
@@ -263,81 +333,65 @@ async function startTerminal(
       throw new Error(
         `tmux is required for this subagent: ${version.stderr.trim() || "tmux not found"}`,
       );
-    let created = await pi.exec(
-      "tmux",
-      tmuxArgs(
-        "new-session",
-        "-d",
-        "-P",
-        "-F",
-        "#{pane_id}",
-        "-s",
-        spec.sessionName,
-        "-n",
-        "subagents",
-        "-c",
-        spec.cwd,
-      ),
+    const workspace = await resolveTmuxWorkspace(
+      pi,
+      spec,
+      launcherPath,
+      tmuxWorkspaces,
     );
-    if (created.code !== 0) {
-      const sessionError = created.stderr.trim() || created.stdout.trim();
-      created = await pi.exec(
+    spec.tmuxSocket = workspace.socketPath;
+
+    if (workspace.initialPane && !workspace.initialPaneClaimed) {
+      workspace.initialPaneClaimed = true;
+      spec.target = workspace.initialPane;
+    } else {
+      const created = await pi.exec(
         "tmux",
         tmuxArgs(
-          "split-window",
-          "-d",
-          "-P",
-          "-F",
-          "#{pane_id}",
-          "-t",
-          spec.sessionName,
-          "-c",
-          spec.cwd,
+          workspace.socketPath,
+          ...tmuxSplitWindowArgs(
+            workspace.windowTarget,
+            spec.cwd,
+            launcherPath,
+          ),
         ),
       );
       if (created.code !== 0) {
-        const splitError = created.stderr.trim() || created.stdout.trim();
         throw new Error(
-          `Failed to create or reuse tmux workspace: ${splitError || sessionError}`,
+          `Failed to create tmux subagent pane: ${created.stderr.trim() || created.stdout.trim()}`,
         );
       }
+      spec.target = created.stdout.trim().split("\n").at(-1)?.trim() ?? "";
+      if (!spec.target)
+        throw new Error("tmux did not report the created subagent pane.");
     }
-    const paneTarget = created.stdout.trim().split("\n").at(-1)?.trim();
-    if (!paneTarget)
-      throw new Error("tmux did not report the created subagent pane.");
-    spec.target = paneTarget;
+
     updateTerminalCommands(spec);
     await setTmuxPaneTitle(
       (command, args) => pi.exec(command, args),
-      tmuxArgs(),
+      tmuxArgs(workspace.socketPath),
       spec.target,
       spec.runName,
     );
     const tiled = await pi.exec(
       "tmux",
-      tmuxArgs("select-layout", "-t", spec.sessionName, "tiled"),
+      tmuxArgs(
+        workspace.socketPath,
+        "select-layout",
+        "-t",
+        workspace.windowTarget,
+        "tiled",
+      ),
     );
     if (tiled.code !== 0)
       throw new Error(tiled.stderr.trim() || "Failed to tile subagent panes.");
     const remain = await pi.exec(
       "tmux",
-      tmuxArgs("set-window-option", "-t", spec.target, "remain-on-exit", "on"),
+      tmuxArgs(workspace.socketPath, ...tmuxClosePaneOnExitArgs(spec.target)),
     );
     if (remain.code !== 0)
-      throw new Error(remain.stderr.trim() || "Failed to set remain-on-exit.");
-    const sent = await pi.exec(
-      "tmux",
-      tmuxArgs("send-keys", "-t", spec.target, "-l", "--", command),
-    );
-    if (sent.code !== 0)
-      throw new Error(sent.stderr.trim() || "Failed to start child Pi.");
-    const entered = await pi.exec(
-      "tmux",
-      tmuxArgs("send-keys", "-t", spec.target, "Enter"),
-    );
-    if (entered.code !== 0)
       throw new Error(
-        entered.stderr.trim() || "Failed to submit child command.",
+        remain.stderr.trim() || "Failed to disable remain-on-exit.",
       );
     return;
   }
@@ -377,6 +431,7 @@ async function startTerminal(
     spec.target = parseCmuxSurfaceTarget(created.stdout);
   }
   updateTerminalCommands(spec);
+  const childCommand = interactiveChildCommand(launcherPath);
 
   const sent = await pi.exec("cmux", [
     "send",
@@ -386,7 +441,7 @@ async function startTerminal(
     spec.target,
     "--window",
     workspace.parentWindow,
-    `cd ${shellQuote(spec.cwd)} && ${command}`,
+    `cd ${shellQuote(spec.cwd)} && ${childCommand}`,
   ]);
   if (sent.code !== 0)
     throw new Error(sent.stderr.trim() || "Failed to start child Pi.");
@@ -402,6 +457,150 @@ async function startTerminal(
   ]);
   if (entered.code !== 0)
     throw new Error(entered.stderr.trim() || "Failed to submit child command.");
+}
+
+async function resolveTmuxWorkspace(
+  pi: ExtensionAPI,
+  spec: RunSpec,
+  launcherPath: string,
+  workspaces: Map<string, Promise<TmuxWorkspaceState>>,
+): Promise<TmuxWorkspaceState> {
+  const identity = parseTmuxIdentity();
+  const identified = await pi.exec(
+    "tmux",
+    tmuxArgs(
+      identity.socketPath,
+      "display-message",
+      "-p",
+      "-t",
+      identity.paneId,
+      "#{session_id}",
+    ),
+    { timeout: 5_000 },
+  );
+  if (identified.code !== 0) {
+    throw new Error(
+      `Failed to identify the current tmux session: ${identified.stderr.trim() || identified.stdout.trim()}`,
+    );
+  }
+  const sessionTarget = identified.stdout.trim();
+  if (!sessionTarget)
+    throw new Error("tmux did not report the current session.");
+
+  const key = `${identity.socketPath}\0${sessionTarget}\0${spec.sessionName}`;
+  let workspacePromise = workspaces.get(key);
+  if (!workspacePromise) {
+    workspacePromise = findOrCreateTmuxWorkspace(
+      pi,
+      identity.socketPath,
+      sessionTarget,
+      spec.parentSessionId,
+      spec.sessionName,
+      spec.cwd,
+      launcherPath,
+    );
+    workspaces.set(key, workspacePromise);
+  }
+  try {
+    return await workspacePromise;
+  } finally {
+    if (workspaces.get(key) === workspacePromise) workspaces.delete(key);
+  }
+}
+
+async function findOrCreateTmuxWorkspace(
+  pi: ExtensionAPI,
+  socketPath: string,
+  sessionTarget: string,
+  parentSessionId: string,
+  name: string,
+  cwd: string,
+  launcherPath: string,
+): Promise<TmuxWorkspaceState> {
+  const listed = await pi.exec(
+    "tmux",
+    tmuxArgs(
+      socketPath,
+      "list-windows",
+      "-t",
+      sessionTarget,
+      "-F",
+      TMUX_WINDOW_LIST_FORMAT,
+    ),
+    { timeout: 5_000 },
+  );
+  if (listed.code !== 0) {
+    throw new Error(
+      `Failed to list windows in the current tmux session: ${listed.stderr.trim() || listed.stdout.trim()}`,
+    );
+  }
+  const existing = findTmuxWindow(listed.stdout, parentSessionId);
+  if (existing) {
+    const tagged = await pi.exec(
+      "tmux",
+      tmuxArgs(
+        socketPath,
+        ...tmuxWindowIdentityArgs(existing.target, parentSessionId),
+      ),
+    );
+    if (tagged.code !== 0) {
+      throw new Error(
+        `Failed to identify tmux subagent window: ${tagged.stderr.trim() || tagged.stdout.trim()}`,
+      );
+    }
+    const renamed = await pi.exec(
+      "tmux",
+      tmuxArgs(socketPath, "rename-window", "-t", existing.target, name),
+    );
+    if (renamed.code !== 0) {
+      throw new Error(
+        `Failed to rename tmux subagent window: ${renamed.stderr.trim() || renamed.stdout.trim()}`,
+      );
+    }
+    return {
+      socketPath,
+      sessionTarget,
+      windowTarget: existing.target,
+      initialPaneClaimed: true,
+    };
+  }
+
+  const created = await pi.exec(
+    "tmux",
+    tmuxArgs(
+      socketPath,
+      ...tmuxNewWindowArgs(sessionTarget, name, cwd, launcherPath),
+    ),
+  );
+  if (created.code !== 0) {
+    throw new Error(
+      `Failed to create tmux subagent window: ${created.stderr.trim() || created.stdout.trim()}`,
+    );
+  }
+  const targets = parseTmuxWindowCreation(created.stdout);
+  const tagged = await pi.exec(
+    "tmux",
+    tmuxArgs(
+      socketPath,
+      ...tmuxWindowIdentityArgs(targets.windowTarget, parentSessionId),
+    ),
+  );
+  if (tagged.code !== 0) {
+    await pi.exec(
+      "tmux",
+      tmuxArgs(socketPath, "kill-window", "-t", targets.windowTarget),
+    );
+    throw new Error(
+      `Failed to identify tmux subagent window: ${tagged.stderr.trim() || tagged.stdout.trim()}`,
+    );
+  }
+  return {
+    socketPath,
+    sessionTarget,
+    windowTarget: targets.windowTarget,
+    initialPane: targets.paneTarget,
+    initialPaneClaimed: false,
+  };
 }
 
 async function resolveCmuxWorkspace(
@@ -526,7 +725,7 @@ async function captureTerminal(
   if (spec.terminal === "tmux") {
     return pi.exec(
       "tmux",
-      tmuxArgs("capture-pane", "-p", "-J", "-t", spec.target),
+      tmuxArgs(spec.tmuxSocket!, "capture-pane", "-p", "-J", "-t", spec.target),
       { timeout: 5_000 },
     );
   }
@@ -554,15 +753,25 @@ async function terminalExited(
   if (spec.terminal !== "tmux") return false;
   const result = await pi.exec(
     "tmux",
-    tmuxArgs("display-message", "-p", "-t", spec.target, "#{pane_dead}"),
+    tmuxArgs(
+      spec.tmuxSocket!,
+      "display-message",
+      "-p",
+      "-t",
+      spec.target,
+      "#{pane_dead}",
+    ),
   );
-  return result.code === 0 && result.stdout.trim() === "1";
+  return tmuxPaneHasExited(result.code, result.stdout);
 }
 
 async function stopTerminal(pi: ExtensionAPI, spec: RunSpec): Promise<void> {
   if (!spec.target) return;
   if (spec.terminal === "tmux") {
-    await pi.exec("tmux", tmuxArgs("kill-pane", "-t", spec.target));
+    await pi.exec(
+      "tmux",
+      tmuxArgs(spec.tmuxSocket!, "kill-pane", "-t", spec.target),
+    );
     return;
   }
   const args = [
@@ -844,7 +1053,7 @@ function resolveModel(
 export default function subagentExtension(pi: ExtensionAPI): void {
   pi.registerFlag(ATTACH_FLAG, {
     description:
-      "Attach to the shared tmux subagent workspace for a parent Pi session id",
+      "Select the shared tmux subagent window for a parent Pi session id",
     type: "string",
   });
   const attachTarget = attachFlagValue(process.argv);
@@ -861,6 +1070,7 @@ export default function subagentExtension(pi: ExtensionAPI): void {
   }
 
   const activeRuns = new Set<RunSpec>();
+  const tmuxWorkspaces = new Map<string, Promise<TmuxWorkspaceState>>();
   const cmuxWorkspaces = new Map<string, Promise<CmuxWorkspaceState>>();
   pi.on("session_shutdown", async () => {
     await Promise.all([...activeRuns].map((spec) => stopTerminal(pi, spec)));
@@ -908,7 +1118,7 @@ export default function subagentExtension(pi: ExtensionAPI): void {
       terminal: Type.Optional(
         StringEnum(["auto", "tmux", "cmux"] as const, {
           description:
-            "Terminal backend. Auto prefers cmux when Pi is running inside cmux, otherwise tmux.",
+            "Terminal backend. Auto uses an active tmux pane first (including tmux nested in cmux), then cmux when available.",
           default: "auto",
         }),
       ),
@@ -926,11 +1136,17 @@ export default function subagentExtension(pi: ExtensionAPI): void {
       const generatedTitle = restoreSessionTaskTitle(
         ctx.sessionManager.getBranch(),
       );
-      const sessionName = terminalWorkspaceNameForSession(
-        parentSessionId,
-        generatedTitle,
-        pi.getSessionName(),
+      const terminal = selectTerminalBackend(
+        (params.terminal ?? "auto") as TerminalChoice,
       );
+      const sessionName =
+        terminal === "tmux"
+          ? tmuxWindowNameForSession(generatedTitle, pi.getSessionName())
+          : terminalWorkspaceNameForSession(
+              parentSessionId,
+              generatedTitle,
+              pi.getSessionName(),
+            );
       const runDir = path.join(
         getAgentDir(),
         RUNS_DIR,
@@ -942,9 +1158,8 @@ export default function subagentExtension(pi: ExtensionAPI): void {
       const spec: RunSpec = {
         task: params.task,
         cwd,
-        terminal: selectTerminalBackend(
-          (params.terminal ?? "auto") as TerminalChoice,
-        ),
+        terminal,
+        parentSessionId,
         sessionName,
         runName: `subagent-${childSessionId.slice(0, 8)}`,
         target: "",
@@ -1009,12 +1224,17 @@ export default function subagentExtension(pi: ExtensionAPI): void {
         encoding: "utf8",
         mode: 0o700,
       });
-      const childCommand = `exec /bin/sh ${shellQuote(launcherPath)}`;
       const startedAt = Date.now();
       let terminalStarted = false;
 
       try {
-        await startTerminal(pi, spec, childCommand, cmuxWorkspaces);
+        await startTerminal(
+          pi,
+          spec,
+          launcherPath,
+          tmuxWorkspaces,
+          cmuxWorkspaces,
+        );
         terminalStarted = true;
         activeRuns.add(spec);
         const initialDetails = detailsFor(spec, "running", { startedAt });

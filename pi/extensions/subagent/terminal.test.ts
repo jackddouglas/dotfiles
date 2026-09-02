@@ -9,30 +9,67 @@ import {
 
 import {
   findCmuxWorkspace,
+  findTmuxWindow,
   findTmuxWorkspaceName,
+  interactiveChildCommand,
   isSameOrDescendant,
   parseCmuxSurfaceTarget,
   parseFirstCmuxSurface,
   parseCmuxIdentity,
   parseCmuxWorkspaceTarget,
+  parseTmuxIdentity,
+  parseTmuxWindowCreation,
   selectTerminalBackend,
   setTmuxPaneTitle,
   shellQuote,
   terminalWorkspaceName,
   terminalWorkspaceNameForSession,
   terminalWorkspaceSuffix,
+  tmuxChildCommandArgs,
+  tmuxClosePaneOnExitArgs,
+  tmuxNewWindowArgs,
+  tmuxPaneHasExited,
+  tmuxSplitWindowArgs,
+  tmuxWindowIdentityArgs,
+  tmuxWindowNameForSession,
+  TMUX_WINDOW_LIST_FORMAT,
 } from "./terminal.ts";
 
-test("auto terminal selection prefers the active cmux environment", () => {
+test("auto terminal selection prefers the innermost active terminal", () => {
   assert.equal(
     selectTerminalBackend("auto", { CMUX_WORKSPACE_ID: "workspace-id" }),
     "cmux",
   );
   assert.equal(
-    selectTerminalBackend("auto", { TMUX: "/tmp/tmux,1,0" }),
+    selectTerminalBackend("auto", {
+      CMUX_WORKSPACE_ID: "outer-cmux-workspace",
+      TMUX: "/tmp/tmux,1,0",
+      TMUX_PANE: "%9",
+    }),
+    "tmux",
+  );
+  assert.equal(
+    selectTerminalBackend("auto", {
+      TMUX: "/tmp/tmux,1,0",
+      TMUX_PANE: "%9",
+    }),
     "tmux",
   );
   assert.equal(selectTerminalBackend("cmux", {}), "cmux");
+});
+
+test("tmux identity comes from the invoking pane and current server", () => {
+  assert.deepEqual(
+    parseTmuxIdentity({
+      TMUX: "/tmp/socket,with-comma,123,0",
+      TMUX_PANE: "%9",
+    }),
+    { socketPath: "/tmp/socket,with-comma", paneId: "%9" },
+  );
+  assert.throws(
+    () => parseTmuxIdentity({}),
+    /requires Pi to be running inside a tmux session/,
+  );
 });
 
 test("cmux response parsers prefer stable UUIDs and accept refs", () => {
@@ -156,6 +193,49 @@ test("tmux workspace lookup accepts current and legacy title prefixes", () => {
   );
 });
 
+test("tmux window lookup uses hidden session identity", () => {
+  assert.equal(
+    TMUX_WINDOW_LIST_FORMAT,
+    "#{window_id}\t#{window_name}\t#{@pi_subagent_session_id}",
+  );
+  const output = [
+    "@1\tmain\t",
+    "@2\tπ′ - Current session\tparent-session-id",
+    "@3\tπ′ - Current session\tother-session-id",
+    "@4\tπ′ - Legacy session - legacyse\t",
+  ].join("\n");
+  assert.deepEqual(findTmuxWindow(output, "parent-session-id"), {
+    target: "@2",
+    name: "π′ - Current session",
+  });
+  assert.deepEqual(findTmuxWindow(output, "legacy-session-id"), {
+    target: "@4",
+    name: "π′ - Legacy session - legacyse",
+  });
+  assert.equal(findTmuxWindow(output, "missing-session-id"), undefined);
+  assert.deepEqual(tmuxWindowIdentityArgs("@2", "parent-session-id"), [
+    "set-window-option",
+    "-t",
+    "@2",
+    "@pi_subagent_session_id",
+    "parent-session-id",
+  ]);
+  assert.deepEqual(parseTmuxWindowCreation("%42\t@2\n"), {
+    paneTarget: "%42",
+    windowTarget: "@2",
+  });
+  assert.throws(
+    () => parseTmuxWindowCreation("%42\n"),
+    /did not report the created subagent window/,
+  );
+});
+
+test("tmux panes are exited when dead or already removed", () => {
+  assert.equal(tmuxPaneHasExited(0, "0\n"), false);
+  assert.equal(tmuxPaneHasExited(0, "1\n"), true);
+  assert.equal(tmuxPaneHasExited(1, ""), true);
+});
+
 test("tmux pane titles use the child run name", async () => {
   const calls: Array<{ command: string; args: string[] }> = [];
   await setTmuxPaneTitle(
@@ -194,6 +274,14 @@ test("tmux pane titles use the child run name", async () => {
 });
 
 test("generated titles take precedence in subagent workspace names", () => {
+  assert.equal(
+    tmuxWindowNameForSession("Generated title", "Manual name"),
+    "π′ - Generated title",
+  );
+  assert.equal(
+    tmuxWindowNameForSession(undefined, "Manual name"),
+    "π′ - Manual name",
+  );
   assert.equal(
     terminalWorkspaceNameForSession(
       "parent-session-id",
@@ -249,4 +337,54 @@ test("trust inheritance stays inside the parent directory", () => {
 
 test("shell quoting preserves apostrophes", () => {
   assert.equal(shellQuote("Jack's task"), `'Jack'"'"'s task'`);
+});
+
+test("child launch commands do not exec through an interactive shell", () => {
+  const launcherPath = "/tmp/Jack's task/run.sh";
+  assert.deepEqual(tmuxChildCommandArgs(launcherPath), [
+    "/bin/sh",
+    launcherPath,
+  ]);
+  assert.deepEqual(
+    tmuxNewWindowArgs("$0", "π′ - Session", "/work", launcherPath),
+    [
+      "new-window",
+      "-d",
+      "-P",
+      "-F",
+      "#{pane_id}\t#{window_id}",
+      "-t",
+      "$0",
+      "-n",
+      "π′ - Session",
+      "-c",
+      "/work",
+      "/bin/sh",
+      launcherPath,
+    ],
+  );
+  assert.deepEqual(tmuxClosePaneOnExitArgs("@2"), [
+    "set-window-option",
+    "-t",
+    "@2",
+    "remain-on-exit",
+    "off",
+  ]);
+  assert.deepEqual(tmuxSplitWindowArgs("@2", "/work", launcherPath), [
+    "split-window",
+    "-d",
+    "-P",
+    "-F",
+    "#{pane_id}",
+    "-t",
+    "@2",
+    "-c",
+    "/work",
+    "/bin/sh",
+    launcherPath,
+  ]);
+  assert.equal(
+    interactiveChildCommand(launcherPath),
+    `/bin/sh '/tmp/Jack'"'"'s task/run.sh'`,
+  );
 });
