@@ -11,8 +11,8 @@
 
     brews = [
       # Development
-      "sst/tap/opencode"
       "pi-coding-agent"
+      "sst/tap/opencode"
       "tree-sitter-cli"
 
       # Utilities
@@ -38,6 +38,7 @@
       # Development
       "chatgpt"
       "claude"
+      "cmux"
       "codex"
       "ghostty"
       "zed"
@@ -69,6 +70,7 @@
       "1password"
       "antinote"
       "linear"
+      "markdown-preview"
       "proton-drive"
       "protonvpn"
       "typewhisper/tap/typewhisper"
