@@ -45,11 +45,10 @@
       # that both ring and set a marker render one glyph instead of two
       setw -g monitor-bell on
 
-      # Codex emits BEL only after its TUI has finished processing a turn and
-      # confirmed that no queued follow-up or active goal will continue it.
-      # Claude Code sets @agent_alert from its own hooks and rings the bell
-      # purely to escape tmux, so it deliberately does not match here.
-      set-hook -g alert-bell 'if-shell -F "#{m:codex*,#{pane_current_command}}" "set-option -w @agent_alert ✓" ""'
+      # Codex normally emits BEL only after its TUI has finished processing a
+      # turn. Preserve an explicit marker when request_user_input or
+      # request_permissions rings instead.
+      set-hook -g alert-bell 'if-shell -F "#{&&:#{m:codex*,#{pane_current_command}},#{==:#{@agent_alert},}}" "set-option -w @agent_alert ✓" ""'
 
       # per-window marker set by agent hooks, cleared when the window is focused
       set -g @agent_alert ""

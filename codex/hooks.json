@@ -1,11 +1,12 @@
 {
   "hooks": {
-    "PermissionRequest": [
+    "PreToolUse": [
       {
+        "matcher": "request_user_input|request_permissions",
         "hooks": [
           {
             "type": "command",
-            "command": "tmux set-option -w -t \"$TMUX_PANE\" @agent_alert '?' 2>/dev/null || true"
+            "command": "tmux set-option -w -t \"$TMUX_PANE\" @agent_alert '?' 2>/dev/null; printf '\\a' >\"$(tmux display-message -p -t \"$TMUX_PANE\" '#{pane_tty}')\" 2>/dev/null; true"
           }
         ]
       }
