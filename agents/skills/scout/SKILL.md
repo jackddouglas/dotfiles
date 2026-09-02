@@ -5,23 +5,14 @@ description: Map where a proposed change lands in the current repository—files
 
 ## Isolation
 
-Fresh context is the requirement; spawning a subagent is not.
-
-- If the current conversation has no prior work on the task being scouted, it is
-  already fresh. Execute the `Workflow` below directly in this context. The
-  user's request and routine repository inspection do not make it stale. Do not
-  spawn a subagent merely to satisfy this section.
-- If this conversation participated in designing, implementing, or previously
-  analyzing the task, use the subagent mechanism provided by the current
-  harness when available.
-- Otherwise, if the current context is not fresh and the current harness
-  provides a subagent mechanism, delegate to a fresh context.
-- Pass the user's request and the `Workflow` section below to the fresh context.
-  Tell it that isolation is already provided and that it must execute the
-  workflow directly rather than delegate again.
-- Wait for the result and inspect its cited evidence before reporting it.
-- If the current context is not fresh and no subagent mechanism is available,
-  stop and explain that limitation.
+Scouting needs a context with no stake in the task, so it maps what is there
+rather than what was planned. If this conversation designed, implemented, or
+analyzed the task, delegate to a fresh context through the harness's subagent
+mechanism, passing the request and the `Workflow` section below and saying
+that isolation is already provided; inspect its cited evidence before
+reporting it. If no fresh context is available, scout directly and say the map
+is not independent. Otherwise scout directly; the request and routine
+repository inspection do not make the context stale.
 
 ## Workflow
 

@@ -89,8 +89,6 @@ screenshots for visual evidence:
 cdp take_screenshot --fullPage
 ```
 
-Do not pass `--filePath`.
-
 ## Debugging
 
 ```bash

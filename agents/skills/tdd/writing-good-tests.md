@@ -52,9 +52,5 @@ behavior is unprotected or the assertion is tautological.
 
 - Setup and expectation use the same builder or object.
 - The test can fail only through a crash or missing selector.
-- It freezes private structure but misses output and side effects.
-- It greps source text instead of running the artifact.
-- It primarily tests framework behavior maintained upstream.
-- It asserts on a `*-mock` element or mock presence.
+- It asserts on mock presence, or mock setup dominates the test.
 - A production method is called only by tests.
-- Mock setup dominates the test and its necessity is unclear.

@@ -78,11 +78,8 @@ cycle.
 
 ## Completion checklist
 
-- Every changed behavior has regression coverage or a documented exception.
-- Each test for new or corrected behavior was observed failing for the expected
-  reason; characterization coverage for a pure refactor passed before and after.
+- Every changed behavior has coverage that was observed failing for the
+  expected reason, or a documented exception; a pure refactor's
+  characterization coverage passed before and after.
 - Focused and broader tests pass after the final implementation.
-- Tests assert observable behavior, not implementation trivia or mock presence.
-- Mocks replace only genuinely slow, external, nondeterministic, or unsafe
-  boundaries.
 - The production diff contains no test-only API or speculative behavior.

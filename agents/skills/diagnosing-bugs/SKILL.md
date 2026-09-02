@@ -27,21 +27,18 @@ and ask for the narrowest safe substitute.
 
 ## Phase 1: Establish the exact failure and feedback loop
 
-1. Read the complete error, warning, stack trace, and surrounding output.
-   Record exact paths, line numbers, error codes, inputs, and environment.
-2. Define a pass/fail signal for the user's exact symptom. Prefer a focused
-   test, deterministic CLI invocation, HTTP script, browser check, trace replay,
-   or minimal harness. Run it and record the command and observed result.
-3. Reproduce consistently. For intermittent failures, tighten the loop and
-   raise the reproduction rate by pinning time or randomness, isolating state,
-   or repeating the trigger instead of guessing.
-4. Inspect recent and local changes, dependencies, configuration, and
-   environment differences without discarding unrelated work.
-5. In a multi-component path, instrument each boundary once: what enters, what
-   exits, and which configuration is visible. Tag temporary logs with one unique
-   `[DEBUG-<id>]` prefix so they can be removed reliably.
-6. Trace bad values backward through callers until you find where they first
-   become wrong. Read [root-cause-tracing.md](root-cause-tracing.md).
+Phase 1 is done when you have a pass/fail signal for the user's exact symptom
+that you can run yourself (a focused test, a deterministic CLI invocation, an
+HTTP script, a browser check, a trace replay, or a minimal harness), it
+reproduces consistently, and you have traced the bad value back to where it
+first goes wrong. Record the exact command and observed result, and the paths,
+line numbers, error codes, inputs, and environment from the complete error
+output. For intermittent failures, raise the reproduction rate by pinning time
+or randomness, isolating state, or repeating the trigger rather than guessing.
+Check recent and local changes, dependencies, and configuration without
+discarding unrelated work. Tag any temporary instrumentation with one unique
+`[DEBUG-<id>]` prefix so it can be removed reliably. Read
+[root-cause-tracing.md](root-cause-tracing.md) for the tracing procedure.
 
 Before moving on, show the observed failure and current root-cause hypothesis.
 For a hard runtime bug, do not advance on conjecture while a red-capable loop is
@@ -99,8 +96,8 @@ reproducer only when it will become durable regression coverage in Phase 4.
    [defense-in-depth.md](defense-in-depth.md).
 
 If a fix does not work, isolate or revert only the speculative part and return
-to the evidence. After three failed fix attempts, stop and question the
-underlying architecture or assumption instead of attempting a fourth variation.
+to the evidence. When fixes keep failing, question the underlying architecture
+or assumption instead of trying another variation.
 
 ## Timing failures
 
@@ -108,17 +105,6 @@ Replace arbitrary sleeps with polling for the state or event that matters. Read
 [condition-based-waiting.md](condition-based-waiting.md). Retain fixed delays
 only when elapsed time is itself the behavior under test, and document the
 timing relationship.
-
-## Stop signals
-
-Return to Phase 1 when you catch yourself:
-
-- proposing a solution before reproducing or tracing the failure;
-- saying “probably” and editing immediately;
-- changing several variables in one experiment;
-- treating a passing narrow test as proof that the full issue is fixed;
-- adding a timeout without identifying the condition being awaited; or
-- trying one more variation after repeated failed fixes.
 
 ## Report
 

@@ -1,27 +1,15 @@
 # Root-cause tracing
 
 Trace a failure backward from where it appears to where the invalid state first
-originates. Fixing only the deepest visible symptom leaves other paths broken.
-
-## Procedure
-
-1. **Observe the symptom.** Capture the exact operation, inputs, output, and
-   stack trace.
-2. **Find the immediate cause.** Identify the statement that directly produces
-   the failure.
-3. **Inspect its caller.** Determine which values were passed and what
-   assumptions the callee made.
-4. **Continue upward.** At each caller ask where the suspect value came from and
-   when it first became invalid.
-5. **Confirm the source.** Reproduce the failure by controlling the earliest
-   bad input or state transition.
-6. **Fix there.** Add downstream guards only where they protect a real trust or
-   safety boundary.
+originates; fixing only the deepest visible symptom leaves other paths broken.
+At each caller ask where the suspect value came from and when it first became
+invalid, then confirm the source by reproducing the failure from the earliest
+bad input or transition. Fix there, and add downstream guards only at a real
+trust or safety boundary.
 
 When static inspection is insufficient, add temporary instrumentation before
-the dangerous operation. Include inputs, current directory, relevant
-environment, timestamp, and a stack trace. Run once, preserve the evidence,
-then remove noisy instrumentation unless it has durable operational value.
+the dangerous operation (inputs, working directory, relevant environment,
+timestamp, stack trace), run once, preserve the evidence, then remove it.
 
 For test pollution, bisect the test set or run suspect tests individually until
 the first test that leaves invalid global state is identified. Verify the

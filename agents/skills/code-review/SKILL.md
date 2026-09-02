@@ -21,20 +21,13 @@ the requested one is unavailable.
 
 ## Isolation
 
-Fresh context is the requirement; spawning a subagent is not.
-
-- If the current conversation did not author or previously analyze the diff,
-  review it directly. The request and routine inspection do not make the
-  context stale.
-- If this conversation participated in the change, use the subagent mechanism
-  provided by the current harness when available and pass it the resolved scope
-  plus the workflow below.
-- Otherwise, if the context is not fresh and the current harness provides a
-  subagent mechanism, delegate to a fresh context.
-- Tell the fresh context that isolation is already provided and it must execute
-  the review rather than delegate again.
-- Inspect and validate the returned findings before reporting them.
-- If fresh isolation is required but unavailable, explain that limitation.
+The review needs a context that did not author or analyze the change, so
+its assumptions are not inherited. If this conversation did, delegate to a
+fresh context through the harness's subagent mechanism, passing the resolved
+scope and the workflow below and saying that isolation is already provided.
+Validate the returned findings before reporting them. If no fresh context is
+available, review directly and say so. Otherwise review directly; the request
+and routine inspection do not make the context stale.
 
 ## Gather the contracts
 

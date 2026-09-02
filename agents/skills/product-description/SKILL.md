@@ -90,18 +90,15 @@ Commit: `docs: revise the set after the consistency review`. Then go back throug
 
 ## Phase 5: verification checklists
 
-Drafting reads the code; verification watches the product. From `verification-template.md`:
+Drafting reads the code; verification watches the product. Build `verification/README.md` and one checklist per cluster of documents from `verification-template.md`; the template fixes the item shape, IDs, priorities, and rules.
 
-- `verification/README.md`: how to bring up the surface, confirm the commit, run a pass, record results, file failures, and when a document moves from `drafted` to `verified`.
-- One checklist file per cluster of documents, one table per document, one row per observable claim: stable ID (`AREA-NN`), priority (P1 established fact or suspected bug, P2 ordinary claim, P3 a number, color, or timing), what it needs (device, role, network condition), the claim with a link to the section, setup, numbered steps, expected result, Result column (`—` until run). Claims that cannot be checked by hand go under "Not checkable by hand".
-
-If you can drive the product (browser tools, a console handle on the app, a shell for a CLI, a test harness), run a first pass yourself on what can be observed that way, record the results in the Result columns, and say plainly in `verification/README.md` what that pass did and did not cover (for example: a scripted pass checks output, exit codes, and stored state but not what was shown on screen or how long it took to appear). Do not mark a document `verified` on the strength of an automated pass alone. A failed item is not automatically a product bug; sometimes the document is wrong, and the Status line says which.
+If you can drive the product (browser tools, a console handle on the app, a shell for a CLI, a test harness), run a first pass yourself on what can be observed that way, record the results, and say plainly in `verification/README.md` what that pass did and did not cover. Do not mark a document `verified` on the strength of an automated pass alone. A failed item is not automatically a product bug; sometimes the document is wrong, and the Status line says which.
 
 ## Phase 6: bug triage
 
-From `bug-triage-template.md`: collect every suspected defect from every document's body and open questions, merge duplicates (the same root cause raised by many documents is one entry with many "Raised by" links), and write each up with where the user meets it, what happens vs. what was expected, reproduction steps, the cause in the code with file and line, a severity, and the decision the product team needs (`fix` or `product call`). Summary table at the top sorted by severity. Entries confirmed by a verification pass carry a **Status** line.
+Build `bug-triage.md` from `bug-triage-template.md`, which fixes how entries are collected, merged by root cause, written up, and ranked.
 
-**Filing upstream is a separate, outward-facing step.** Offer it; do not do it unasked. If the user wants the entries filed as issues, confirm the repo and the format first, file them, then add an Issue line to each entry and a link column to the summary table (`docs: revise bug-triage.md with links to the filed issues`).
+**Filing upstream is a separate, outward-facing step.** Offer it; do not do it unasked. If the user wants the entries filed as issues, confirm the repo and the format first, then follow the template's filing section.
 
 ## Resuming and extending an existing repo
 

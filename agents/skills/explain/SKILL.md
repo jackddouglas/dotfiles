@@ -9,8 +9,8 @@ disable-model-invocation: true
 Make a rich, interactive explanation of the change named by the user, or the
 current branch's diff against its base when no change is named.
 
-Do not invoke or use the `browser-testing` skill to create, inspect, or verify
-the explanation.
+Verify the file by reading it. Do not launch a browser to render or
+screenshot it; that costs minutes and shows nothing the file does not.
 
 It should have these sections:
 
