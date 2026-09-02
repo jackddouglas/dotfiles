@@ -173,6 +173,7 @@ return {
 					map("n", "<leader>ghR", gitsigns.reset_buffer, { desc = "Reset buffer" })
 					map("n", "<leader>ghp", gitsigns.preview_hunk, { desc = "Preview hunk" })
 					map("n", "<leader>ghi", gitsigns.preview_hunk_inline, { desc = "Preview hunk inline" })
+					map("n", "<leader>gb", gitsigns.blame, { desc = "Git blame (buffer)" })
 
 					map("n", "<leader>ghb", function()
 						gitsigns.blame_line({ full = true })

@@ -106,6 +106,8 @@ return {
 	{
 		"nvim-mini/mini.statusline",
 		version = false,
+		opts = {},
+		--[=[
 		config = function()
 			local jj_cache = { value = "", time = 0 }
 			local jj_updating = false
@@ -182,6 +184,7 @@ return {
 				},
 			})
 		end,
+		]=]
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",

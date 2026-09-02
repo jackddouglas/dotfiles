@@ -104,8 +104,6 @@ map("n", "<leader>gd", "<cmd>FzfLua git_diff<cr>", { desc = "Git diff (changed f
 map("n", "<leader>gH", "<cmd>FzfLua git_hunks<cr>", { desc = "Git hunks (search diffs)" })
 map("n", "<leader>gc", "<cmd>FzfLua git_commits<cr>", { desc = "Git commits (project)" })
 map("n", "<leader>gC", "<cmd>FzfLua git_bcommits<cr>", { desc = "Git commits (buffer)" })
-map("n", "<leader>gb", "<cmd>FzfLua git_blame<cr>", { desc = "Git blame (buffer)" })
-map("n", "<leader>gB", "<cmd>FzfLua git_branches<cr>", { desc = "Git branches" })
 map("n", "<leader>gS", "<cmd>FzfLua git_stash<cr>", { desc = "Git stash" })
 
 -------------------------------------------------------------------------------
