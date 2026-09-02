@@ -1,17 +1,15 @@
 {
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "high",
   "theme": "light/dark",
   "packages": [
-    "npm:pi-web-access@0.15.0",
-    "npm:@quintinshaw/pi-dynamic-workflows@3.5.0"
+    "npm:pi-web-access@0.15.0"
   ],
   "enabledModels": [
     "openai-codex/gpt-5.6-sol",
     "openai-codex/gpt-5.6-terra",
     "openai-codex/gpt-5.6-luna",
     "qwen-server/qwen3.8-27b",
-    "gemma-4-26b"
-  ]
+    "gemma-server/gemma-4-26b"
+  ],
+  "lastChangelogVersion": "0.84.4"
 }

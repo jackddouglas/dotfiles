@@ -11,8 +11,8 @@ import type {
 const run = promisify(execFile);
 export const SESSION_TASK_TITLE_ENTRY = "session-task-title";
 
-export function mainTerminalTitle(cwd: string): string {
-  return `π - ${basename(cwd)}`;
+export function mainTerminalTitle(cwd: string, sessionName?: string): string {
+  return `π - ${sessionName?.trim() || basename(cwd) || "Session"}`;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -228,7 +228,7 @@ export default function (pi: ExtensionAPI) {
   let attempted = false;
 
   const restoreMainTerminalTitle = (ctx: ExtensionContext): void => {
-    ctx.ui.setTitle(mainTerminalTitle(ctx.cwd));
+    ctx.ui.setTitle(mainTerminalTitle(ctx.cwd, pi.getSessionName()));
   };
 
   pi.on("session_start", (_event, ctx) => {
@@ -238,8 +238,7 @@ export default function (pi: ExtensionAPI) {
     );
 
     // Interactive mode reapplies Pi's default title after session_start. Wait
-    // until that finishes, then keep the terminal/workspace title cwd-based
-    // while the generated name remains attached to the Pi session itself.
+    // until that finishes, then restore the session-aware terminal title.
     const sessionId = ctx.sessionManager.getSessionId();
     setTimeout(() => {
       if (ctx.sessionManager.getSessionId() === sessionId) {
@@ -248,8 +247,8 @@ export default function (pi: ExtensionAPI) {
     }, 0);
   });
 
-  pi.on("session_info_changed", (_event, ctx) => {
-    restoreMainTerminalTitle(ctx);
+  pi.on("session_info_changed", (event, ctx) => {
+    ctx.ui.setTitle(mainTerminalTitle(ctx.cwd, event.name));
   });
 
   pi.on("before_agent_start", (event, ctx) => {

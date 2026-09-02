@@ -24,15 +24,17 @@ import { restoreSessionTaskTitle } from "../session-task.ts";
 
 import {
   findCmuxWorkspace,
+  findTmuxWorkspaceName,
   isSameOrDescendant,
   parseCmuxIdentity,
   parseCmuxSurfaceTarget,
   parseFirstCmuxSurface,
   parseCmuxWorkspaceTarget,
   selectTerminalBackend,
+  setTmuxPaneTitle,
   shellQuote,
   terminalWorkspaceName,
-  terminalWorkspaceSuffix,
+  terminalWorkspaceNameForSession,
   type TerminalBackend,
   type TerminalChoice,
 } from "./terminal.ts";
@@ -219,17 +221,13 @@ function attachToSubagentAndExit(rawTarget: string): never {
     }
     const fallback = terminalWorkspaceName(target);
     session = fallback;
-    const suffix = terminalWorkspaceSuffix(target);
     const listed = spawnSync(
       "tmux",
       ["-S", socket, "list-sessions", "-F", "#{session_name}"],
       { encoding: "utf8" },
     );
     if (!listed.error && listed.status === 0) {
-      const matching = listed.stdout
-        .split("\n")
-        .map((name) => name.trim())
-        .find((name) => name.startsWith("π - ") && name.endsWith(suffix));
+      const matching = findTmuxWorkspaceName(listed.stdout, target);
       if (matching) session = matching;
     }
   }
@@ -309,12 +307,12 @@ async function startTerminal(
       throw new Error("tmux did not report the created subagent pane.");
     spec.target = paneTarget;
     updateTerminalCommands(spec);
-    const titled = await pi.exec(
-      "tmux",
-      tmuxArgs("select-pane", "-t", spec.target, "-T", spec.runName),
+    await setTmuxPaneTitle(
+      (command, args) => pi.exec(command, args),
+      tmuxArgs(),
+      spec.target,
+      spec.runName,
     );
-    if (titled.code !== 0)
-      throw new Error(titled.stderr.trim() || "Failed to title subagent pane.");
     const tiled = await pi.exec(
       "tmux",
       tmuxArgs("select-layout", "-t", spec.sessionName, "tiled"),
@@ -928,9 +926,10 @@ export default function subagentExtension(pi: ExtensionAPI): void {
       const generatedTitle = restoreSessionTaskTitle(
         ctx.sessionManager.getBranch(),
       );
-      const sessionName = terminalWorkspaceName(
+      const sessionName = terminalWorkspaceNameForSession(
         parentSessionId,
-        generatedTitle ?? pi.getSessionName(),
+        generatedTitle,
+        pi.getSessionName(),
       );
       const runDir = path.join(
         getAgentDir(),

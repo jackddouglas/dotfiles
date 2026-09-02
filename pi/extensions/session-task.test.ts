@@ -15,6 +15,10 @@ function deferred<T>() {
   return { promise, resolve };
 }
 
+function flushTitleUpdate(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
 function conversation() {
   return [
     {
@@ -49,9 +53,12 @@ function loadExtension(
 ) {
   const handlers = new Map<string, Handler[]>();
   const requests: Array<{ model: any; context: any; options: any }> = [];
+  const titles: string[] = [];
+  const entries: any[] = conversation();
   const namingStarted = deferred<void>();
   const nameChanged = deferred<void>();
   let name = options.initialName;
+  let sessionId = "session-id";
 
   sessionTask({
     on(event: string, handler: Handler) {
@@ -63,6 +70,9 @@ function loadExtension(
     setSessionName(next: string) {
       name = next;
       nameChanged.resolve();
+    },
+    appendEntry(customType: string, data: unknown) {
+      entries.push({ type: "custom", customType, data });
     },
   } as any);
 
@@ -91,9 +101,15 @@ function loadExtension(
     },
   };
   const ctx = {
+    cwd: "/work/project",
+    ui: {
+      setTitle(title: string) {
+        titles.push(title);
+      },
+    },
     sessionManager: {
-      getBranch: conversation,
-      getSessionId: () => "session-id",
+      getBranch: () => entries,
+      getSessionId: () => sessionId,
     },
     modelRegistry: {
       find(providerId: string, modelId: string) {
@@ -125,6 +141,10 @@ function loadExtension(
       }
     },
     getName: () => name,
+    setSessionId: (next: string) => {
+      sessionId = next;
+    },
+    titles,
     requests,
     namingStarted: namingStarted.promise,
     nameChanged: nameChanged.promise,
@@ -136,7 +156,9 @@ test("generates an unnamed session title without blocking agent startup", async 
   const extension = loadExtension({ result: title.promise });
 
   await extension.emit("session_start");
+  await flushTitleUpdate();
   assert.equal(extension.getName(), undefined);
+  assert.equal(extension.titles.at(-1), "π - project");
   assert.equal(extension.requests.length, 0);
 
   let promptStarted = false;
@@ -157,6 +179,7 @@ test("generates an unnamed session title without blocking agent startup", async 
 
   assert.equal(startedBeforeTitle, true);
   assert.equal(extension.getName(), "Summarize Session Naming Intent");
+  assert.equal(extension.titles.at(-1), "π - Summarize Session Naming Intent");
   assert.equal(extension.requests.length, 1);
   assert.deepEqual(extension.requests[0].model, {
     provider: "openai-codex",
@@ -178,13 +201,35 @@ test("preserves an existing session name without making a model request", async 
   const extension = loadExtension({ initialName: "Manual session name" });
 
   await extension.emit("session_start");
+  await flushTitleUpdate();
   await extension.emit("agent_start");
   await extension.emit("before_agent_start", {
     prompt: conversation()[0].message.content,
   });
 
   assert.equal(extension.getName(), "Manual session name");
+  assert.equal(extension.titles.at(-1), "π - Manual session name");
   assert.equal(extension.requests.length, 0);
+});
+
+test("skips a delayed title update after the session is replaced", async () => {
+  const extension = loadExtension({ initialName: "Old session" });
+
+  await extension.emit("session_start");
+  extension.setSessionId("replacement-session-id");
+  await flushTitleUpdate();
+
+  assert.deepEqual(extension.titles, []);
+});
+
+test("updates the terminal title when a session is manually renamed", async () => {
+  const extension = loadExtension({ initialName: "Old name" });
+
+  await extension.emit("session_info_changed", { name: "Renamed session" });
+  assert.equal(extension.titles.at(-1), "π - Renamed session");
+
+  await extension.emit("session_info_changed", { name: undefined });
+  assert.equal(extension.titles.at(-1), "π - project");
 });
 
 test("falls back to a deterministic label when OAuth naming fails", async () => {
@@ -199,6 +244,10 @@ test("falls back to a deterministic label when OAuth naming fails", async () => 
   assert.equal(
     extension.getName(),
     "replace deterministic session names with an inten…",
+  );
+  assert.equal(
+    extension.titles.at(-1),
+    "π - replace deterministic session names with an inten…",
   );
   assert.equal(extension.requests.length, 1);
 });

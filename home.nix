@@ -283,6 +283,11 @@ in
       ".pi/agent/settings.json".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/pi/settings.json";
       ".pi/agent/models.json".source = ./pi/models.json;
+      ".pi/agent/extensions/answer.LICENSE".source = ./pi/extensions/answer.LICENSE;
+      ".pi/agent/extensions/answer.ts".source = ./pi/extensions/answer.ts;
+      ".pi/agent/extensions/codex-fast-mode.ts".source = ./pi/extensions/codex-fast-mode.ts;
+      ".pi/agent/extensions/files.LICENSE".source = ./pi/extensions/files.LICENSE;
+      ".pi/agent/extensions/files.ts".source = ./pi/extensions/files.ts;
       ".pi/agent/extensions/goal.LICENSE".source = ./pi/extensions/goal.LICENSE;
       ".pi/agent/extensions/goal.ts".source = ./pi/extensions/goal.ts;
       ".pi/agent/extensions/pane-focus-cursor.ts".source = ./pi/extensions/pane-focus-cursor.ts;

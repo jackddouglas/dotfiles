@@ -9,14 +9,17 @@ import {
 
 import {
   findCmuxWorkspace,
+  findTmuxWorkspaceName,
   isSameOrDescendant,
   parseCmuxSurfaceTarget,
   parseFirstCmuxSurface,
   parseCmuxIdentity,
   parseCmuxWorkspaceTarget,
   selectTerminalBackend,
+  setTmuxPaneTitle,
   shellQuote,
   terminalWorkspaceName,
+  terminalWorkspaceNameForSession,
   terminalWorkspaceSuffix,
 } from "./terminal.ts";
 
@@ -102,20 +105,111 @@ test("cmux response parsers prefer stable UUIDs and accept refs", () => {
 test("workspace names are deterministic for the parent Pi session", () => {
   assert.equal(
     terminalWorkspaceName("parent-session-id"),
-    "π - Session - parentse",
+    "π′ - Session - parentse",
   );
   assert.equal(
     terminalWorkspaceName(
       "session/with:punctuation",
       "Use Generated Session Title!",
     ),
-    "π - Use Generated Session Title - sessionw",
+    "π′ - Use Generated Session Title - sessionw",
   );
   assert.equal(
     terminalWorkspaceName("parent-session-id", "  ...  "),
-    "π - Session - parentse",
+    "π′ - Session - parentse",
   );
   assert.equal(terminalWorkspaceSuffix("parent-session-id"), " - parentse");
+});
+
+test("tmux workspace lookup accepts current and legacy title prefixes", () => {
+  assert.equal(
+    findTmuxWorkspaceName(
+      [
+        "unrelated - parentse",
+        "π′ - Wrong session - otherid",
+        "π′ - Current session - parentse",
+      ].join("\n"),
+      "parent-session-id",
+    ),
+    "π′ - Current session - parentse",
+  );
+  assert.equal(
+    findTmuxWorkspaceName(
+      "π subagents - Previous session - parentse\n",
+      "parent-session-id",
+    ),
+    "π subagents - Previous session - parentse",
+  );
+  assert.equal(
+    findTmuxWorkspaceName(
+      "π - Original session - parentse\n",
+      "parent-session-id",
+    ),
+    "π - Original session - parentse",
+  );
+  assert.equal(
+    findTmuxWorkspaceName(
+      "π′ - Other session - otherid\n",
+      "parent-session-id",
+    ),
+    undefined,
+  );
+});
+
+test("tmux pane titles use the child run name", async () => {
+  const calls: Array<{ command: string; args: string[] }> = [];
+  await setTmuxPaneTitle(
+    async (command, args) => {
+      calls.push({ command, args });
+      return { code: 0, stderr: "" };
+    },
+    ["-S", "/tmp/subagents.sock"],
+    "%42",
+    "subagent-12345678",
+  );
+
+  assert.deepEqual(calls, [
+    {
+      command: "tmux",
+      args: [
+        "-S",
+        "/tmp/subagents.sock",
+        "select-pane",
+        "-t",
+        "%42",
+        "-T",
+        "subagent-12345678",
+      ],
+    },
+  ]);
+  await assert.rejects(
+    setTmuxPaneTitle(
+      async () => ({ code: 1, stderr: "title denied" }),
+      [],
+      "%42",
+      "subagent-12345678",
+    ),
+    /title denied/,
+  );
+});
+
+test("generated titles take precedence in subagent workspace names", () => {
+  assert.equal(
+    terminalWorkspaceNameForSession(
+      "parent-session-id",
+      "Generated title",
+      "Manual name",
+    ),
+    "π′ - Generated title - parentse",
+  );
+  assert.equal(
+    terminalWorkspaceNameForSession(
+      "parent-session-id",
+      undefined,
+      "Manual name",
+    ),
+    "π′ - Manual name - parentse",
+  );
 });
 
 test("generated session titles restore from hidden session entries", () => {
@@ -136,7 +230,11 @@ test("generated session titles restore from hidden session entries", () => {
   );
 });
 
-test("the main terminal title stays directory-based", () => {
+test("the main terminal title prefers the session name", () => {
+  assert.equal(
+    mainTerminalTitle("/work/project", "Review workspace titles"),
+    "π - Review workspace titles",
+  );
   assert.equal(mainTerminalTitle("/work/project"), "π - project");
 });
 
