@@ -7,6 +7,11 @@ interface CmuxIdentity {
   windowId: string;
 }
 
+export interface CmuxWorkspace {
+  target: string;
+  initialSurface?: string;
+}
+
 export function shellQuote(value: string): string {
   if (value.length === 0) return "''";
   return `'${value.replace(/'/g, `'"'"'`)}'`;
@@ -20,6 +25,29 @@ export function selectTerminalBackend(
   return environment.CMUX_WORKSPACE_ID || environment.CMUX_SURFACE_ID
     ? "cmux"
     : "tmux";
+}
+
+export function terminalWorkspaceName(
+  sessionId: string,
+  sessionTitle?: string,
+): string {
+  const normalizedId = sessionId.trim();
+  if (!normalizedId) throw new Error("Pi session id must not be empty.");
+  const shortId = normalizedId.replace(/[^A-Za-z0-9]/g, "").slice(0, 8);
+  if (!shortId)
+    throw new Error("Pi session id must contain letters or numbers.");
+  const safeTitle = sessionTitle
+    ?.trim()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .replaceAll(/\s+/g, " ")
+    .trim()
+    .slice(0, 52)
+    .trimEnd();
+  return `π - ${safeTitle || "Session"} - ${shortId}`;
+}
+
+export function terminalWorkspaceSuffix(sessionId: string): string {
+  return terminalWorkspaceName(sessionId).replace(/^π - Session/, "");
 }
 
 export function parseCmuxIdentity(output: string): CmuxIdentity {
@@ -61,6 +89,76 @@ export function parseCmuxWorkspaceTarget(output: string): string {
     throw new Error(
       "cmux workspace create did not report the created workspace.",
     );
+  }
+  return target;
+}
+
+function cmuxItemTarget(
+  item: any,
+  kind: "workspace" | "surface",
+): string | undefined {
+  const target =
+    item?.[`${kind}_id`] ?? item?.id ?? item?.[`${kind}_ref`] ?? item?.ref;
+  return typeof target === "string" && target ? target : undefined;
+}
+
+export function findCmuxWorkspace(
+  output: string,
+  name: string,
+): CmuxWorkspace | undefined {
+  let payload: any;
+  try {
+    payload = JSON.parse(output);
+  } catch {
+    throw new Error("cmux workspace list returned invalid JSON.");
+  }
+  const result = payload?.result ?? payload;
+  const workspaces = result?.workspaces;
+  if (!Array.isArray(workspaces)) {
+    throw new Error("cmux workspace list did not return workspaces.");
+  }
+  for (const workspace of workspaces) {
+    if (workspace?.title !== name) continue;
+    const target = cmuxItemTarget(workspace, "workspace");
+    if (target) return { target };
+  }
+  return undefined;
+}
+
+export function parseCmuxSurfaceTarget(output: string): string {
+  let payload: any;
+  try {
+    payload = JSON.parse(output);
+  } catch {
+    const plainTarget = output.match(/(?:^|\s)(surface:[^\s]+)/)?.[1];
+    if (plainTarget) return plainTarget;
+    throw new Error(
+      "cmux surface command did not report valid JSON or a surface ref.",
+    );
+  }
+  const result = payload?.result ?? payload;
+  const surface = result?.surface ?? result;
+  const target = cmuxItemTarget(surface, "surface");
+  if (!target) {
+    throw new Error("cmux surface command did not report a surface.");
+  }
+  return target;
+}
+
+export function parseFirstCmuxSurface(output: string): string {
+  let payload: any;
+  try {
+    payload = JSON.parse(output);
+  } catch {
+    throw new Error("cmux surface list returned invalid JSON.");
+  }
+  const result = payload?.result ?? payload;
+  const surface = Array.isArray(result?.surfaces)
+    ? result.surfaces[0]
+    : undefined;
+  const target = cmuxItemTarget(surface, "surface");
+  if (!target) {
+    throw new Error("cmux surface list did not return a surface.");
   }
   return target;
 }

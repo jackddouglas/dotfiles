@@ -2,11 +2,22 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  mainTerminalTitle,
+  restoreSessionTaskTitle,
+  SESSION_TASK_TITLE_ENTRY,
+} from "../session-task.ts";
+
+import {
+  findCmuxWorkspace,
   isSameOrDescendant,
+  parseCmuxSurfaceTarget,
+  parseFirstCmuxSurface,
   parseCmuxIdentity,
   parseCmuxWorkspaceTarget,
   selectTerminalBackend,
   shellQuote,
+  terminalWorkspaceName,
+  terminalWorkspaceSuffix,
 } from "./terminal.ts";
 
 test("auto terminal selection prefers the active cmux environment", () => {
@@ -51,6 +62,82 @@ test("cmux response parsers prefer stable UUIDs and accept refs", () => {
     parseCmuxWorkspaceTarget("cmux: legacy notice\nOK workspace:5\n"),
     "workspace:5",
   );
+  assert.deepEqual(
+    findCmuxWorkspace(
+      JSON.stringify({
+        workspaces: [
+          { id: "other-uuid", title: "Other" },
+          {
+            id: "workspace-uuid",
+            ref: "workspace:2",
+            title: "pi-subagents-parent-id",
+          },
+        ],
+      }),
+      "pi-subagents-parent-id",
+    ),
+    { target: "workspace-uuid" },
+  );
+  assert.equal(
+    findCmuxWorkspace(JSON.stringify({ workspaces: [] }), "missing"),
+    undefined,
+  );
+  assert.equal(
+    parseCmuxSurfaceTarget(
+      JSON.stringify({ surface_id: "surface-uuid", surface_ref: "surface:3" }),
+    ),
+    "surface-uuid",
+  );
+  assert.equal(parseCmuxSurfaceTarget("OK surface:4\n"), "surface:4");
+  assert.equal(
+    parseFirstCmuxSurface(
+      JSON.stringify({
+        surfaces: [{ id: "first-surface", ref: "surface:1" }],
+      }),
+    ),
+    "first-surface",
+  );
+});
+
+test("workspace names are deterministic for the parent Pi session", () => {
+  assert.equal(
+    terminalWorkspaceName("parent-session-id"),
+    "π - Session - parentse",
+  );
+  assert.equal(
+    terminalWorkspaceName(
+      "session/with:punctuation",
+      "Use Generated Session Title!",
+    ),
+    "π - Use Generated Session Title - sessionw",
+  );
+  assert.equal(
+    terminalWorkspaceName("parent-session-id", "  ...  "),
+    "π - Session - parentse",
+  );
+  assert.equal(terminalWorkspaceSuffix("parent-session-id"), " - parentse");
+});
+
+test("generated session titles restore from hidden session entries", () => {
+  assert.equal(
+    restoreSessionTaskTitle([
+      {
+        type: "custom",
+        customType: SESSION_TASK_TITLE_ENTRY,
+        data: { title: "First title" },
+      },
+      {
+        type: "custom",
+        customType: SESSION_TASK_TITLE_ENTRY,
+        data: { title: "Shared Subagent Workspace" },
+      },
+    ]),
+    "Shared Subagent Workspace",
+  );
+});
+
+test("the main terminal title stays directory-based", () => {
+  assert.equal(mainTerminalTitle("/work/project"), "π - project");
 });
 
 test("trust inheritance stays inside the parent directory", () => {

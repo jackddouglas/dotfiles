@@ -1,7 +1,7 @@
 import { execFile } from "node:child_process";
 import { mkdir, readFile, rename, stat, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import { promisify } from "node:util";
 import type {
   ExtensionAPI,
@@ -9,6 +9,35 @@ import type {
 } from "@earendil-works/pi-coding-agent";
 
 const run = promisify(execFile);
+export const SESSION_TASK_TITLE_ENTRY = "session-task-title";
+
+export function mainTerminalTitle(cwd: string): string {
+  return `π - ${basename(cwd)}`;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+export function restoreSessionTaskTitle(
+  entries: readonly unknown[],
+): string | undefined {
+  let title: string | undefined;
+  for (const entry of entries) {
+    if (
+      !isRecord(entry) ||
+      entry.type !== "custom" ||
+      entry.customType !== SESSION_TASK_TITLE_ENTRY ||
+      !isRecord(entry.data) ||
+      typeof entry.data.title !== "string"
+    ) {
+      continue;
+    }
+    const candidate = entry.data.title.trim();
+    if (candidate) title = candidate;
+  }
+  return title;
+}
 
 // Compiled on demand into ~/.cache/pi/apple-intelligence and invoked to name
 // sessions with on-device Apple Intelligence (macOS 26+ FoundationModels).
@@ -117,11 +146,9 @@ async function ensureAppleHelper(): Promise<string | undefined> {
       // Compile out of the way and rename so concurrent sessions never see a
       // partially written binary.
       const staged = join(cacheDir, `.ask.${process.pid}`);
-      await run(
-        "/usr/bin/swiftc",
-        ["-O", "-o", staged, sourcePath],
-        { timeout: 120_000 },
-      );
+      await run("/usr/bin/swiftc", ["-O", "-o", staged, sourcePath], {
+        timeout: 120_000,
+      });
       await rename(staged, binaryPath);
     }
     return binaryPath;
@@ -187,7 +214,9 @@ async function generateTaskLabel(
         },
       )
       .result();
-    label = responseTitle(messageText(result as unknown as Record<string, unknown>));
+    label = responseTitle(
+      messageText(result as unknown as Record<string, unknown>),
+    );
   } catch {
     // A naming failure should not fail the user's session.
   }
@@ -198,17 +227,48 @@ async function generateTaskLabel(
 export default function (pi: ExtensionAPI) {
   let attempted = false;
 
-  pi.on("session_start", () => {
-    attempted = Boolean(pi.getSessionName());
+  const restoreMainTerminalTitle = (ctx: ExtensionContext): void => {
+    ctx.ui.setTitle(mainTerminalTitle(ctx.cwd));
+  };
+
+  pi.on("session_start", (_event, ctx) => {
+    attempted = Boolean(
+      restoreSessionTaskTitle(ctx.sessionManager.getBranch()) ??
+        pi.getSessionName(),
+    );
+
+    // Interactive mode reapplies Pi's default title after session_start. Wait
+    // until that finishes, then keep the terminal/workspace title cwd-based
+    // while the generated name remains attached to the Pi session itself.
+    const sessionId = ctx.sessionManager.getSessionId();
+    setTimeout(() => {
+      if (ctx.sessionManager.getSessionId() === sessionId) {
+        restoreMainTerminalTitle(ctx);
+      }
+    }, 0);
+  });
+
+  pi.on("session_info_changed", (_event, ctx) => {
+    restoreMainTerminalTitle(ctx);
   });
 
   pi.on("before_agent_start", (event, ctx) => {
-    if (attempted || pi.getSessionName() || !event.prompt.trim()) return;
+    if (attempted || !event.prompt.trim()) return;
     attempted = true;
+    const sessionId = ctx.sessionManager.getSessionId();
 
     void generateTaskLabel(event.prompt, ctx)
       .then((label) => {
-        if (label && !pi.getSessionName()) pi.setSessionName(label);
+        if (
+          label &&
+          ctx.sessionManager.getSessionId() === sessionId &&
+          !pi.getSessionName() &&
+          !restoreSessionTaskTitle(ctx.sessionManager.getBranch())
+        ) {
+          pi.appendEntry(SESSION_TASK_TITLE_ENTRY, { title: label });
+          pi.setSessionName(label);
+          restoreMainTerminalTitle(ctx);
+        }
       })
       .catch(() => {
         // The session may have been replaced while naming was in flight.
