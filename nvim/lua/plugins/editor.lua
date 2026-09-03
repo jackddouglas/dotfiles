@@ -234,6 +234,10 @@ return {
 			local sessions = require("mini.sessions")
 			sessions.setup(opts)
 
+			vim.fn.timer_start(60 * 1000, function()
+				sessions.write(opts.file, { verbose = false })
+			end, { ["repeat"] = -1 })
+
 			vim.api.nvim_create_autocmd("VimEnter", {
 				group = vim.api.nvim_create_augroup("MiniSessionsLocalAutoread", { clear = true }),
 				nested = true,
