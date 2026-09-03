@@ -391,6 +391,7 @@ in
     git = {
       enable = true;
       lfs.enable = true;
+      ignores = [ "Session.vim" ];
       settings = {
         user = {
           email = "jack@jackddouglas.com";

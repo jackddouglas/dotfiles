@@ -220,7 +220,46 @@ return {
 		"nvim-mini/mini.sessions",
 		version = false,
 		lazy = false,
-		opts = {},
+		opts = {
+			autoread = false,
+			autowrite = true,
+			file = "Session.vim",
+			verbose = {
+				read = false,
+				write = false,
+				delete = true,
+			},
+		},
+		config = function(_, opts)
+			local sessions = require("mini.sessions")
+			sessions.setup(opts)
+
+			vim.api.nvim_create_autocmd("VimEnter", {
+				group = vim.api.nvim_create_augroup("MiniSessionsLocalAutoread", { clear = true }),
+				nested = true,
+				once = true,
+				desc = "Autoread local session",
+				callback = function()
+					if vim.fn.argc() > 0 or vim.v.this_session ~= "" then
+						return
+					end
+
+					local listed_buffers = vim.tbl_filter(function(buffer)
+						return vim.fn.buflisted(buffer) == 1
+					end, vim.api.nvim_list_bufs())
+					local line_count = vim.api.nvim_buf_line_count(0)
+					local first_line = vim.api.nvim_buf_get_lines(0, 0, 1, true)[1]
+					if #listed_buffers > 1 or vim.bo.filetype ~= "" or line_count > 1 or first_line ~= "" then
+						return
+					end
+
+					local session = sessions.detected[opts.file]
+					if session and session.type == "local" then
+						sessions.read(opts.file)
+					end
+				end,
+			})
+		end,
 		keys = {
 			{
 				"<leader>ps",
@@ -260,6 +299,13 @@ return {
 					end
 				end,
 				desc = "Write Session",
+			},
+			{
+				"<leader>pW",
+				function()
+					MiniSessions.write("Session.vim")
+				end,
+				desc = "Write Local Session",
 			},
 			{
 				"<leader>pd",

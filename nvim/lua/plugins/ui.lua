@@ -197,6 +197,7 @@ return {
 	{
 		"nvim-mini/mini.starter",
 		version = false,
+		dependencies = { "nvim-mini/mini.sessions" },
 		opts = {},
 	},
 }

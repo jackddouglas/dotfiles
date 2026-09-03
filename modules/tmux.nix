@@ -16,6 +16,25 @@
           set -g @minimal-tmux-window-status-format " #I:#{?#{m:ssh*,#{pane_current_command}},#(ps -t #{pane_tty} -o args= | grep \"^ssh \" | sed \"s/.* //\"),#W}#{@agent_alert}#{?@agent_alert,,#{?window_bell_flag,!,}}#{?window_activity_flag,*,} "
         '';
       }
+      {
+        plugin = tmuxPlugins.resurrect;
+        extraConfig = ''
+          # The Nix Neovim command includes an unquoted `--cmd lua ...` value
+          # that resurrect cannot replay safely. Start plain Neovim instead;
+          # mini.sessions will load a local Session.vim when one exists.
+          set -gu @resurrect-strategy-nvim
+          set -g @resurrect-processes '"~bin/nvim->nvim" "claude->claude --continue" "codex->codex resume --last" "pi->pi --continue"'
+        '';
+      }
+      {
+        # Keep continuum last: it injects its autosave hook into status-right,
+        # which status plugins can otherwise overwrite.
+        plugin = tmuxPlugins.continuum;
+        extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '5'
+        '';
+      }
     ];
     prefix = "C-Space";
     shell = "${pkgs.fish}/bin/fish";

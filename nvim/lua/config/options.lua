@@ -41,7 +41,16 @@ o.splitright = true
 -- files
 o.autoread = true
 o.undofile = true
-o.swapfile = false
+o.swapfile = true
+o.sessionoptions = {
+	"blank",
+	"buffers",
+	"curdir",
+	"folds",
+	"help",
+	"tabpages",
+	"winsize",
+}
 
 -- folds
 o.foldlevelstart = 99
