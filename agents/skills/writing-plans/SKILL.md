@@ -5,96 +5,57 @@ description: Turn an approved specification or sufficiently clear requirements i
 
 # Writing implementation plans
 
-Use this for multi-step work whose requirements are already decided. If two
-reasonable implementations imply different product behavior or architecture,
-stop and obtain that decision before planning.
+Use this for multi-step work with decided requirements. Resolve choices that
+change product behavior or architecture before planning. Read repository
+instructions and local changes, then inspect relevant code, tests, and patterns.
+Save the plan in the repository's planning location, or an ordinary Markdown
+file agreed with the user.
 
-Save the plan in the repository's established planning location. If none
-exists, use an ordinary repository Markdown file agreed with the user. Do not
-put durable state in harness-private storage.
+## Write for an engineer
 
-## Inspect before planning
+Explain what changes, why the approach fits, how it works, and how to verify it
+in connected prose. Weave exact paths, symbols, interfaces, and edge cases into
+the explanation. Prefer stable symbols over line numbers; include code when
+it prevents ambiguity about a signature, data shape, migration, or algorithm.
 
-- Read repository instructions and local changes.
-- Map the relevant entry points, data flow, tests, and analogous implementation.
-- Record version, platform, dependency, compatibility, and scope constraints
-  exactly.
-- List files to create or modify and give each a clear responsibility. Follow
-  existing structure rather than introducing an unrelated reorganization.
+Write for humans and agents. Link an existing specification when it defines
+enduring behavior. Use lists, tables, or code blocks where they clarify the work.
 
-## Task boundaries
+Include the context and design decisions needed for implementation. Specify
+concrete cases and mechanics for error handling, validation, and tests.
 
-Each task should produce one independently testable, reviewable behavior. Fold
-setup, scaffolding, configuration, and documentation into the task that needs
-them. Split tasks only where a reviewer could reasonably approve one while
-rejecting its neighbor.
+## Organize the work
 
-Use test-driven steps for executable behavior:
+Open with the problem, intended outcome, approach, main tradeoff, and exact
+scope and compatibility constraints. A before/after example can make this brief.
 
-1. add one failing behavioral test;
-2. run it and record the expected failure;
-3. implement the smallest change;
-4. run the focused test;
-5. refactor while green if needed; and
-6. run the relevant broader checks.
+Give each task an outcome-based heading and explain:
 
-Configuration, generated files, and explicitly disposable prototypes follow
-their own verification workflow rather than fabricated unit tests.
+- What it enables, why it comes here, and dependencies on earlier tasks.
+- Which files and symbols change, their responsibilities, and the mechanism.
+- How to verify the behavior: test paths, concrete inputs and outputs, exact
+  commands, and expected results.
 
-## Required plan structure
+Each task should deliver one independently testable, reviewable behavior and
+preserve a working state. Fold setup and documentation into the task that needs
+them. Use one completion checkbox per task with an observable acceptance condition.
 
-```markdown
-# <Feature> implementation plan
+For executable behavior, plan a failing behavioral test, the smallest change,
+and focused verification; refactor while green as needed. State the expected
+initial failure. Configuration, generated files, and disposable prototypes use
+appropriate checks. Put broader checks at
+integration checkpoints and give shared final checks once, including necessary
+platform or manual verification. Distinguish expected results from checks
+actually run during planning.
 
-**Goal:** <one sentence>
-**Approach:** <two or three sentences>
-**Constraints:**
-- <exact project-wide constraint>
+## Review and handoff
 
-## File map
-- `path`: <responsibility>
+Check requirement coverage, task order, interface consistency, and verification.
+Remove placeholders, unstated decisions, speculative features, and unrelated
+cleanup. Read the plan in order: does the explanation flow, and can an engineer
+implement it without guessing?
 
-### Task 1: <reviewable behavior>
-
-**Files:**
-- Create: `exact/path`
-- Modify: `exact/path:relevant-symbol-or-lines`
-- Test: `exact/test/path`
-
-**Interfaces:**
-- Consumes: <existing or earlier signatures>
-- Produces: <exact signatures later tasks rely on>
-
-- [ ] Add `<test name>` covering <behavior>, with concrete inputs and expected output.
-- [ ] Run `<exact command>`; expect <specific failure>.
-- [ ] Implement <specific code path and edge handling>.
-- [ ] Run `<focused command>`; expect success.
-- [ ] Run `<broader command>`; expect success.
-```
-
-Give exact paths, symbols, commands, expected outcomes, interfaces, and edge
-cases. Include code snippets when a signature, data shape, migration, or subtle
-algorithm would otherwise require the implementer to redesign the task.
-
-Do not use `TBD`, “handle errors,” “add validation,” “write tests,” or “similar
-to Task N” without the concrete cases and mechanics. A task must be executable
-without hidden context from the planning conversation.
-
-## Self-review
-
-Before handoff:
-
-1. Map every requirement to at least one task.
-2. Search for placeholders and unstated decisions.
-3. Check that signatures and names agree across tasks.
-4. Check task ordering and note dependencies explicitly.
-5. Ensure each task preserves a working state and has fresh verification.
-6. Remove speculative features and unrelated cleanup.
-
-After saving and reviewing the plan, walk the user through it one coherent
-task or section at a time. Pause after each so the user can ask questions or
-request corrections before continuing.
-
-Hand the completed plan to an implementation run. For large plans, a fresh
-worker may execute each independent task, but the parent must inspect the
-resulting diff and verify it rather than trusting the report.
+After saving, walk the user through one coherent task or section at a time,
+explaining behavior, rationale, and tradeoffs. Pause after each for questions
+or corrections before continuing. Hand the completed plan to an implementation
+run; if workers execute separate tasks, inspect their diffs and verify results.
