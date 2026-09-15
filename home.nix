@@ -176,9 +176,6 @@ in
     stateVersion = "26.05";
 
     packages = with pkgs; [
-      # window management
-      ice-app
-
       # dev tools
       awscli2
       cocoapods
@@ -231,7 +228,6 @@ in
       glow
       iina
       imagemagick
-      itsycal
       jq
       mosh
       mprocs

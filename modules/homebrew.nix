@@ -26,6 +26,7 @@
       "firefox"
       "google-chrome"
       "helium-browser"
+      "zen"
 
       # Communication
       "discord"
@@ -68,12 +69,12 @@
 
       # Productivity
       "1password"
+      "anarlog"
       "antinote"
       "linear"
       "markdown-preview"
       "proton-drive"
       "protonvpn"
-      "typewhisper/tap/typewhisper"
 
       # Utilities
       "betterdisplay"
@@ -81,7 +82,6 @@
       "clop"
       "homerow"
       "istat-menus"
-      "launchos"
       "proton-mail-bridge"
       "raycast"
       "rectangle"
