@@ -23,7 +23,7 @@ The right shape depends on the question:
 - **A small set of pure functions** over a plain data type. Good when there's no implicit current state, just transformations.
 - **A class or module with a clear method surface** when the logic genuinely owns ongoing internal state.
 
-Pick whichever shape best fits the question being asked, *not* whichever is easiest to wire to a page. Keep it pure: no DOM, no `document`, no button handlers reaching inside it. The page calls into it; nothing flows the other direction. This makes the decision legible after the prototype: once the question is answered, reimplement the validated behavior in the real module under `tdd`.
+Pick whichever shape best fits the question being asked, *not* whichever is easiest to wire to a page. Keep it pure: no DOM, no `document`, no button handlers reaching inside it. The page calls into it; nothing flows the other direction. This makes the decision legible after the prototype: once the question is answered, reimplement the validated behavior in the real module using the repository's development and testing conventions.
 
 ### 3. Build the shareable HTML file
 

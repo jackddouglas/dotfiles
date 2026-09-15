@@ -56,8 +56,8 @@ Always report the artifact or worktree path and whether this task created it.
   depend on production services unless that is the question being tested and
   the user has authorized it.
 - Do not write tests, handle edge cases, generalize, or refactor. Restart the
-  validated production behavior under `tdd` rather than promoting prototype
-  code unchanged.
+  validated production behavior using the repository's development and testing
+  conventions, reviewing prototype shortcuts before reusing any code.
 - When the answer is a matter of taste, make the variants meaningfully
   different. Color-only variations do not expose a design decision.
 

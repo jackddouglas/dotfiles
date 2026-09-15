@@ -141,18 +141,16 @@ let
 
   agentSkills = [
     "browser-testing"
-    "code-review"
-    "codebase-design"
-    "diagnosing-bugs"
+    # "code-review"
+    # "diagnosing-bugs"
     "discuss"
-    "domain-modeling"
     "explain"
-    "grill-with-docs"
+    "discuss-with-docs"
     "improve-codebase-architecture"
     "product-description"
     "prototype"
-    "scout"
-    "writing-plans"
+    # "scout"
+    # "writing-plans"
   ];
 
   agentSkillFiles = lib.listToAttrs (

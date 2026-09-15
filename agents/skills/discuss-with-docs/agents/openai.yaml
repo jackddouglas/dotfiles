@@ -1,0 +1,5 @@
+interface:
+  display_name: "Discuss with Docs"
+  short_description: "Discuss a design and record terms and decisions"
+policy:
+  allow_implicit_invocation: false

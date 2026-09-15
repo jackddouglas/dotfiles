@@ -39,7 +39,7 @@ Repo name, date, and a compact legend: solid box = module, dashed line = seam, r
 
 ## Candidate card
 
-The diagrams carry the weight. Prose is sparse, plain, and uses the glossary terms (from the `/codebase-design` skill) without ceremony.
+The diagrams carry the weight. Prose is sparse, plain, and uses the repository’s established terminology.
 
 Each candidate is one `<article>`:
 
@@ -105,19 +105,7 @@ One larger card. Candidate name, one sentence on why, anchor link to its card. T
 
 ## Tone
 
-Plain English, concise, but the architectural nouns and verbs come straight from the `/codebase-design` skill. Concision is not an excuse to drift.
-
-**Use exactly:** module, interface, implementation, depth, deep, shallow, seam, adapter, leverage, locality.
-
-**Never substitute:** component, service, unit (for module) · API, signature (for interface) · boundary (for seam) · layer, wrapper (for module, when you mean module).
-
-**Phrasings that fit the style:**
-
-- "Order intake module is shallow: interface nearly matches the implementation."
-- "Pricing leaks across the seam."
-- "Deepen: one interface, one place to test."
-- "Two adapters justify the seam: HTTP in prod, in-memory in tests."
-
-**Wins bullets** name the gain in glossary terms: *"locality: bugs concentrate in one module"*, *"leverage: one interface, N call sites"*, *"interface shrinks; implementation absorbs the wrappers"*. Don't write *"easier to maintain"* or *"cleaner code"*, because those terms aren't in the glossary and don't earn their place.
-
-Direct statements only. If a sentence could be a bullet, make it a bullet. If a bullet could be cut, cut it. If a term isn't in the `/codebase-design` glossary, reach for one that is before inventing a new one.
+Use plain, concise language and the repository's established names. Explain
+benefits concretely: which callers become simpler, where changes concentrate,
+and what failures the tests can detect. Use design vocabulary when it clarifies
+the explanation.

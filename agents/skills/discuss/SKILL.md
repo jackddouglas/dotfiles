@@ -1,6 +1,7 @@
 ---
 name: discuss
 description: Interview the user in rounds to clarify or stress-test a plan, idea, or decision, then summarize without implementing. Use when the user asks to discuss, refine, or grill a plan.
+disable-model-invocation: true
 ---
 
 # Discuss
@@ -28,13 +29,15 @@ Finding facts is your job, never the user's. When a question needs a
 substantial investigation, use the subagent mechanism provided by the current
 harness; otherwise inspect the environment directly. A running investigation is
 an unsettled prerequisite, so only the questions downstream of it wait. The
-decisions are the user's: put each to them and wait.
+material product and architecture decisions are the user's. Ask about unresolved
+choices that would change the outcome; use established preferences and state
+reasonable assumptions for routine details.
 
 Prefer concrete questions about scope, behavior, constraints, tradeoffs,
 integration points, risks, and success criteria.
 
-The session is done when the frontier is empty and nothing is left silently
-assumed. Then summarize:
+Finish when the important decisions are settled and the next step is clear.
+Summarize:
 
 - agreed decisions
 - remaining open questions, if any

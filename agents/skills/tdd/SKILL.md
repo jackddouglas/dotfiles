@@ -64,7 +64,8 @@ preserving behavior. Keep rerunning the relevant tests.
 
 Repeat the cycle for the next behavior. Read [writing-good-tests.md](writing-good-tests.md)
 whenever adding or changing tests, mocks, fixtures, or test-only helpers. When
-the interface itself is unresolved, use `codebase-design` to reason about the
+the interface itself is unresolved, read the
+[design criteria](../improve-codebase-architecture/references/codebase-design.md) to reason about the
 module, seam, and test surface before continuing.
 
 ## Existing implementation written before a test
