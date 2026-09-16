@@ -75,6 +75,7 @@
       "markdown-preview"
       "proton-drive"
       "protonvpn"
+      "typewhisper/tap/typewhisper"
 
       # Utilities
       "betterdisplay"
