@@ -171,6 +171,7 @@
           imports = [
             ./modules/aerospace.nix
             ./modules/homebrew.nix
+            ./modules/mas.nix
           ];
 
           nixpkgs = {
