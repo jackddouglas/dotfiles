@@ -26,7 +26,6 @@
       "firefox"
       "google-chrome"
       "helium-browser"
-      "zen"
 
       # Communication
       "discord"
