@@ -16,6 +16,8 @@
       "Amphetamine" = 937984704;
       "Flighty" = 1358823008;
       "HazeOver" = 430798174;
+      "wBlock" = 6746388723;
+      "Vimari" = 1480933944;
 
       # Development
       "Xcode" = 497799835;
