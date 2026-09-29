@@ -1,0 +1,43 @@
+{
+  "object": {
+    "artifacts": [],
+    "dependencies": [
+      {
+        "basedOn": null,
+        "packageRef": {
+          "identity": "fluidaudio",
+          "kind": "remoteSourceControl",
+          "location": "https://github.com/FluidInference/FluidAudio.git",
+          "name": "FluidAudio"
+        },
+        "state": {
+          "checkoutState": {
+            "revision": "19600a485baa4998812e4654b70d2bab8f2c9949",
+            "version": "0.15.5"
+          },
+          "name": "sourceControlCheckout"
+        },
+        "subpath": "FluidAudio"
+      },
+      {
+        "basedOn": null,
+        "packageRef": {
+          "identity": "swift-argument-parser",
+          "kind": "remoteSourceControl",
+          "location": "https://github.com/apple/swift-argument-parser.git",
+          "name": "swift-argument-parser"
+        },
+        "state": {
+          "checkoutState": {
+            "revision": "6a52f3251125d74daf04fcbd5e6f08a75d074382",
+            "version": "1.8.2"
+          },
+          "name": "sourceControlCheckout"
+        },
+        "subpath": "swift-argument-parser"
+      }
+    ],
+    "prebuilts": []
+  },
+  "version": 6
+}

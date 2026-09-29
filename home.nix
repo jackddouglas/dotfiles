@@ -169,6 +169,17 @@ let
   );
 in
 {
+  launchd.agents.quill = {
+    enable = true;
+    config = {
+      ProgramArguments = [ "/Applications/Nix Apps/Quill.app/Contents/MacOS/quill" ];
+      RunAtLoad = true;
+      StandardOutPath = "${config.home.homeDirectory}/Library/Logs/quill/quill.out.log";
+      StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/quill/quill.err.log";
+      EnvironmentVariables.HOME = config.home.homeDirectory;
+    };
+  };
+
   home = {
     username = "jackdouglas";
     homeDirectory = "/Users/jackdouglas";
@@ -253,6 +264,7 @@ in
     ];
 
     file = {
+      "Library/Logs/quill/.keep".text = "";
       ".hushlogin".source = ./hushlogin/.hushlogin;
       ".local/bin/chrome-devtools".source = "${chrome-devtools-cli}/bin/chrome-devtools";
       ".config/nvim".source = ./nvim;

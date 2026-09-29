@@ -6,7 +6,6 @@
     taps = [
       "rjyo/moshi"
       "sst/tap"
-      "typewhisper/tap"
     ];
 
     brews = [
@@ -73,7 +72,6 @@
       "markdown-preview"
       "proton-drive"
       "protonvpn"
-      "typewhisper/tap/typewhisper"
 
       # Utilities
       "betterdisplay"

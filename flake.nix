@@ -47,11 +47,16 @@
     let
       configuration =
         { pkgs, ... }:
+        let
+          apps = import ./nix/apps.nix { inherit pkgs; };
+        in
         {
           environment = {
             systemPackages = [
               pkgs.coreutils
               pkgs.neovim
+              apps.parrot-app
+              apps.quill-app
             ];
 
             systemPath = [
