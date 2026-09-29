@@ -9,37 +9,6 @@
 let
   signingKeyFile = "/Users/jackdouglas/.ssh/id_ed25519";
 
-  ice-app = pkgs.stdenvNoCC.mkDerivation {
-    pname = "ice";
-    version = "0.11.13-dev.2";
-
-    src = pkgs.fetchurl {
-      url = "https://github.com/jordanbaird/Ice/releases/download/0.11.13-dev.2/Ice.zip";
-      sha256 = "c1bbaa71f61ebfe5ee928f790af60963a9f202364d63f78d2c6b3ec5105cf4a0";
-    };
-
-    nativeBuildInputs = [ pkgs.unzip ];
-
-    sourceRoot = ".";
-
-    installPhase = ''
-      mkdir -p $out/Applications
-      cp -r Ice.app $out/Applications/
-    '';
-  };
-
-  flexoki-typora-src = pkgs.fetchFromGitHub {
-    owner = "guidovicino";
-    repo = "flexoki-typora";
-    rev = "5d86c9846f7441e491f0db263f938c302eebcd6e";
-    hash = "sha256-qLmdPmVTE8Dud4rcvn6WPQuTQ5sQp7GfxteyLuWcek4=";
-  };
-
-  flexoki-typora-css = pkgs.runCommandLocal "flexoki-light.css" { } ''
-    sed -e 's/"JetBrainsMono Nerd Font"/"Berkeley Mono"/' \
-      ${flexoki-typora-src}/flexoki-light.css > $out
-  '';
-
   chrome-devtools-cli = pkgs.stdenvNoCC.mkDerivation {
     pname = "chrome-devtools-cli";
     version = "1.6.0";
@@ -270,8 +239,6 @@ in
       ".config/nvim".source = ./nvim;
       ".config/tmuxinator".source = ./tmuxinator;
       "Library/Application Support/com.mitchellh.ghostty/config".source = ./ghostty/config;
-      "Library/Application Support/abnerworks.Typora/themes/flexoki-light.css".source =
-        flexoki-typora-css;
       ".config/ghostty/themes".source = ./ghostty/themes;
       ".stack/config.yaml".source = ./stack/config.yaml;
       ".config/opencode/agent/debug.md".source = ./opencode/agent/debug.md;
