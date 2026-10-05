@@ -2,8 +2,8 @@
   "minutes": {
     "owner": "jackddouglas",
     "repo": "minutes",
-    "rev": "a01a94c411893e3a693562c855243c5ad164a197",
-    "hash": "sha256-htJVBttvidwtdwhvqLhUU7k3ZAbK7uuKB+AiIC3GA+8="
+    "rev": "935d3f9a563cb27ac1d70f607670c0687b4f5d03",
+    "hash": "sha256-Y+SZqy3O+p1XRUffL2BQTNcbZGFJd+pWLnJChdI9ifY="
   },
   "fluidaudio": {
     "owner": "FluidInference",
