@@ -5,6 +5,8 @@ let
   quill-generated = pkgs.swiftPackages.swiftpm2nix.helpers ./quill;
 in
 {
+  minutes-app = import ./minutes { inherit pkgs; };
+
   parrot-app = pkgs.stdenvNoCC.mkDerivation {
     pname = "parrot";
     version = "0.2.1";

@@ -1,0 +1,45 @@
+{
+  "object": {
+    "artifacts": [
+      {
+        "kind": {
+          "xcframework": {}
+        },
+        "packageRef": {
+          "identity": "fluidaudio",
+          "kind": "remoteSourceControl",
+          "location": "https://github.com/FluidInference/FluidAudio.git",
+          "name": "FluidAudio"
+        },
+        "path": "@artifactPath@",
+        "source": {
+          "checksum": "5fa8c10d4ec26c1bb2413125f351a7222a4c68a23b74476680fbada7e26fc6aa",
+          "type": "remote",
+          "url": "https://github.com/FluidInference/text-processing-rs/releases/download/v0.3.1/NemoTextProcessing.xcframework.zip"
+        },
+        "targetName": "NemoTextProcessing"
+      }
+    ],
+    "dependencies": [
+      {
+        "basedOn": null,
+        "packageRef": {
+          "identity": "fluidaudio",
+          "kind": "remoteSourceControl",
+          "location": "https://github.com/FluidInference/FluidAudio.git",
+          "name": "FluidAudio"
+        },
+        "state": {
+          "checkoutState": {
+            "revision": "0b1f46289fe27d95b5e66ad8be46e64f5ee02ae7",
+            "version": "0.17.5"
+          },
+          "name": "sourceControlCheckout"
+        },
+        "subpath": "FluidAudio"
+      }
+    ],
+    "prebuilts": []
+  },
+  "version": 7
+}
