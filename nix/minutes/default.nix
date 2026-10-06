@@ -10,7 +10,7 @@ let
 in
 pkgs.stdenvNoCC.mkDerivation {
   pname = "minutes";
-  version = "unstable-2026-10-05";
+  version = "unstable-2026-10-06";
   src = sources.minutes;
 
   # Swift 6 and Icon Composer require this Mac's selected Xcode toolchain.
