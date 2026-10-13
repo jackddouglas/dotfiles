@@ -56,8 +56,6 @@
               pkgs.coreutils
               pkgs.neovim
               apps.minutes-app
-              apps.parrot-app
-              apps.quill-app
             ];
 
             systemPath = [
