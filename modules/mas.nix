@@ -13,7 +13,6 @@
       "Final Cut Pro" = 424389933;
 
       # Utilities
-      "Amphetamine" = 937984704;
       "Flighty" = 1358823008;
       "HazeOver" = 430798174;
       "wBlock" = 6746388723;

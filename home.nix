@@ -149,14 +149,13 @@ in
       awscli2
       cocoapods
       difftastic
-      docker
-      docker-compose
       jjui
       lazydocker
       lazygit
       neovim
       ngrok
       nvimpager
+      orbstack
       ori
       pm2
       uv

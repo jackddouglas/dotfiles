@@ -4,6 +4,7 @@
     enable = true;
 
     taps = [
+      "mikker/tap"
       "rjyo/moshi"
       "sst/tap"
     ];
@@ -32,6 +33,7 @@
 
       # Design
       "figma"
+      "flowvision"
 
       # Development
       "chatgpt"
@@ -66,12 +68,13 @@
 
       # Productivity
       "1password"
-      "anarlog"
       "antinote"
       "linear"
       "markdown-preview"
+      "mikker/tap/poof"
       "proton-drive"
       "protonvpn"
+      "superwhisper"
 
       # Utilities
       "betterdisplay"
@@ -83,6 +86,7 @@
       "raycast"
       "rectangle"
       "tailscale-app"
+      "vorssaint"
     ];
 
     onActivation = {
