@@ -265,6 +265,8 @@ in
     // agentSkillFiles;
 
     sessionVariables = {
+      SSL_CERT_FILE = "/etc/ssl/cert.pem";
+      NODE_EXTRA_CA_CERTS = "/etc/ssl/cert.pem";
       XDG_CONFIG_DIR = "$HOME/.config";
       PNPM_HOME = "$HOME/.pnpm";
       ANTHROPIC_API_KEY = "op://Tonk/Anthropic/credential";
@@ -372,6 +374,16 @@ in
         diff.colorMoved = "default";
         commit.verbose = true;
         branch.sort = "-committerdate";
+        credential = {
+          "https://origin.cursor.com/git".helper = [
+            ""
+            "!${config.home.homeDirectory}/.local/bin/origin credential-helper"
+          ];
+          "https://origin.cursor.com".helper = [
+            ""
+            "!${config.home.homeDirectory}/.local/bin/origin credential-helper"
+          ];
+        };
       };
     };
 
